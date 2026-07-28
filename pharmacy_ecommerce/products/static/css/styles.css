@@ -348,3 +348,30 @@ p { margin-bottom: var(--space-2); }
   outline: 2px solid var(--primary-500);
   outline-offset: 2px;
 }
+
+/* ── FORMS & CARDS ── */
+.form-page { display: flex; align-items: center; justify-content: center; padding: var(--space-12) 0; min-height: 70vh; }
+.form-card { background: var(--bg-surface); padding: var(--space-8); border-radius: var(--radius-2xl); border: 1px solid var(--border-light); width: 100%; max-width: 480px; box-shadow: var(--shadow-lg); animation: fadeInUp var(--duration-normal) var(--ease-spring) both; }
+.form-card h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: var(--space-2); text-align: center; }
+.form-card > p { text-align: center; color: var(--text-secondary); margin-bottom: var(--space-6); font-size: 1.05rem; }
+.form-card label { display: block; font-weight: 600; margin-bottom: var(--space-2); color: var(--text-primary); font-size: 0.95rem; }
+.form-card input, .form-card select, .form-card textarea { width: 100%; padding: 12px 16px; border-radius: var(--radius-lg); border: 1px solid var(--border-strong); background: var(--bg-surface); color: var(--text-primary); font-family: var(--font-sans); font-size: 1rem; transition: border-color var(--duration-fast), box-shadow var(--duration-fast); margin-bottom: var(--space-5); }
+.form-card input:focus, .form-card select:focus, .form-card textarea:focus { outline: none; border-color: var(--primary-500); box-shadow: 0 0 0 3px var(--primary-100); }
+.form-card .btn-block { width: 100%; justify-content: center; padding: 14px; font-size: 1.05rem; }
+
+/* ── SUCCESS PAGE ── */
+.order-success { display: flex; align-items: center; justify-content: center; padding: var(--space-12) 0; min-height: 70vh; }
+.success-card { background: var(--bg-surface); padding: var(--space-10) var(--space-8); border-radius: var(--radius-2xl); border: 1px solid var(--border-light); width: 100%; max-width: 520px; text-align: center; box-shadow: var(--shadow-lg); animation: fadeInUp var(--duration-normal) var(--ease-spring) both; }
+.success-icon { width: 80px; height: 80px; border-radius: 50%; background: var(--success-light); color: var(--success); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6); animation: scaleIn var(--duration-normal) var(--ease-spring) 0.2s both; }
+.success-card h2 { font-size: 2rem; font-weight: 800; margin-bottom: var(--space-3); letter-spacing: -0.02em; }
+.success-card p { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6; margin-bottom: var(--space-8); }
+.order-summary { background: var(--bg-surface-hover); border-radius: var(--radius-lg); padding: var(--space-4); margin-bottom: var(--space-6); border: 1px solid var(--border-light); }
+.order-summary-item { display: flex; justify-content: space-between; padding: var(--space-2) 0; font-size: 0.95rem; border-bottom: 1px solid var(--border-light); }
+.order-summary-item:last-child { border-bottom: none; }
+.order-summary-item span:first-child { color: var(--text-secondary); font-weight: 500; }
+.order-summary-item span:last-child { color: var(--text-primary); font-weight: 700; }
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}

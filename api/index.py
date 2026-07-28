@@ -15,7 +15,10 @@ if os.environ.get('VERCEL'):
         call_command('migrate')
         from products.models import Product
         if Product.objects.count() == 0:
-            exec(open(os.path.join(project, 'scripts', 'seed_prod.py')).read().split('if __name__')[0] + 'seed()')
+            seed_path = os.path.join(project, 'scripts', 'seed_prod.py')
+            seed_globals = {'__file__': seed_path, '__name__': '__seed__'}
+            exec(open(seed_path).read(), seed_globals)
+            seed_globals['seed']()
 
 from django.core.wsgi import get_wsgi_application
 app = get_wsgi_application()

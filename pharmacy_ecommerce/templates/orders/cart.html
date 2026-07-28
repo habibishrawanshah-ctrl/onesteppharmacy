@@ -1,1 +1,89 @@
-{% extends "base.html" %}{% block title %}Cart - OneStep Pharmacy{% endblock %}{% block content %}<section class="page-content"><div class="page-header"><h1>Shopping Cart</h1><p>Review your items before checkout</p></div>{% if items %}<div class="cart-layout"><div class="cart-items">{% for item in items %}<div class="cart-item"><div class="cart-item-img">{% if item.product.image and item.product.image.name %}<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">{% else %}<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>{% endif %}</div><div class="cart-item-info"><h3><a href="{% url 'products:detail' item.product.pk %}">{{ item.product.name }}</a></h3><p class="cart-item-price">Rs. {{ item.product.price }} each</p></div><form method="post" action="{% url 'cart_update' item.product.pk %}" class="cart-qty-form">{% csrf_token %}<input type="number" name="quantity" value="{{ item.quantity }}" min="0" max="{{ item.product.stock }}" class="cart-qty-input" onchange="this.form.submit()"></form><div class="cart-item-subtotal">Rs. {{ item.subtotal }}</div><a href="{% url 'cart_remove' item.product.pk %}" class="cart-remove" aria-label="Remove">✕</a></div>{% endfor %}</div><div class="cart-summary"><div class="cart-summary-card"><h3>Order Summary</h3><div class="cart-summary-row"><span>Subtotal</span><span>Rs. {{ total }}</span></div><div class="cart-summary-row"><span>Shipping</span><span>Free</span></div><hr><div class="cart-summary-row total"><span>Total</span><span>Rs. {{ total }}</span></div><a href="{% url 'checkout' %}" class="btn btn-primary btn-block">Proceed to Checkout</a><a href="{% url 'products:list' %}" class="btn btn-outline btn-block" style="margin-top:8px;">Continue Shopping</a></div></div></div>{% else %}<div class="text-center" style="padding:80px 0;color:var(--muted);"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;opacity:0.4;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><p style="font-size:1.1rem;">Your cart is empty</p><a href="{% url 'products:list' %}" class="btn btn-primary" style="margin-top:16px;">Browse Products</a></div>{% endif %}</section>{% endblock %}
+{% extends "base.html" %}
+{% block title %}Cart - OneStep Pharmacy{% endblock %}
+{% block content %}
+<section class="page-content">
+  <div class="page-header">
+    <h1>Shopping Cart</h1>
+    <p>Review your items before checkout</p>
+  </div>
+  {% if items %}
+  <div class="cart-layout" style="display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-8);">
+    <div class="cart-items" style="background: var(--bg-surface); padding: var(--space-4); border-radius: var(--radius-xl); border: 1px solid var(--border-light);">
+      {% for item in items %}
+      <div class="cart-item" style="display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4); border-bottom: 1px solid var(--border-light);">
+        <div class="cart-item-img" style="width: 80px; height: 80px; border-radius: var(--radius-lg); overflow: hidden; background: var(--bg-surface-hover); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          {% if item.product.image and item.product.image.name %}
+            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 100%; height: 100%; object-fit: cover;">
+          {% else %}
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--text-tertiary);"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          {% endif %}
+        </div>
+        <div class="cart-item-info" style="flex: 1;">
+          <h3 style="margin: 0; font-size: 1.1rem;"><a href="{% url 'products:detail' item.product.pk %}" style="color: var(--text-primary);">{{ item.product.name }}</a></h3>
+          <p class="cart-item-price" style="margin: 4px 0 0; color: var(--text-secondary); font-size: 0.9rem;">Rs. {{ item.product.price }} each</p>
+        </div>
+        
+        <form method="post" action="{% url 'cart_update' item.product.pk %}" class="cart-qty-form" id="cart-form-{{ item.product.pk }}">
+          {% csrf_token %}
+          <div class="stepper-ui" style="display: inline-flex; align-items: center; border: 1px solid var(--border-strong); border-radius: var(--radius-full); overflow: hidden; background: var(--bg-surface);">
+            <button type="button" class="stepper-btn" style="background: transparent; border: none; padding: 8px 12px; cursor: pointer; color: var(--text-primary);" onclick="updateCartQty('qty-{{ item.product.pk }}', -1, {{ item.product.stock }}, 'cart-form-{{ item.product.pk }}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <input type="number" name="quantity" id="qty-{{ item.product.pk }}" value="{{ item.quantity }}" min="0" max="{{ item.product.stock }}" style="width: 40px; text-align: center; border: none; font-size: 1rem; font-weight: 600; font-family: var(--font-sans); color: var(--text-primary); padding: 8px 0; background: transparent; -moz-appearance: textfield;" onchange="this.form.submit()">
+            <button type="button" class="stepper-btn" style="background: transparent; border: none; padding: 8px 12px; cursor: pointer; color: var(--text-primary);" onclick="updateCartQty('qty-{{ item.product.pk }}', 1, {{ item.product.stock }}, 'cart-form-{{ item.product.pk }}')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </form>
+        
+        <div class="cart-item-subtotal" style="font-weight: 700; width: 100px; text-align: right;">Rs. {{ item.subtotal }}</div>
+        
+        <a href="{% url 'cart_remove' item.product.pk %}" class="cart-remove" aria-label="Remove item" style="padding: 8px; color: var(--text-tertiary); transition: color var(--duration-fast);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </a>
+      </div>
+      {% endfor %}
+      
+      <script>
+        function updateCartQty(inputId, delta, maxStock, formId) {
+          const input = document.getElementById(inputId);
+          let val = parseInt(input.value, 10) || 0;
+          val += delta;
+          if (val < 0) val = 0;
+          if (val > maxStock) val = maxStock;
+          input.value = val;
+          document.getElementById(formId).submit();
+        }
+      </script>
+    </div>
+    
+    <div class="cart-summary">
+      <div class="cart-summary-card" style="background: var(--bg-surface-hover); padding: var(--space-6); border-radius: var(--radius-xl); border: 1px solid var(--border-light); position: sticky; top: 100px;">
+        <h3 style="margin-bottom: var(--space-4);">Order Summary</h3>
+        <div class="cart-summary-row" style="display: flex; justify-content: space-between; margin-bottom: var(--space-2);">
+          <span style="color: var(--text-secondary);">Subtotal</span>
+          <span style="font-weight: 600;">Rs. {{ total }}</span>
+        </div>
+        <div class="cart-summary-row" style="display: flex; justify-content: space-between; margin-bottom: var(--space-4);">
+          <span style="color: var(--text-secondary);">Shipping</span>
+          <span style="font-weight: 600; color: var(--success);">Free</span>
+        </div>
+        <hr style="border: 0; border-top: 1px solid var(--border-light); margin-bottom: var(--space-4);">
+        <div class="cart-summary-row total" style="display: flex; justify-content: space-between; margin-bottom: var(--space-6);">
+          <span style="font-size: 1.1rem; font-weight: 600;">Total</span>
+          <span style="font-size: 1.25rem; font-weight: 800; color: var(--primary-500);">Rs. {{ total }}</span>
+        </div>
+        <a href="{% url 'checkout' %}" class="btn btn-primary btn-block" style="text-align: center; justify-content: center;">Proceed to Checkout</a>
+        <a href="{% url 'products:list' %}" class="btn btn-secondary btn-block" style="margin-top: 12px; text-align: center; justify-content: center;">Continue Shopping</a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="text-center" style="padding: var(--space-12) 0; color: var(--text-tertiary);">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: var(--space-4);"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: var(--space-4);">Your cart is empty</p>
+    <a href="{% url 'products:list' %}" class="btn btn-primary">Browse Products</a>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

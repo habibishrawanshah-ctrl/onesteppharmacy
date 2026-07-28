@@ -1,0 +1,210 @@
+import os
+
+css_content = """
+/* 
+  OneStep Pharmacy - Premium Design System 
+  Inspired by Apple, Linear, and Vercel.
+*/
+
+:root {
+  /* Core HSL Tokens */
+  --hue-primary: 212;
+  --sat-primary: 90%;
+  
+  --primary-50: hsl(var(--hue-primary), var(--sat-primary), 97%);
+  --primary-100: hsl(var(--hue-primary), var(--sat-primary), 92%);
+  --primary-200: hsl(var(--hue-primary), var(--sat-primary), 85%);
+  --primary-300: hsl(var(--hue-primary), var(--sat-primary), 75%);
+  --primary-400: hsl(var(--hue-primary), var(--sat-primary), 65%);
+  --primary-500: hsl(var(--hue-primary), var(--sat-primary), 55%); /* Brand */
+  --primary-600: hsl(var(--hue-primary), var(--sat-primary), 45%);
+  --primary-700: hsl(var(--hue-primary), var(--sat-primary), 35%);
+
+  --secondary: hsl(175, 80%, 40%); /* Medical Teal */
+  --secondary-light: hsl(175, 80%, 92%);
+
+  /* Backgrounds & Surfaces */
+  --bg-app: hsl(0, 0%, 99.5%);
+  --bg-surface: hsl(0, 0%, 100%);
+  --bg-surface-hover: hsl(210, 15%, 97%);
+  --bg-surface-elevated: rgba(255, 255, 255, 0.85); /* Glassmorphism */
+  
+  /* Text */
+  --text-primary: hsl(215, 25%, 10%);
+  --text-secondary: hsl(215, 15%, 40%);
+  --text-tertiary: hsl(215, 10%, 60%);
+  
+  /* Borders */
+  --border-light: hsl(215, 15%, 92%);
+  --border-base: hsl(215, 15%, 86%);
+  --border-strong: hsl(215, 15%, 75%);
+  
+  /* Status */
+  --success: hsl(142, 70%, 45%);
+  --success-light: hsl(142, 70%, 94%);
+  --danger: hsl(348, 80%, 50%);
+  --danger-light: hsl(348, 80%, 96%);
+  --warning: hsl(40, 90%, 50%);
+  --warning-light: hsl(40, 90%, 95%);
+
+  /* 8px Spacing Grid */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-10: 80px;
+  --space-12: 96px;
+  --space-16: 128px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+
+  /* Shadows (Premium Linear-style) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 24px rgba(var(--primary-500), 0.2);
+  
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  
+  /* Animation */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+}
+
+[data-theme="dark"] {
+  --bg-app: hsl(215, 20%, 4%);
+  --bg-surface: hsl(215, 20%, 7%);
+  --bg-surface-hover: hsl(215, 20%, 10%);
+  --bg-surface-elevated: rgba(10, 12, 16, 0.85);
+  
+  --text-primary: hsl(0, 0%, 98%);
+  --text-secondary: hsl(215, 15%, 70%);
+  --text-tertiary: hsl(215, 15%, 50%);
+  
+  --border-light: hsl(215, 20%, 15%);
+  --border-base: hsl(215, 20%, 20%);
+  
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 32px -4px rgba(0, 0, 0, 0.5);
+
+  --primary-50: hsl(var(--hue-primary), var(--sat-primary), 10%);
+}
+
+/* ── RESET & BASE ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { font-family: var(--font-sans); background: var(--bg-app); color: var(--text-primary); line-height: 1.6; transition: background var(--duration-normal) var(--ease-out), color var(--duration-normal) var(--ease-out); }
+a { color: var(--primary-500); text-decoration: none; transition: color var(--duration-fast); }
+a:hover { color: var(--primary-600); }
+img { max-width: 100%; height: auto; display: block; }
+button { font-family: inherit; }
+
+/* ── TYPOGRAPHY ── */
+h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; color: var(--text-primary); }
+h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; letter-spacing: -0.03em; }
+h2 { font-size: clamp(2rem, 3vw, 2.5rem); }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+p { margin-bottom: var(--space-2); }
+.text-muted { color: var(--text-secondary); }
+.text-sm { font-size: 0.875rem; }
+.text-lg { font-size: 1.125rem; }
+
+/* ── LAYOUT ── */
+.page-shell { display: flex; flex-direction: column; min-height: 100vh; }
+.page-content { flex: 1; width: 100%; max-width: 1280px; margin: 0 auto; padding: var(--space-6) var(--space-4); }
+
+/* ── PREMIUM HEADER (GLASSMORPHISM) ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100; height: 72px;
+  background: var(--bg-surface-elevated);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border-bottom: 1px solid var(--border-light);
+  transition: all var(--duration-normal) var(--ease-out);
+}
+.site-header.scrolled { box-shadow: var(--shadow-sm); }
+.header-inner { max-width: 1280px; margin: 0 auto; padding: 0 var(--space-4); display: flex; align-items: center; justify-content: space-between; height: 100%; gap: var(--space-4); }
+
+.brand-link { display: flex; align-items: center; gap: var(--space-2); }
+.brand-logo-container { width: 40px; height: 40px; background: var(--primary-50); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; padding: 6px; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+.brand-eyebrow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); font-weight: 600; }
+.brand-title { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.01em; color: var(--text-primary); }
+
+.site-nav { display: flex; align-items: center; gap: var(--space-1); }
+.site-nav a { padding: 8px 16px; border-radius: var(--radius-full); font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); transition: all var(--duration-fast); }
+.site-nav a:hover, .site-nav a.active { color: var(--text-primary); background: var(--bg-surface-hover); }
+
+.nav-right { display: flex; align-items: center; gap: var(--space-2); }
+.nav-btn-link { padding: 8px 20px; background: var(--text-primary); color: var(--bg-surface) !important; border-radius: var(--radius-full); font-weight: 600; font-size: 0.9rem; box-shadow: var(--shadow-sm); transition: transform var(--duration-fast); }
+.nav-btn-link:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); opacity: 0.9; }
+
+.theme-toggle, .mobile-toggle { background: none; border: none; padding: 8px; cursor: pointer; color: var(--text-secondary); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; transition: background var(--duration-fast); }
+.theme-toggle:hover, .mobile-toggle:hover { background: var(--bg-surface-hover); color: var(--text-primary); }
+.theme-toggle svg { width: 20px; height: 20px; }
+.mobile-toggle { display: none; }
+
+.search-bar { flex: 1; max-width: 320px; position: relative; }
+.search-bar input { width: 100%; padding: 10px 16px 10px 40px; border-radius: var(--radius-full); border: 1px solid var(--border-light); background: var(--bg-surface-hover); font-size: 0.9rem; color: var(--text-primary); outline: none; transition: all var(--duration-fast); }
+.search-bar input:focus { border-color: var(--primary-500); background: var(--bg-surface); box-shadow: 0 0 0 4px var(--primary-50); }
+.search-bar .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); pointer-events: none; }
+
+/* ── BUTTONS ── */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius-full); font-weight: 600; font-size: 0.95rem; border: none; cursor: pointer; transition: all var(--duration-fast); line-height: 1; }
+.btn-primary { background: var(--primary-500); color: white; box-shadow: var(--shadow-sm); }
+.btn-primary:hover { background: var(--primary-600); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-secondary { background: var(--bg-surface-hover); color: var(--text-primary); border: 1px solid var(--border-light); }
+.btn-secondary:hover { background: var(--border-light); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in-up { animation: fadeInUp var(--duration-slow) var(--ease-out) both; }
+
+/* ── UTILITIES ── */
+.d-flex { display: flex; }
+.align-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: var(--space-2); }
+.gap-4 { gap: var(--space-4); }
+
+/* ── FOOTER ── */
+.footer { background: var(--bg-surface); border-top: 1px solid var(--border-light); padding: var(--space-10) var(--space-4) var(--space-6); margin-top: auto; }
+.footer-inner { max-width: 1280px; margin: 0 auto; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--space-8); padding-bottom: var(--space-8); border-bottom: 1px solid var(--border-light); margin-bottom: var(--space-6); }
+.footer-col h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-primary); margin-bottom: var(--space-3); }
+.footer-links { display: flex; flex-direction: column; gap: var(--space-2); }
+.footer-links a { color: var(--text-secondary); font-size: 0.9rem; transition: color var(--duration-fast); }
+.footer-links a:hover { color: var(--primary-500); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; color: var(--text-tertiary); font-size: 0.85rem; }
+.footer-bottom-links { display: flex; gap: var(--space-4); }
+
+/* ── CARDS (Product, Features) ── */
+.card { background: var(--bg-surface); border-radius: var(--radius-xl); border: 1px solid var(--border-light); padding: var(--space-4); box-shadow: var(--shadow-sm); transition: transform var(--duration-fast), box-shadow var(--duration-fast); }
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+/* ── MEDIA QUERIES ── */
+@media (max-width: 1024px) {
+  .site-nav { display: none; } /* Implement mobile nav via JS later */
+  .mobile-toggle { display: flex; }
+}
+
+"""
+
+with open("/home/neo/Projects/onesteppharmacy/pharmacy_ecommerce/products/static/css/styles.css", "w") as f:
+    f.write(css_content)
+
+print("CSS generated.")

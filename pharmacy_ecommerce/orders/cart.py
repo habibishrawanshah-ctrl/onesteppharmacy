@@ -41,16 +41,22 @@ def cart_items(request):
     cart = get_cart(request)
     items = []
     total = 0
-    for pid, data in cart.items():
-        try:
-            product = Product.objects.get(pk=int(pid))
-            subtotal = product.price * data['qty']
+    if not cart:
+        return items, total
+        
+    product_ids = [int(pid) for pid in cart.keys() if pid.isdigit()]
+    products = Product.objects.filter(pk__in=product_ids)
+    
+    for product in products:
+        pid = str(product.pk)
+        if pid in cart:
+            qty = cart[pid]['qty']
+            subtotal = product.price * qty
             total += subtotal
             items.append({
                 'product': product,
-                'quantity': data['qty'],
+                'quantity': qty,
                 'subtotal': subtotal,
             })
-        except Product.DoesNotExist:
-            pass
+            
     return items, total

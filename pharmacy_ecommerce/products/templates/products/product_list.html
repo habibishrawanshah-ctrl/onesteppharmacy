@@ -54,4 +54,24 @@
       </div>
     {% endfor %}
   </div>
+  
+  {% if products.has_other_pages %}
+    <div class="pagination" style="display: flex; justify-content: center; gap: 8px; margin-top: var(--space-8); animation: fadeInUp 0.5s ease-out 0.3s both;">
+      {% if products.has_previous %}
+        <a href="?page={{ products.previous_page_number }}" class="btn btn-secondary" style="padding: 8px 16px;">&laquo; Prev</a>
+      {% endif %}
+      
+      {% for num in products.paginator.page_range %}
+        {% if products.number == num %}
+          <span class="btn btn-primary" style="padding: 8px 16px;">{{ num }}</span>
+        {% else %}
+          <a href="?page={{ num }}" class="btn btn-secondary" style="padding: 8px 16px;">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      
+      {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}" class="btn btn-secondary" style="padding: 8px 16px;">Next &raquo;</a>
+      {% endif %}
+    </div>
+  {% endif %}
 {% endblock %}

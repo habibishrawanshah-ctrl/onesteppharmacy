@@ -26,7 +26,13 @@ def place_order(request, product_id):
         elif qty > product.stock:
             errors.append(f'Only {product.stock} in stock — you requested {qty}.')
         if not errors:
-            Order.objects.create(user=request.user, product=product, quantity=qty)
+            Order.objects.create(
+                user=request.user,
+                product=product,
+                quantity=qty,
+                unit_price=product.price,
+                total_price=product.price * qty
+            )
             product.stock -= qty
             product.save(update_fields=['stock'])
             return redirect('orders:success')
@@ -70,6 +76,18 @@ def checkout(request):
         messages.info(request, 'Your cart is empty.')
         return redirect('cart')
     if request.method == 'POST':
+        address = request.POST.get('address', '').strip()
+        phone = request.POST.get('phone', '').strip()[:15]
+        
+        if not address or not phone:
+            messages.error(request, 'Please provide both shipping address and phone number.')
+            return render(request, 'orders/checkout.html', {'items': items, 'total': total})
+            
+        profile = request.user.userprofile
+        profile.address = address
+        profile.phone = phone
+        profile.save()
+        
         for item in items:
             if item['quantity'] > item['product'].stock:
                 messages.error(request, f'Only {item["product"].stock} of {item["product"].name} in stock.')
@@ -78,6 +96,8 @@ def checkout(request):
                 user=request.user,
                 product=item['product'],
                 quantity=item['quantity'],
+                unit_price=item['product'].price,
+                total_price=item['product'].price * item['quantity']
             )
             item['product'].stock -= item['quantity']
             item['product'].save(update_fields=['stock'])

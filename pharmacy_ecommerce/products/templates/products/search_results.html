@@ -63,6 +63,26 @@
       </article>
     {% endfor %}
   </div>
+  
+  {% if results.has_other_pages %}
+    <div class="pagination" style="display: flex; justify-content: center; gap: 8px; margin-top: var(--space-8); animation: fadeInUp 0.5s ease-out 0.3s both;">
+      {% if results.has_previous %}
+        <a href="?q={{ query|urlencode }}&page={{ results.previous_page_number }}" class="btn btn-secondary" style="padding: 8px 16px;">&laquo; Prev</a>
+      {% endif %}
+      
+      {% for num in results.paginator.page_range %}
+        {% if results.number == num %}
+          <span class="btn btn-primary" style="padding: 8px 16px;">{{ num }}</span>
+        {% else %}
+          <a href="?q={{ query|urlencode }}&page={{ num }}" class="btn btn-secondary" style="padding: 8px 16px;">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      
+      {% if results.has_next %}
+        <a href="?q={{ query|urlencode }}&page={{ results.next_page_number }}" class="btn btn-secondary" style="padding: 8px 16px;">Next &raquo;</a>
+      {% endif %}
+    </div>
+  {% endif %}
 
 {% elif query %}
   <div class="card text-center animate-fade-in-up" style="animation-delay: 0.2s; padding: var(--space-8); margin-top: var(--space-6);">

@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block title %}{{ product.name }} - OneStep Pharmacy{% endblock %}
+{% block meta_description %}Buy {{ product.name }} online at OneStep Pharmacy. {{ product.description|truncatechars:150 }}{% endblock %}
+{% block og_title %}{{ product.name }} - OneStep Pharmacy{% endblock %}
+{% block og_description %}Buy {{ product.name }} online at OneStep Pharmacy. {{ product.description|truncatechars:150 }}{% endblock %}
 {% block content %}
   <div class="detail-layout animate-fade-in-up">
     <div class="detail-image{% if not product.image or not product.image.name %} no-image{% endif %}">

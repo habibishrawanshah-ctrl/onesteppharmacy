@@ -30,7 +30,15 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('about/', views.about, name='about'),
-    path('', views.home, name='home'),  # <-- add this line
+    path('careers/', views.page_view, {'template': 'pages/careers.html'}, name='careers'),
+    path('help-center/', views.page_view, {'template': 'pages/help_center.html'}, name='help_center'),
+    path('shipping-info/', views.page_view, {'template': 'pages/shipping_info.html'}, name='shipping_info'),
+    path('returns/', views.page_view, {'template': 'pages/returns.html'}, name='returns'),
+    path('contact-us/', views.page_view, {'template': 'pages/contact_us.html'}, name='contact_us'),
+    path('privacy-policy/', views.page_view, {'template': 'pages/privacy_policy.html'}, name='privacy_policy'),
+    path('terms-of-service/', views.page_view, {'template': 'pages/terms_of_service.html'}, name='terms_of_service'),
+    path('license-info/', views.page_view, {'template': 'pages/license_info.html'}, name='license_info'),
+    path('', views.home, name='home'),
 ]
 
 from django.conf import settings

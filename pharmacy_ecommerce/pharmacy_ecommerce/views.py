@@ -31,3 +31,7 @@ def logout_view(request):
         logout(request)
         return redirect('login')
     return render(request, 'users/logout.html')
+
+
+def page_view(request, template):
+    return render(request, template)

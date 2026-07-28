@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} - OneStep Pharmacy{% endblock %}
+{% block content %}
+  <div class="detail-layout">
+    <div class="detail-image{% if not product.image or not product.image.name %} no-image{% endif %}">
+      {% if product.image and product.image.name %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+      {% else %}
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+      {% endif %}
+    </div>
+    <div class="detail-info">
+      <div class="detail-rating">
+        <span class="stars">★★★★★</span>
+        <span class="count">(4.8 rating)</span>
+      </div>
+      <h1>{{ product.name }}</h1>
+      <div class="detail-price">Rs. {{ product.price }}</div>
+      <div class="detail-description">{{ product.description|linebreaks }}</div>
+      <div class="detail-meta">
+        <div class="meta-row">
+          <strong>Stock:</strong>
+          {% if product.stock > 10 %}
+            <span class="stock-badge in-stock">{{ product.stock }} available</span>
+          {% elif product.stock > 0 %}
+            <span class="stock-badge low-stock">Only {{ product.stock }} left</span>
+          {% else %}
+            <span class="stock-badge out-of-stock">Out of Stock</span>
+          {% endif %}
+        </div>
+        {% if product.expiry_date %}
+          <div class="meta-row">
+            <strong>Expiry:</strong> {{ product.expiry_date|date:"F Y" }}
+          </div>
+        {% endif %}
+      </div>
+      <div class="detail-actions">
+        {% if user.is_authenticated %}
+          {% if product.stock > 0 %}
+            <a href="{% url 'orders:place' product.pk %}" class="btn btn-primary btn-lg">
+              Place Order
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          {% endif %}
+        {% else %}
+          {% if product.stock > 0 %}
+            <a href="/login/?next={{ request.path }}" class="btn btn-primary btn-lg">Login to Order</a>
+          {% endif %}
+        {% endif %}
+        <a href="/products/" class="btn btn-secondary btn-lg">&larr; Back to Products</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

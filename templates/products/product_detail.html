@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.name }} - ONE STEP PHARMACY{% endblock %}
+{% block content %}
+  <div class="product-card product-card-horizontal">
+    {% if product.image and product.image.name %}
+      <div class="product-card-image">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+      </div>
+    {% endif %}
+    <div class="product-card-content">
+      <h3>{{ product.name }}</h3>
+      <p class="card-copy">{{ product.description }}</p>
+      <div class="product-card-footer">
+        <span class="price">Rs. {{ product.price }}</span>
+      </div>
+      <p><strong>Stock:</strong> {{ product.stock }}</p>
+      {% if product.expiry_date %}
+        <p><strong>Expiry date:</strong> {{ product.expiry_date }}</p>
+      {% endif %}
+      <div class="hero-actions">
+        <a href="{% url 'orders:place' product.id %}" class="button button-primary">Order Now</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

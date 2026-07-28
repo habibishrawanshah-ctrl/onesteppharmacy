@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Sign Up - OneStep Pharmacy{% endblock %}
+{% block content %}
+<section class="form-page">
+  <div class="form-card">
+    <h2>Create Account</h2>
+    <p>Join OneStep Pharmacy to start ordering</p>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-primary btn-block" type="submit">
+        Create Account
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </form>
+    <p class="text-center mt-4" style="font-size:0.88rem;color:var(--muted);">
+      Already have an account? <a href="{% url 'login' %}" style="color:var(--primary);font-weight:600;text-decoration:none;">Sign In</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

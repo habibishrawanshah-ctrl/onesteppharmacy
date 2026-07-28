@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Products - ONE STEP PHARMACY{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>All Medicines</h1>
+    <p>Browse our complete collection of quality pharmacy products</p>
+  </div>
+
+  <div class="products-grid">
+    {% for product in products %}
+      <div class="product-card">
+        {% if product.image and product.image.name %}
+          <div class="product-image">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          </div>
+        {% else %}
+          <div class="product-image no-image">💊</div>
+        {% endif %}
+        <div class="product-info">
+          <h3>{{ product.name }}</h3>
+          <p class="description">{{ product.description|truncatechars:100 }}</p>
+          <div class="product-meta">
+            {% if product.stock %}
+              <span class="badge bg-success">Stock: {{ product.stock }}</span>
+            {% endif %}
+            {% if product.expiry_date %}
+              <span class="badge bg-info">Expires: {{ product.expiry_date|date:"M Y" }}</span>
+            {% endif %}
+          </div>
+          <div class="product-details">
+            <span class="price">Rs. {{ product.price }}</span>
+          </div>
+          <a href="{% url 'products:detail' product.pk %}" class="btn btn-sm btn-primary w-100 mt-3">View Details</a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12 text-center text-muted py-5">
+        <p>No products available</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

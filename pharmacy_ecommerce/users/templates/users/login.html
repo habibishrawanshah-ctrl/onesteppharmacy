@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Login - OneStep Pharmacy{% endblock %}
+{% block content %}
+<section class="form-page">
+  <div class="form-card">
+    <h2>Welcome Back</h2>
+    <p>Sign in to your account to place orders</p>
+    <form method="post">
+      {% csrf_token %}
+      {% if request.GET.next %}<input type="hidden" name="next" value="{{ request.GET.next }}">{% endif %}
+      {{ form.as_p }}
+      <button class="btn btn-primary btn-block" type="submit">
+        Sign In
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </form>
+    <p class="text-center mt-4" style="font-size:0.88rem;color:var(--muted);">
+      Don't have an account? <a href="{% url 'users:signup' %}" style="color:var(--primary);font-weight:600;text-decoration:none;">Sign Up</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

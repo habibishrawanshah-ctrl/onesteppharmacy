@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Place Order - OneStep Pharmacy{% endblock %}
+{% block content %}
+<section class="form-page">
+  <div class="form-card">
+    <h2>Place Order</h2>
+    <p>Order: <strong>{{ product.name }}</strong></p>
+    <div class="order-summary">
+      <div class="order-summary-item">
+        <span>Product</span>
+        <span>{{ product.name }}</span>
+      </div>
+      <div class="order-summary-item">
+        <span>Price per unit</span>
+        <span>Rs. {{ product.price }}</span>
+      </div>
+      <div class="order-summary-item">
+        <span>Available stock</span>
+        <span>{{ product.stock }}</span>
+      </div>
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      <p>
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" required>
+      </p>
+      <button class="btn btn-primary btn-block" type="submit">
+        Submit Order
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+    </form>
+    <p class="text-center mt-4">
+      <a href="{% url 'products:detail' product.pk %}" style="color:var(--muted);font-weight:500;text-decoration:none;font-size:0.9rem;">&larr; Back to product</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

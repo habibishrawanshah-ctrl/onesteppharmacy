@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Order Placed - OneStep Pharmacy{% endblock %}
+{% block content %}
+<section class="order-success">
+  <div class="success-card">
+    <div class="success-icon">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2>Order Placed Successfully</h2>
+    <p>Thank you for your order. We will process it shortly and keep you updated.</p>
+    <a class="btn btn-primary" href="{% url 'products:list' %}">
+      Continue Shopping
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</section>
+{% endblock %}

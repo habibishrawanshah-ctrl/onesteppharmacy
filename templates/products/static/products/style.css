@@ -1,0 +1,114 @@
+/* General page styling */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f5fdf7; /* soft pharmacy green background */
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header */
+.site-header {
+  background-color: #4CAF50; /* pharmacy green */
+  color: white;
+  padding: 1rem;
+}
+.site-header a {
+  color: white;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+.site-header a:hover {
+  text-decoration: underline;
+}
+
+/* Hero section */
+.home-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem;
+  background: linear-gradient(135deg, #4CAF50, #2196F3);
+  color: white;
+}
+.hero-copy h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.hero-actions .button {
+  margin-right: 1rem;
+}
+
+/* Buttons */
+.button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+}
+.button-primary {
+  background-color: #4CAF50;
+  color: #fff;
+}
+.button-secondary {
+  background-color: #2196F3;
+  color: #fff;
+}
+.button-small {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+/* Featured products grid */
+.featured-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 2rem;
+}
+.product-card {
+  flex: 0 0 250px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+}
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.product-card-content {
+  padding: 1rem;
+}
+.product-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+.price {
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+/* Footer */
+.footer {
+  background-color: #2196F3;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+.footer a {
+  color: #fff;
+  margin: 0 0.5rem;
+}
+.footer a:hover {
+  text-decoration: underline;
+}

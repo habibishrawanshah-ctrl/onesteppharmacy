@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Logout - OneStep Pharmacy{% endblock %}
+{% block content %}
+<section class="form-page">
+  <div class="form-card">
+    <h2>Sign Out</h2>
+    <p>Are you sure you want to sign out?</p>
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button class="btn btn-primary btn-block" type="submit">Sign Out</button>
+    </form>
+    <p class="text-center mt-4">
+      <a href="/" style="color:var(--muted);font-weight:500;text-decoration:none;font-size:0.9rem;">Stay signed in</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

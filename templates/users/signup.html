@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Signup - ONE STEP PHARMACY{% endblock %}
+{% block content %}
+  <div class="form-page">
+    <div class="form-card">
+      <h2>Create your account</h2>
+      <p class="card-copy">Sign up to save orders, view your cart, and access the pharmacy dashboard.</p>
+      <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <button class="button button-primary">Create account</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

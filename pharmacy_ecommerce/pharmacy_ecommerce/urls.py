@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import views  # import your home view
+from . import views
+from orders import views as orders_views
 
 admin.site.site_header = "OneStep Pharmacy Administration"
 admin.site.site_title = "OneStep Pharmacy Admin"
@@ -30,6 +31,11 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('about/', views.about, name='about'),
+    path('cart/', orders_views.cart_view, name='cart'),
+    path('cart/add/<int:product_id>/', orders_views.cart_add, name='cart_add'),
+    path('cart/remove/<int:product_id>/', orders_views.cart_remove, name='cart_remove'),
+    path('cart/update/<int:product_id>/', orders_views.cart_update, name='cart_update'),
+    path('checkout/', orders_views.checkout, name='checkout'),
     path('careers/', views.page_view, {'template': 'pages/careers.html'}, name='careers'),
     path('help-center/', views.page_view, {'template': 'pages/help_center.html'}, name='help_center'),
     path('shipping-info/', views.page_view, {'template': 'pages/shipping_info.html'}, name='shipping_info'),

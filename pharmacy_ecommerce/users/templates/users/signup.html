@@ -3,8 +3,13 @@
 {% block content %}
 <section class="form-page">
   <div class="form-card">
-    <h2>Create Account</h2>
-    <p>Join OneStep Pharmacy to start ordering</p>
+    <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:24px;">
+      <div style="width:56px;height:56px;background:var(--primary-50);border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+      </div>
+      <h2>Create Account</h2>
+      <p style="margin-bottom:0;">Join OneStep Pharmacy to start ordering</p>
+    </div>
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}

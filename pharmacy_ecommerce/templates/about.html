@@ -326,7 +326,7 @@ paths.forEach(p => {
       const md = Math.max(sz.x, sz.y, sz.z);
       if (md > 0) group.scale.setScalar(450 / md);
       const fovRad = camera.fov * Math.PI / 180;
-      camera.position.set(0, 0, (450 / 2) / Math.tan(fovRad / 2) * 0.75);
+      camera.position.set(0, 0, (450 / 2) / Math.tan(fovRad / 2) * 0.82);
       controls.target.set(0, 0, 0);
       controls.update();
     }

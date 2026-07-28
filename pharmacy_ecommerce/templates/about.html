@@ -322,7 +322,7 @@ paths.forEach(p => {
       const box = new THREE.Box3().setFromObject(group);
       const ctr = box.getCenter(new THREE.Vector3());
       group.position.sub(ctr);
-      group.position.y += 25;
+      group.position.y += 60;
       const sz = box.getSize(new THREE.Vector3());
       const md = Math.max(sz.x, sz.y, sz.z);
       if (md > 0) group.scale.setScalar(460 / md);

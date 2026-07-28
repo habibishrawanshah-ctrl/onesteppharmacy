@@ -2,8 +2,6 @@ venv/
 __pycache__/
 *.pyc
 *.pyo
-db.sqlite3
-media/product_images/
 staticfiles/
 .DS_Store
 Thumbs.db

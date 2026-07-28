@@ -324,9 +324,9 @@ paths.forEach(p => {
       group.position.sub(ctr);
       const sz = box.getSize(new THREE.Vector3());
       const md = Math.max(sz.x, sz.y, sz.z);
-      if (md > 0) group.scale.setScalar(320 / md);
+      if (md > 0) group.scale.setScalar(380 / md);
       const fovRad = camera.fov * Math.PI / 180;
-      camera.position.set(0, 0, (320 / 2) / Math.tan(fovRad / 2) * 1.03);
+      camera.position.set(0, 0, (380 / 2) / Math.tan(fovRad / 2) * 0.95);
       controls.target.set(0, 0, 0);
       controls.update();
     }

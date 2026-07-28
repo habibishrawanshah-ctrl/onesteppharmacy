@@ -110,9 +110,24 @@ def download_image(url):
         return None
 
 
+def clean_media():
+    media_root = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'media', 'product_images')
+    if not os.path.exists(media_root):
+        return
+    used = set()
+    for p in Product.objects.all():
+        if p.image and p.image.name:
+            used.add(os.path.basename(p.image.path))
+    for f in os.listdir(media_root):
+        if f not in used:
+            path = os.path.join(media_root, f)
+            os.remove(path)
+            print(f'  Cleaned orphan: {f}')
+
 def seed():
     print('=== Seeding Products ===')
     Product.objects.all().delete()
+    clean_media()
     products = {}
     for data in PRODUCT_DATA:
         expiry = date.today() + timedelta(days=data['expiry_days'])

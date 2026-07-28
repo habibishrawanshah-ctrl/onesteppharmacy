@@ -58,6 +58,24 @@ class SignupViewTest(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, 'entirely numeric')
 
+    def test_signup_short_password_shows_error(self):
+        resp = self.client.post(reverse('users:signup'), {
+            'username': 'testuser2',
+            'password1': 'Ab1',
+            'password2': 'Ab1',
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'too short')
+
+    def test_signup_password_similar_to_username_shows_error(self):
+        resp = self.client.post(reverse('users:signup'), {
+            'username': 'testuser',
+            'password1': 'testuser123',
+            'password2': 'testuser123',
+        })
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'too similar')
+
 
 class UserProfileModelTest(TestCase):
     def test_create_profile(self):

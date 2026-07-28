@@ -48,6 +48,11 @@ class ProductListViewTest(TestCase):
         resp = self.client.get(reverse('products:list'))
         self.assertContains(resp, 'Out of Stock')
 
+    def test_expiry_badge_hidden_when_null_on_list(self):
+        Product.objects.create(name='NoExp', price=5.00, stock=10, expiry_date=None)
+        resp = self.client.get(reverse('products:list'))
+        self.assertNotContains(resp, 'Exp:')
+
 
 class ProductDetailViewTest(TestCase):
     def setUp(self):
@@ -93,3 +98,7 @@ class ProductDetailViewTest(TestCase):
         self.product.save()
         resp = self.client.get(reverse('products:detail', args=[self.product.pk]))
         self.assertNotContains(resp, '<strong>Expiry:</strong>')
+
+    def test_back_to_products_link_shown(self):
+        resp = self.client.get(reverse('products:detail', args=[self.product.pk]))
+        self.assertContains(resp, 'Back to Products')

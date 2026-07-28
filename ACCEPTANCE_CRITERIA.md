@@ -136,7 +136,7 @@
 | SE1.5 | `SECURE_BROWSER_XSS_FILTER = True` | N/A |
 | SE1.6 | `X_FRAME_OPTIONS = 'DENY'` | Clickjacking prevention |
 | SE1.7 | `SESSION_COOKIE_HTTPONLY = True`, `CSRF_COOKIE_HTTPONLY = True` | N/A |
-| SE1.8 | `SSESSION_COOKIE_SAMESITE = 'Lax'`, `CSRF_COOKIE_SAMESITE = 'Lax'` | N/A |
+| SE1.8 | `SESSION_COOKIE_SAMESITE = 'Lax'`, `CSRF_COOKIE_SAMESITE = 'Lax'` | N/A |
 
 ---
 

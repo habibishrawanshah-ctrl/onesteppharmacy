@@ -279,20 +279,18 @@ camera.position.set(0, 100, 400);
 const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setClearColor(0x000000, 0);
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.2;
 
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true; controls.dampingFactor = 0.08;
 controls.autoRotate = true; controls.autoRotateSpeed = 2; controls.update();
 
-scene.add(new THREE.AmbientLight(0x404060, 0.6));
-const kl = new THREE.DirectionalLight(0xffffff, 2.5); kl.position.set(8,12,10); scene.add(kl);
-const fl = new THREE.DirectionalLight(0x88bbff, 0.6); fl.position.set(-6,4,6); scene.add(fl);
-const rl = new THREE.DirectionalLight(0x4488ff, 0.5); rl.position.set(0,-8,-12); scene.add(rl);
+scene.add(new THREE.AmbientLight(0x8080a0, 1.2));
+const kl = new THREE.DirectionalLight(0xffffff, 3.5); kl.position.set(8,12,10); scene.add(kl);
+const fl = new THREE.DirectionalLight(0x88bbff, 1.0); fl.position.set(-6,4,6); scene.add(fl);
+const rl = new THREE.DirectionalLight(0x4488ff, 0.8); rl.position.set(0,-8,-12); scene.add(rl);
 
 const tex = new THREE.TextureLoader().load("{% static 'models/spiral_texture.png' %}");
-const mat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.35, metalness: 0, side: THREE.DoubleSide });
+const mat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: 0.25, metalness: 0, side: THREE.DoubleSide });
 
 const group = new THREE.Group(); scene.add(group);
 const loader = new OBJLoader();

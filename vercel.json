@@ -1,15 +1,13 @@
 {
   "buildCommand": "cd pharmacy_ecommerce && pip install --break-system-packages -r requirements.txt && python manage.py collectstatic --noinput && mkdir -p ../public/static && cp -r staticfiles/* ../public/static/",
-  "outputDirectory": "public",
   "functions": {
-    "api/**/*.py": {
-      "memory": 512,
+    "api/index.py": {
       "maxDuration": 30
     }
   },
   "routes": [
     { "src": "/static/(.*)", "dest": "/static/$1" },
-    { "src": "/(.*)", "dest": "/api/wsgi.py" }
+    { "src": "/(.*)", "dest": "/api/index" }
   ],
   "cleanUrls": true
 }

@@ -1,6 +1,5 @@
 {
-  "buildCommand": "cd pharmacy_ecommerce && pip install -r requirements.txt && python manage.py collectstatic --noinput",
-  "outputDirectory": "pharmacy_ecommerce",
+  "buildCommand": "cd pharmacy_ecommerce && pip install -r requirements.txt && python manage.py collectstatic --noinput && cp -r staticfiles ../static",
   "functions": {
     "api/**/*.py": {
       "memory": 512,
@@ -8,7 +7,7 @@
     }
   },
   "routes": [
-    { "src": "/static/(.*)", "dest": "/staticfiles/$1" },
+    { "src": "/static/(.*)", "dest": "/static/$1" },
     { "src": "/(.*)", "dest": "/api/wsgi.py" }
   ],
   "cleanUrls": true

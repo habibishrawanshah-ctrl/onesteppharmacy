@@ -25,7 +25,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def get_image_url(self):
-        if self.image and self.image.name:
+        if self.image and self.image.name and self.image.storage.exists(self.image.name):
             return self.image.url
         name_slug = self.name.lower().replace(' ', '_')
         from django.conf import settings

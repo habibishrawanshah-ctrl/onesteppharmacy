@@ -30,7 +30,7 @@ class Product(models.Model):
             return self.image.url
         name_slug = self.name.lower().replace(' ', '_')
         cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', 'cxfqn4a3')
-        return f'https://res.cloudinary.com/{cloud_name}/image/upload/v1/products/{name_slug}.svg'
+        return f'https://res.cloudinary.com/{cloud_name}/image/upload/v1/products/{name_slug}.jpg'
 
     def __str__(self):
         return self.name

@@ -27,8 +27,14 @@ class Product(models.Model):
     def get_image_url(self):
         if self.image and self.image.name:
             return self.image.url
-        name_slug = self.name.replace(' ', '+')
-        return f'https://placehold.co/400x300/1a56db/ffffff?text={name_slug}'
+        name_slug = self.name.lower().replace(' ', '_')
+        from django.conf import settings
+        from pathlib import Path
+        static_dir = Path(settings.BASE_DIR) / 'products' / 'static' / 'images' / 'products'
+        for ext in ('svg', 'jpg', 'jpeg', 'png', 'webp'):
+            if (static_dir / f'{name_slug}.{ext}').exists():
+                return f'{settings.STATIC_URL}images/products/{name_slug}.{ext}'
+        return f'{settings.STATIC_URL}images/products/{name_slug}.svg'
 
     def __str__(self):
         return self.name

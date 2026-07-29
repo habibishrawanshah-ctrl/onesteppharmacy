@@ -7,8 +7,8 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-7pc%5b8lz()$ddbi1chs1mzj!gzt+=%g14m82--#-u#@ofwcd1'
-DEBUG = True
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-7pc%5b8lz()$ddbi1chs1mzj!gzt+=%g14m82--#-u#@ofwcd1')
+DEBUG = os.environ.get('VERCEL') != '1'
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.vercel.app']
 
 INSTALLED_APPS = [
@@ -68,10 +68,15 @@ if DATABASE_URL:
         'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600, conn_health_checks=True),
     }
 elif os.environ.get('VERCEL'):
+    import shutil
+    src = BASE_DIR / 'db.sqlite3'
+    dst = '/tmp/db.sqlite3'
+    if src.exists() and not os.path.exists(dst):
+        shutil.copy2(src, dst)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'NAME': dst,
         }
     }
 else:

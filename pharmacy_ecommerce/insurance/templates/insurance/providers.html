@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Insurance Providers{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Insurance Providers</h1>
+  <p>Partner insurance companies</p>
+</div>
+
+<div class="products-grid">
+  {% for provider in providers %}
+  <div class="product-card">
+    <div class="product-info">
+      <h3>{{ provider.name }}</h3>
+      <p class="description">{{ provider.coverage_details|truncatewords:30 }}</p>
+      <div class="product-meta">
+        {% if provider.contact_phone %}<span class="badge">{{ provider.contact_phone }}</span>{% endif %}
+        {% if provider.contact_email %}<span class="badge">{{ provider.contact_email }}</span>{% endif %}
+      </div>
+    </div>
+    <div class="product-card-actions">
+      <a href="{% url 'insurance:add' %}" class="btn btn-primary">Add Policy</a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="empty-state">
+    <p>No insurance providers available.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

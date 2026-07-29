@@ -1,75 +1,68 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block title %}My Profile - OneStep Pharmacy{% endblock %}
 {% block content %}
-<div class="page-header animate-fade-in-up">
+<div class="page-header" style="max-width:100%;margin-bottom:var(--space-6);">
   <h1>My Profile</h1>
-  <p>Manage your details and view order history</p>
+  <p>Welcome, {{ user.username }}</p>
 </div>
 
-<div class="profile-layout" style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-8); margin-bottom: var(--space-10);">
-  <div class="profile-details animate-fade-in-up" style="animation-delay: 0.1s;">
-    <div class="card" style="padding: var(--space-6); border-radius: var(--radius-xl); background: var(--bg-surface); border: 1px solid var(--border-light);">
-      <h3 style="margin-bottom: var(--space-4);">Account Details</h3>
-      <div style="margin-bottom: var(--space-3);">
-        <strong style="color: var(--text-secondary); font-size: 0.9rem; display: block; margin-bottom: 2px;">Username</strong>
-        <div style="font-weight: 500;">{{ user.username }}</div>
+<div class="d-flex gap-4 flex-wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-5);">
+  <div>
+    <div class="card">
+      <h3 class="mb-4">Account Details</h3>
+      <div class="d-flex flex-column gap-2 text-sm">
+        <div><strong>Username:</strong> {{ user.username }}</div>
+        <div><strong>Email:</strong> {{ user.email|default:'Not provided' }}</div>
+        <div><strong>Phone:</strong> {{ user.userprofile.phone|default:'Not provided' }}</div>
+        <div><strong>Address:</strong> {{ user.userprofile.address|default:'Not provided' }}</div>
+        <div><strong>Blood Group:</strong> {{ user.userprofile.blood_group|default:'Not provided' }}</div>
+        <div><strong>Language:</strong> {{ user.userprofile.get_preferred_language_display }}</div>
       </div>
-      <div style="margin-bottom: var(--space-3);">
-        <strong style="color: var(--text-secondary); font-size: 0.9rem; display: block; margin-bottom: 2px;">Email</strong>
-        <div style="font-weight: 500;">{{ user.email|default:"Not provided" }}</div>
+    </div>
+
+    <div class="card mt-4">
+      <h3 class="mb-4">Quick Links</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);">
+        <a href="{% url 'health:my_records' %}" class="btn btn-secondary btn-sm text-center">Health Records</a>
+        <a href="{% url 'insurance:my_insurance' %}" class="btn btn-secondary btn-sm text-center">Insurance</a>
+        <a href="{% url 'payments:methods' %}" class="btn btn-secondary btn-sm text-center">Payments</a>
+        <a href="{% url 'delivery:my_deliveries' %}" class="btn btn-secondary btn-sm text-center">Deliveries</a>
+        <a href="{% url 'lab:my_bookings' %}" class="btn btn-secondary btn-sm text-center">Lab Bookings</a>
+        <a href="{% url 'cart' %}" class="btn btn-secondary btn-sm text-center">My Cart</a>
       </div>
-      <div style="margin-bottom: var(--space-3);">
-        <strong style="color: var(--text-secondary); font-size: 0.9rem; display: block; margin-bottom: 2px;">Phone</strong>
-        <div style="font-weight: 500;">{{ user.userprofile.phone|default:"Not provided" }}</div>
-      </div>
-      <div style="margin-bottom: var(--space-4);">
-        <strong style="color: var(--text-secondary); font-size: 0.9rem; display: block; margin-bottom: 2px;">Delivery Address</strong>
-        <div style="font-weight: 500; line-height: 1.5;">{{ user.userprofile.address|default:"Not provided" }}</div>
-      </div>
-      <p style="font-size: 0.85rem; color: var(--text-tertiary);">* Update your delivery details during checkout.</p>
     </div>
   </div>
 
-  <div class="order-history animate-fade-in-up" style="animation-delay: 0.2s;">
-    <h3 style="margin-bottom: var(--space-4);">Order History</h3>
-    {% if orders %}
-      <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+  <div>
+    <div class="card">
+      <h3 class="mb-4">Order History</h3>
+      {% if orders %}
+      <div class="d-flex flex-column gap-3">
         {% for order in orders %}
-          <div class="card" style="padding: var(--space-5); border-radius: var(--radius-lg); background: var(--bg-surface); border: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <h4 style="margin: 0 0 4px; font-size: 1.05rem;">
-                <a href="{% url 'products:detail' order.product.pk %}" style="color: var(--text-primary);">{{ order.product.name }}</a>
-              </h4>
-              <div style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 8px;">
-                Ordered on {{ order.order_date|date:"M d, Y" }}
-              </div>
-              <div style="display: flex; gap: var(--space-4); font-size: 0.9rem; font-weight: 500;">
-                <span>Qty: {{ order.quantity }}</span>
-                <span>Rs. {{ order.total_price }}</span>
-              </div>
-            </div>
-            <div>
-              {% if order.status == 'Pending' %}
-                <span class="badge" style="background: var(--warning-light); color: var(--warning-dark);">{{ order.status }}</span>
-              {% elif order.status == 'Shipped' %}
-                <span class="badge" style="background: var(--primary-100); color: var(--primary-700);">{{ order.status }}</span>
-              {% elif order.status == 'Delivered' %}
-                <span class="badge" style="background: var(--success-light); color: var(--success-dark);">{{ order.status }}</span>
-              {% else %}
-                <span class="badge">{{ order.status }}</span>
-              {% endif %}
+        <div class="d-flex justify-between align-center flex-wrap gap-2" style="padding:var(--space-3);background:var(--bg-surface-hover);border-radius:var(--radius-lg);">
+          <div>
+            <strong>#{{ order.id }}</strong> &mdash; {{ order.product.name }} x {{ order.quantity }}
+            <div class="text-sm text-secondary">
+              {{ order.order_date|date:"M d, Y" }} &middot; Rs. {{ order.total_price }}
             </div>
           </div>
+          <div class="d-flex align-center gap-2">
+            <span class="stock-badge {% if order.status == 'Delivered' %}in-stock{% elif order.status == 'Shipped' %}low-stock{% else %}out-of-stock{% endif %}">
+              {{ order.status }}
+            </span>
+            {% if order.delivery %}
+            <a href="{% url 'delivery:tracking' order.delivery.pk %}" class="btn btn-sm btn-secondary">Track</a>
+            {% endif %}
+            <a href="{% url 'payments:make_payment' order.pk %}" class="btn btn-sm btn-primary">Pay</a>
+          </div>
+        </div>
         {% endfor %}
       </div>
-    {% else %}
-      <div class="card text-center" style="padding: var(--space-8); border-radius: var(--radius-xl); background: var(--bg-surface); border: 1px solid var(--border-light);">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--text-tertiary); margin-bottom: var(--space-3);"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-        <h4 style="margin-bottom: var(--space-2);">No orders yet</h4>
-        <p style="color: var(--text-secondary); margin-bottom: var(--space-4);">You haven't placed any orders.</p>
-        <a href="{% url 'products:list' %}" class="btn btn-primary">Start Shopping</a>
-      </div>
-    {% endif %}
+      {% else %}
+      <p class="text-secondary">No orders yet.</p>
+      <a href="{% url 'products:list' %}" class="btn btn-primary btn-sm mt-4">Start Shopping</a>
+      {% endif %}
+    </div>
   </div>
 </div>
 {% endblock %}

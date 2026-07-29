@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Book {{ test.name }}{% endblock %}
+{% block content %}
+<div class="form-page">
+  <div class="form-card">
+    <h2>Book Lab Test</h2>
+    <p class="form-card-desc">{{ test.name }} &mdash; Rs. {{ test.price }}</p>
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label" for="booking_date">Preferred Date & Time</label>
+        <input type="datetime-local" name="booking_date" id="booking_date" class="form-input" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="preferred_time">Time Preference</label>
+        <select name="preferred_time" id="preferred_time" class="form-select">
+          <option value="">Any time</option>
+          <option value="Morning (6AM-10AM)">Morning (6AM-10AM)</option>
+          <option value="Midday (10AM-2PM)">Midday (10AM-2PM)</option>
+          <option value="Afternoon (2PM-6PM)">Afternoon (2PM-6PM)</option>
+          <option value="Evening (6PM-9PM)">Evening (6PM-9PM)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="address">Home Collection Address</label>
+        <textarea name="address" id="address" rows="3" class="form-textarea">{{ user.userprofile.address }}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="notes">Notes (optional)</label>
+        <textarea name="notes" id="notes" rows="2" class="form-textarea" placeholder="Any special instructions..."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Confirm Booking</button>
+    </form>
+    <div class="form-card-back">
+      <a href="{% url 'lab:detail' test.pk %}">Back to test details</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

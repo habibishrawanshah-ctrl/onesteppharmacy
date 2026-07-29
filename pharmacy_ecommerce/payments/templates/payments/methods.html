@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Payment Methods{% endblock %}
+{% block content %}
+<div class="page-header-row">
+  <div>
+    <h1>Payment Methods</h1>
+    <p>Manage your saved payment methods</p>
+  </div>
+  <a href="{% url 'payments:add_method' %}" class="btn btn-primary">Add Method</a>
+</div>
+
+{% if methods %}
+<div class="list-grid">
+  {% for m in methods %}
+  <div class="card card-hover">
+    <div class="list-item">
+      <div class="d-flex align-center gap-3">
+        <div style="color:var(--text-tertiary);">
+          {% if m.method_type == 'credit_card' %}
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          {% elif m.method_type == 'khalti' or m.method_type == 'esewa' %}
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          {% else %}
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+          {% endif %}
+        </div>
+        <div>
+          <div class="list-item-title">{{ m.get_method_type_display }}</div>
+          {% if m.account_name %}
+          <div class="list-item-sub">{{ m.account_name }}</div>
+          {% endif %}
+          {% if m.account_number %}
+          <div class="list-item-sub">****{{ m.account_number|slice:"-4:" }}</div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="list-item-actions">
+        {% if m.is_default %}
+        <span class="stock-badge in-stock">Default</span>
+        {% endif %}
+        <a href="{% url 'payments:delete_method' m.pk %}" class="btn btn-sm btn-secondary" onclick="return confirm('Remove this payment method?')">Remove</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state" style="text-align:center;">
+  <p>No payment methods saved.</p>
+  <a href="{% url 'payments:add_method' %}" class="btn btn-primary">Add Payment Method</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -4,8 +4,8 @@
 <section class="form-page">
   <div class="form-card">
     <h2>Place Order</h2>
-    <p>Order: <strong>{{ product.name }}</strong></p>
-    <div class="order-summary">
+    <p class="form-card-desc">Order: <strong>{{ product.name }}</strong></p>
+    <div style="background:var(--bg-surface-hover);border-radius:var(--radius-lg);padding:var(--space-4);margin-bottom:var(--space-5);">
       <div class="order-summary-item">
         <span>Product</span>
         <span>{{ product.name }}</span>
@@ -14,35 +14,34 @@
         <span>Price per unit</span>
         <span>Rs. {{ product.price }}</span>
       </div>
-      <div class="order-summary-item">
+      <div class="order-summary-item" style="border-bottom:none;">
         <span>Available stock</span>
         <span>{{ product.stock }}</span>
       </div>
     </div>
     <form method="post" id="order-form">
       {% csrf_token %}
-      <div class="quantity-selector" style="margin-bottom: var(--space-4);">
-        <label for="quantity" style="display: block; margin-bottom: var(--space-2); font-weight: 600;">Quantity:</label>
-        <div class="stepper-ui" style="display: inline-flex; align-items: center; border: 1px solid var(--border-strong); border-radius: var(--radius-full); overflow: hidden; background: var(--bg-surface);">
-          <button type="button" id="qty-btn-minus" class="stepper-btn" style="background: transparent; border: none; padding: 12px 16px; cursor: pointer; color: var(--text-primary); transition: background var(--duration-fast);" aria-label="Decrease quantity">
+      <div class="form-group">
+        <label for="quantity" class="form-label">Quantity:</label>
+        <div style="display:inline-flex;align-items:center;border:1px solid var(--border-base);border-radius:var(--radius-md);overflow:hidden;background:var(--bg-surface);">
+          <button type="button" id="qty-btn-minus" class="btn-ghost" style="padding:10px 14px;border-radius:0;" aria-label="Decrease quantity">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
-          <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" required style="width: 60px; text-align: center; border: none; font-size: 1.1rem; font-weight: 600; font-family: var(--font-sans); color: var(--text-primary); padding: 12px 0; background: transparent; -moz-appearance: textfield;" aria-live="polite">
-          <button type="button" id="qty-btn-plus" class="stepper-btn" style="background: transparent; border: none; padding: 12px 16px; cursor: pointer; color: var(--text-primary); transition: background var(--duration-fast);" aria-label="Increase quantity">
+          <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" required class="form-input" style="width:60px;text-align:center;border:none;border-radius:0;padding:10px 0;font-size:1.1rem;font-weight:600;">
+          <button type="button" id="qty-btn-plus" class="btn-ghost" style="padding:10px 14px;border-radius:0;" aria-label="Increase quantity">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
         </div>
       </div>
-      <div class="order-total" style="display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-3); border-top: 1px solid var(--border-light); margin-bottom: var(--space-4);">
-        <span style="font-size: 1.1rem; font-weight: 600; color: var(--text-secondary);">Total Price</span>
-        <span id="total-price" style="font-size: 1.5rem; font-weight: 800; color: var(--primary-500);">Rs. {{ product.price }}</span>
+      <div class="d-flex justify-between align-center" style="padding-top:var(--space-3);border-top:1px solid var(--border-light);margin-bottom:var(--space-4);">
+        <span style="font-size:1.1rem;font-weight:600;color:var(--text-secondary);">Total Price</span>
+        <span id="total-price" style="font-size:1.5rem;font-weight:800;color:var(--primary-500);">Rs. {{ product.price }}</span>
       </div>
       <button class="btn btn-primary btn-block" type="submit" id="submit-order-btn">
         Submit Order
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </button>
     </form>
-    
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const qtyInput = document.getElementById('quantity');
@@ -51,39 +50,29 @@
         const totalPriceEl = document.getElementById('total-price');
         const unitPrice = parseFloat('{{ product.price }}');
         const maxStock = parseInt('{{ product.stock }}', 10);
-        
         function updateTotal() {
           let val = parseInt(qtyInput.value, 10);
           if (isNaN(val) || val < 1) val = 1;
           if (val > maxStock) val = maxStock;
           qtyInput.value = val;
           const total = (val * unitPrice).toFixed(2);
-          totalPriceEl.textContent = 'Rs. ' + total.replace(/\.00$/, ''); // Strip .00 if whole number
+          totalPriceEl.textContent = 'Rs. ' + total.replace(/\.00$/, '');
         }
-
         btnMinus.addEventListener('click', () => {
           let val = parseInt(qtyInput.value, 10) || 1;
-          if (val > 1) {
-            qtyInput.value = val - 1;
-            updateTotal();
-          }
+          if (val > 1) { qtyInput.value = val - 1; updateTotal(); }
         });
-
         btnPlus.addEventListener('click', () => {
           let val = parseInt(qtyInput.value, 10) || 1;
-          if (val < maxStock) {
-            qtyInput.value = val + 1;
-            updateTotal();
-          }
+          if (val < maxStock) { qtyInput.value = val + 1; updateTotal(); }
         });
-
         qtyInput.addEventListener('input', updateTotal);
         qtyInput.addEventListener('blur', updateTotal);
       });
     </script>
-    <p class="text-center mt-4">
-      <a href="{% url 'products:detail' product.pk %}" style="color:var(--muted);font-weight:500;text-decoration:none;font-size:0.9rem;">&larr; Back to product</a>
-    </p>
+    <div class="form-card-back">
+      <a href="{% url 'products:detail' product.pk %}">Back to product</a>
+    </div>
   </div>
 </section>
 {% endblock %}

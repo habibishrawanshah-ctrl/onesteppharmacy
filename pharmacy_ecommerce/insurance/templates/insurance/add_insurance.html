@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Add Insurance Policy{% endblock %}
+{% block content %}
+<div class="form-page">
+  <div class="form-card">
+    <h2>Add Insurance Policy</h2>
+    <p class="form-card-desc">Link your insurance policy to your account</p>
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label" for="provider">Insurance Provider</label>
+        <select name="provider" id="provider" class="form-select" required>
+          <option value="">Select provider</option>
+          {% for p in providers %}
+          <option value="{{ p.pk }}">{{ p.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="policy_number">Policy Number</label>
+        <input type="text" name="policy_number" id="policy_number" class="form-input" required placeholder="Enter your policy number">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="coverage_type">Coverage Type</label>
+        <select name="coverage_type" id="coverage_type" class="form-select">
+          <option value="basic">Basic</option>
+          <option value="standard">Standard</option>
+          <option value="premium">Premium</option>
+          <option value="family">Family</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Add Policy</button>
+    </form>
+    <div class="form-card-back">
+      <a href="{% url 'insurance:my_insurance' %}">Back to insurance</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

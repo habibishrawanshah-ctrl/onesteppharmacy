@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{{ test.name }} - OneStep Pharmacy{% endblock %}
+{% block content %}
+<div class="detail-layout">
+  <div class="detail-image no-image" style="background:var(--primary-50);color:var(--primary-500);">
+    <svg width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2v12a4 4 0 0 1-8 0V2"/><line x1="6" y1="2" x2="18" y2="2"/><circle cx="12" cy="14" r="3"/></svg>
+  </div>
+  <div class="detail-info">
+    <span class="text-sm" style="color:var(--primary-500);font-weight:600;text-transform:uppercase;">{{ test.get_category_display }}</span>
+    <h1>{{ test.name }}</h1>
+    <div class="detail-price">Rs. {{ test.price }}</div>
+    <p class="detail-description">{{ test.description }}</p>
+    <div class="detail-meta">
+      {% if test.preparation_instructions %}
+      <div class="meta-row">
+        <strong>Preparation:</strong>
+        <span>{{ test.preparation_instructions }}</span>
+      </div>
+      {% endif %}
+      <div class="meta-row">
+        <strong>Category:</strong>
+        <span>{{ test.get_category_display }}</span>
+      </div>
+    </div>
+    <div class="detail-actions">
+      <a href="{% url 'lab:book' test.pk %}" class="btn btn-primary btn-lg">Book This Test</a>
+      <a href="{% url 'lab:list' %}" class="btn btn-secondary btn-lg">Back to Tests</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

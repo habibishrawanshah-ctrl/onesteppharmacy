@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Add Health Record{% endblock %}
+{% block content %}
+<div class="form-page">
+  <div class="form-card">
+    <h2>Add Health Record</h2>
+    <p class="form-card-desc">Track your health conditions and medications</p>
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label" for="condition">Health Condition</label>
+        <select name="condition" id="condition" class="form-select">
+          <option value="">Select a condition (or type below)</option>
+          {% for c in conditions %}
+          <option value="{{ c.pk }}">{{ c.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="custom_condition">Or enter custom condition</label>
+        <input type="text" name="custom_condition" id="custom_condition" class="form-input" placeholder="e.g. Migraine">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="diagnosis_date">Diagnosis Date</label>
+        <input type="date" name="diagnosis_date" id="diagnosis_date" class="form-input">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="medications">Current Medications</label>
+        <textarea name="medications" id="medications" rows="2" class="form-textarea" placeholder="List your current medications..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="notes">Notes</label>
+        <textarea name="notes" id="notes" rows="3" class="form-textarea" placeholder="Any additional notes..."></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Save Record</button>
+    </form>
+    <div class="form-card-back">
+      <a href="{% url 'health:my_records' %}">Back to records</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

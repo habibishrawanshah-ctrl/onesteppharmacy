@@ -1,111 +1,101 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}{% if query %}{{ query }} - Search{% else %}Search - {% endif %}OneStep Pharmacy{% endblock %}
-
+{% extends 'base.html' %}
+{% block title %}Search Results - OneStep Pharmacy{% endblock %}
 {% block content %}
 <div class="page-header animate-fade-in-up">
-  <h1>Search Products</h1>
-  <p>Find medicines and healthcare products</p>
+  <h1>Search Results</h1>
+  {% if query %}
+  <p>Showing results for "{{ query }}"</p>
+  {% else %}
+  <p>Enter a search term to find products</p>
+  {% endif %}
 </div>
 
-<div class="search-page-bar animate-fade-in-up" style="animation-delay: 0.1s;">
-  <form action="{% url 'products:search' %}" method="get" role="search" style="position: relative; max-width: 640px; margin: 0 auto var(--space-6);">
-    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="search" name="q" value="{{ query }}" placeholder="Search medicines..." aria-label="Search products" autofocus style="width: 100%; padding: 16px 20px 16px 48px; border-radius: var(--radius-full); border: 1px solid var(--border-strong); font-size: 1.05rem; outline: none; transition: box-shadow var(--duration-fast); box-shadow: var(--shadow-sm); background: var(--bg-surface);">
+{% if query %}
+<div class="filter-bar animate-fade-in-up">
+  <form method="get" action="{% url 'products:search' %}" class="d-flex align-center" style="gap:var(--space-2);flex-wrap:wrap;">
+    <input type="hidden" name="q" value="{{ query }}">
+    <select name="category" class="filter-select">
+      <option value="">All Categories</option>
+      {% for cat in categories %}
+      <option value="{{ cat.slug }}" {% if active_category == cat.slug %}selected{% endif %}>{{ cat.name }}</option>
+      {% endfor %}
+    </select>
+    <input type="number" name="min_price" placeholder="Min" value="{{ min_price }}" class="filter-input">
+    <input type="number" name="max_price" placeholder="Max" value="{{ max_price }}" class="filter-input">
+    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
   </form>
 </div>
-
-{% if results %}
-  <div class="animate-fade-in-up" style="animation-delay: 0.2s; display: flex; justify-content: space-between; align-items: center; margin: var(--space-4) 0 var(--space-2);">
-    <p style="color: var(--text-secondary); font-size: 1rem;">
-      {{ results|length }} result{% if results|length != 1 %}s{% endif %} for "<strong>{{ query }}</strong>"
-    </p>
-  </div>
-  
-  <div class="product-list animate-fade-in-up" style="animation-delay: 0.3s;">
-    {% for product in results %}
-      <article class="product-card">
-        {% if product.image and product.image.name %}
-          <div class="product-image">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
-          </div>
-        {% else %}
-          <div class="product-image no-image">
-            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-          </div>
-        {% endif %}
-        
-        <button class="product-wishlist" aria-label="Add to wishlist">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        </button>
-        
-        <div class="product-info">
-          <h3>{{ product.name }}</h3>
-          <p class="description">{{ product.description|truncatechars:90 }}</p>
-          <div class="product-card-footer">
-            <span class="price">Rs. {{ product.price }}</span>
-            {% if product.stock > 10 %}
-              <span class="stock-badge in-stock">{{ product.stock }} in stock</span>
-            {% elif product.stock > 0 %}
-              <span class="stock-badge low-stock">Only {{ product.stock }} left</span>
-            {% else %}
-              <span class="stock-badge out-of-stock">Out of Stock</span>
-            {% endif %}
-          </div>
-        </div>
-        
-        <div class="product-card-actions">
-          <a href="{% url 'products:detail' product.pk %}" class="btn btn-secondary">View Details</a>
-          {% if product.stock > 0 %}
-            <a href="{% url 'orders:place' product.pk %}" class="btn btn-primary">Order Now</a>
-          {% endif %}
-        </div>
-      </article>
-    {% endfor %}
-  </div>
-  
-  {% if results.has_other_pages %}
-    <div class="pagination" style="display: flex; justify-content: center; gap: 8px; margin-top: var(--space-8); animation: fadeInUp 0.5s ease-out 0.3s both;">
-      {% if results.has_previous %}
-        <a href="?q={{ query|urlencode }}&page={{ results.previous_page_number }}" class="btn btn-secondary" style="padding: 8px 16px;">&laquo; Prev</a>
-      {% endif %}
-      
-      {% for num in results.paginator.page_range %}
-        {% if results.number == num %}
-          <span class="btn btn-primary" style="padding: 8px 16px;">{{ num }}</span>
-        {% else %}
-          <a href="?q={{ query|urlencode }}&page={{ num }}" class="btn btn-secondary" style="padding: 8px 16px;">{{ num }}</a>
-        {% endif %}
-      {% endfor %}
-      
-      {% if results.has_next %}
-        <a href="?q={{ query|urlencode }}&page={{ results.next_page_number }}" class="btn btn-secondary" style="padding: 8px 16px;">Next &raquo;</a>
-      {% endif %}
-    </div>
-  {% endif %}
-
-{% elif query %}
-  <div class="card text-center animate-fade-in-up" style="animation-delay: 0.2s; padding: var(--space-8); margin-top: var(--space-6);">
-    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-tertiary); margin-bottom: var(--space-3);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <h3>No results found</h3>
-    <p class="text-muted" style="margin-bottom: var(--space-4);">We couldn't find any products matching "<strong>{{ query }}</strong>"</p>
-    <div style="display: inline-block; text-align: left; background: var(--bg-surface-hover); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: var(--space-4); margin: 0 auto;">
-      <p style="font-weight: 600; margin-bottom: var(--space-2);">Suggestions:</p>
-      <ul style="list-style: none; padding: 0; color: var(--text-secondary); font-size: 0.95rem;">
-        <li style="margin-bottom: 4px;">· Check your spelling</li>
-        <li style="margin-bottom: 4px;">· Try a different keyword</li>
-        <li style="margin-bottom: 4px;">· Use a more general term</li>
-        <li>· Browse our <a href="{% url 'products:list' %}" style="font-weight: 600;">full catalog</a></li>
-      </ul>
-    </div>
-  </div>
-
-{% else %}
-  <div class="card text-center animate-fade-in-up" style="animation-delay: 0.2s; padding: var(--space-8); margin-top: var(--space-6);">
-    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-tertiary); margin-bottom: var(--space-3);"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <h3>Search our products</h3>
-    <p class="text-muted">Type a medicine name, category, or condition above to find what you need.</p>
-  </div>
 {% endif %}
 
+<div class="products-grid animate-fade-in-up">
+  {% for product in results %}
+  <article class="product-card">
+    {% if product.image and product.image.name %}
+    <div class="product-image">
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+    </div>
+    {% else %}
+    <div class="product-image no-image">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+    </div>
+    {% endif %}
+    <div class="product-info">
+      <h3>{{ product.name }}</h3>
+      <p class="description">{{ product.description|truncatechars:90 }}</p>
+      <div class="product-meta">
+        {% if product.category %}
+        <span class="badge">{{ product.category.name }}</span>
+        {% endif %}
+        {% if product.expiry_date %}
+        <span class="badge">Exp: {{ product.expiry_date|date:"M Y" }}</span>
+        {% endif %}
+      </div>
+      <div class="product-card-footer">
+        <span class="price">Rs. {{ product.price }}</span>
+        {% if product.stock > 10 %}
+        <span class="stock-badge in-stock">{{ product.stock }} in stock</span>
+        {% elif product.stock > 0 %}
+        <span class="stock-badge low-stock">Only {{ product.stock }} left</span>
+        {% else %}
+        <span class="stock-badge out-of-stock">Out of Stock</span>
+        {% endif %}
+      </div>
+    </div>
+    <div class="product-card-actions">
+      <a href="{% url 'products:detail' product.pk %}" class="btn btn-secondary">View Details</a>
+      {% if product.stock > 0 %}
+      <a href="{% url 'orders:place' product.pk %}" class="btn btn-primary">Order Now</a>
+      {% endif %}
+    </div>
+  </article>
+  {% empty %}
+  <div class="empty-state">
+    {% if query %}
+    <h3>No results for "{{ query }}"</h3>
+    <p>Try different keywords or browse our categories.</p>
+    {% else %}
+    <h3>Enter a search term</h3>
+    <p>Use the search bar above to find products.</p>
+    {% endif %}
+  </div>
+  {% endfor %}
+</div>
+
+{% if results.has_other_pages %}
+<div class="pagination">
+  {% if results.has_previous %}
+  <a href="?q={{ query }}&page={{ results.previous_page_number }}" class="btn btn-secondary">&laquo; Prev</a>
+  {% endif %}
+  {% for num in results.paginator.page_range %}
+  {% if results.number == num %}
+  <span class="btn btn-primary">{{ num }}</span>
+  {% else %}
+  <a href="?q={{ query }}&page={{ num }}" class="btn btn-secondary">{{ num }}</a>
+  {% endif %}
+  {% endfor %}
+  {% if results.has_next %}
+  <a href="?q={{ query }}&page={{ results.next_page_number }}" class="btn btn-secondary">Next &raquo;</a>
+  {% endif %}
+</div>
+{% endif %}
 {% endblock %}

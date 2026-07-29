@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}My Insurance{% endblock %}
+{% block content %}
+<div class="page-header-row">
+  <div>
+    <h1>My Insurance</h1>
+    <p>Manage your health insurance policies</p>
+  </div>
+  <a href="{% url 'insurance:add' %}" class="btn btn-primary">Add Policy</a>
+</div>
+
+{% if policies %}
+<div class="list-grid">
+  {% for p in policies %}
+  <div class="card card-hover">
+    <div class="list-item">
+      <div class="list-item-content">
+        <div class="list-item-title">{{ p.provider.name }}</div>
+        <div class="list-item-sub">
+          Policy: {{ p.policy_number }}
+        </div>
+        <div class="list-item-sub">
+          Coverage: {{ p.get_coverage_type_display }}
+        </div>
+        {% if p.start_date and p.end_date %}
+        <div class="list-item-sub">
+          {{ p.start_date|date:"M d, Y" }} &mdash; {{ p.end_date|date:"M d, Y" }}
+        </div>
+        {% endif %}
+      </div>
+      <div class="list-item-actions">
+        <span class="stock-badge {% if p.is_active %}in-stock{% else %}out-of-stock{% endif %}">
+          {{ p.is_active|yesno:"Active,Inactive" }}
+        </span>
+        <a href="{% url 'insurance:delete' p.pk %}" class="btn btn-sm btn-secondary" onclick="return confirm('Remove this policy?')">Remove</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state" style="text-align:center;">
+  <p>No insurance policies added.</p>
+  <a href="{% url 'insurance:add' %}" class="btn btn-primary">Add Insurance Policy</a>
+</div>
+{% endif %}
+{% endblock %}

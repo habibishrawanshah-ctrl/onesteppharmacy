@@ -20,13 +20,6 @@
     align-items: center;
     padding: 32px 0 72px;
   }
-  .about-hero-content h1 {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: 16px;
-  }
   .about-hero-content h1 span { color: var(--primary-500); }
   .about-hero-content p {
     font-size: 1.05rem;
@@ -41,15 +34,9 @@
     border-radius: var(--radius-2xl);
     overflow: hidden;
     box-shadow: var(--shadow-xl);
-  }
-  .model-viewer-wrapper {
     background: var(--bg-surface);
   }
-  .model-viewer-wrapper canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
+  .model-viewer-wrapper canvas { display: block; width: 100%; height: 100%; }
   .model-controls {
     position: absolute;
     bottom: 16px;
@@ -60,32 +47,31 @@
     z-index: 2;
   }
   .model-controls button {
-    background: rgba(255,255,255,0.9);
-    border: none;
+    background: var(--bg-surface-elevated);
+    backdrop-filter: blur(4px);
+    border: 1px solid var(--border-light);
     border-radius: 50%;
     width: 38px;
     height: 38px;
     cursor: pointer;
-    font-size: 0.82rem;
     color: var(--text-secondary);
     transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(4px);
-    font-family: var(--font);
+    font-family: var(--font-sans);
     font-weight: 600;
   }
   .model-controls button:hover,
-  .model-controls button.active { background: white; color: var(--primary-500); box-shadow: var(--shadow-md); }
+  .model-controls button.active { background: var(--bg-surface); color: var(--primary-500); box-shadow: var(--shadow-md); }
   .model-badge {
     position: absolute;
     top: 16px;
     left: 16px;
-    background: rgba(255,255,255,0.9);
+    background: var(--bg-surface-elevated);
     backdrop-filter: blur(8px);
     padding: 8px 16px;
-    border-radius: 100px;
+    border-radius: var(--radius-full);
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--text-secondary);
@@ -106,7 +92,7 @@
     border-radius: var(--radius-xl);
     padding: 36px 24px;
     text-align: center;
-    transition: all var(--transition);
+    transition: all var(--duration-normal);
   }
   .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
   .stat-number { font-size: 2.6rem; font-weight: 800; color: var(--primary-500); letter-spacing: -0.02em; }
@@ -122,7 +108,7 @@
     border-radius: var(--radius-xl);
     padding: 36px 28px;
     text-align: center;
-    transition: all var(--transition-slow);
+    transition: all var(--duration-normal);
   }
   .team-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
   .team-avatar {
@@ -145,12 +131,6 @@
     max-width: 720px;
     margin: 72px auto;
     text-align: center;
-  }
-  .story-section h2 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 800;
-    margin-bottom: 20px;
-    letter-spacing: -0.02em;
   }
   .story-section p {
     font-size: 1rem;
@@ -185,7 +165,7 @@
     </p>
     <div class="hero-buttons">
       <a href="/products/" class="btn btn-primary">Browse Products</a>
-      <a href="/contact-us/" class="btn btn-outline">Contact Us</a>
+      <a href="/contact-us/" class="btn btn-secondary">Contact Us</a>
     </div>
   </div>
   <div class="model-viewer-wrapper" id="model-wrapper">
@@ -194,7 +174,9 @@
     </div>
     <canvas id="pharmacy-canvas"></canvas>
     <div class="model-controls">
-      <button class="active" onclick="document.getElementById('pharmacy-canvas').dataset.rotate=1" title="Auto-rotate"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></button>
+      <button class="active" onclick="document.getElementById('pharmacy-canvas').dataset.rotate=1" title="Auto-rotate">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+      </button>
     </div>
   </div>
 </section>
@@ -223,7 +205,7 @@
   <h2>From a simple idea to a trusted pharmacy platform</h2>
   <p>
     OneStep Pharmacy was born from a simple observation: getting the right medicine
-    shouldn't be complicated. We set out to build a platform where patients can
+    should not be complicated. We set out to build a platform where patients can
     browse, compare, and order medicines with complete transparency about pricing,
     stock availability, and expiry dates.
   </p>

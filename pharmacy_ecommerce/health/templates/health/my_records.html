@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}My Health Records{% endblock %}
+{% block content %}
+<div class="page-header-row">
+  <div>
+    <h1>My Health Records</h1>
+    <p>Manage your health conditions and medications</p>
+  </div>
+  <a href="{% url 'health:add' %}" class="btn btn-primary">Add Record</a>
+</div>
+
+{% if records %}
+<div class="list-grid">
+  {% for record in records %}
+  <div class="card card-hover">
+    <div class="list-item">
+      <div class="list-item-content">
+        <div class="list-item-title">{{ record.condition.name|default:record.custom_condition }}</div>
+        {% if record.diagnosis_date %}
+        <div class="list-item-sub">
+          Diagnosed: {{ record.diagnosis_date|date:"M d, Y" }}
+        </div>
+        {% endif %}
+        {% if record.medications %}
+        <div class="list-item-sub">
+          Medications: {{ record.medications }}
+        </div>
+        {% endif %}
+        {% if record.notes %}
+        <div class="text-sm" style="color:var(--text-tertiary);margin-top:var(--space-2);font-style:italic;">
+          {{ record.notes|truncatewords:30 }}
+        </div>
+        {% endif %}
+      </div>
+      <div class="list-item-actions">
+        <span class="stock-badge {% if record.is_active %}in-stock{% else %}out-of-stock{% endif %}">
+          {{ record.is_active|yesno:"Active,Inactive" }}
+        </span>
+        <a href="{% url 'health:delete' record.pk %}" class="btn btn-sm btn-secondary" onclick="return confirm('Delete this record?')">Delete</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-state" style="text-align:center;">
+  <p>No health records yet.</p>
+  <a href="{% url 'health:add' %}" class="btn btn-primary">Add Your First Record</a>
+</div>
+{% endif %}
+{% endblock %}

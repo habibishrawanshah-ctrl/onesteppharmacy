@@ -1,1 +1,15 @@
-{% extends 'base.html' %}{% load static %}{% block title %}License Info - OneStep Pharmacy{% endblock %}{% block content %}<section class="page-content"><h1>License Information</h1><p>OneStep Pharmacy is a licensed and registered pharmacy operating in compliance with all applicable regulations.</p><p><strong>Business Registration:</strong> XXXXXXXX</p><p><strong>Pharmacy License:</strong> XXXXXXXX</p><p><strong>Issuing Authority:</strong> Department of Drug Administration, Nepal</p><p>For verification or inquiries regarding our licenses, please contact our compliance team.</p></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}License Info - OneStep Pharmacy{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>License Information</h1>
+</div>
+<div class="card" style="padding:var(--space-6);border-radius:var(--radius-lg);">
+  <p>OneStep Pharmacy is a licensed and registered pharmacy operating in compliance with all applicable regulations.</p>
+  <p><strong>Business Registration:</strong> XXXXXXXX</p>
+  <p><strong>Pharmacy License:</strong> XXXXXXXX</p>
+  <p><strong>Issuing Authority:</strong> Department of Drug Administration, Nepal</p>
+  <p>For verification or inquiries regarding our licenses, please contact our compliance team.</p>
+</div>
+{% endblock %}

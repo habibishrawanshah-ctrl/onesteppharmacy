@@ -13,20 +13,14 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#ffffff" id="theme-color-meta">
   <meta name="color-scheme" content="light dark">
-  
   <title>{% block title %}OneStep Pharmacy{% endblock %}</title>
-  
   <link rel="icon" type="image/svg+xml" href="{% static 'images/favicon.svg' %}">
   <link rel="alternate icon" href="{% static 'images/logo.svg' %}">
-  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   {% block extra_head %}{% endblock %}
-
-  <!-- Theme Script (Inline to prevent FOUC) -->
   <script>
     (function() {
       try {
@@ -43,42 +37,28 @@
 </head>
 <body>
   <div class="page-shell">
-    
-    <div class="top-bar">
-      <div class="top-bar-inner">
-        <span>Licensed pharmacy support</span>
-        <span>Free delivery on eligible orders</span>
-        <a href="/contact-us/">Talk to a pharmacist</a>
-      </div>
-    </div>
 
-    <!-- HEADER -->
     <header class="site-header" id="site-header">
       <div class="header-inner">
-        
-        <!-- Brand -->
+
         <a class="brand-link" href="/" aria-label="OneStep Pharmacy Home">
           <div class="brand-logo-container">
-            <!-- Ensure logo.svg exists in static, assuming it does based on original -->
-            <img src="{% static 'images/logo.svg' %}" alt="" class="brand-logo" width="28" height="28" aria-hidden="true" onerror="this.style.display='none'">
+            <img src="{% static 'images/logo.svg' %}" alt="" width="28" height="28" aria-hidden="true" onerror="this.style.display='none'">
           </div>
-          <div class="brand-text">
-            <span class="brand-title">OneStep Pharmacy</span>
-          </div>
+          <span class="brand-title">OneStep Pharmacy</span>
         </a>
 
-        <!-- Desktop Navigation -->
         <nav class="site-nav" id="site-nav" aria-label="Main navigation">
           <a href="/" {% if request.path == '/' %}class="active" aria-current="page"{% endif %}>Home</a>
-          <a href="/products/" {% if '/products/' in request.path %}class="active" aria-current="page"{% endif %}>Products</a>
-          <a href="/products/search/?q=vitamin">Categories</a>
-          <a href="/about/" {% if '/about/' in request.path %}class="active" aria-current="page"{% endif %}>About</a>
+          <a href="/products/" {% if '/products/' in request.path %}class="active" aria-current="page"{% endif %}>Medicines</a>
+          <a href="/lab/" {% if '/lab/' in request.path %}class="active"{% endif %}>Lab Tests</a>
+          <a href="/about/" {% if '/about/' in request.path %}class="active"{% endif %}>About</a>
           {% if user.is_authenticated %}
-            <a href="/orders/place/" {% if '/orders/' in request.path %}class="active" aria-current="page"{% endif %}>Order</a>
+          <a href="/health/" {% if '/health/' in request.path %}class="active"{% endif %}>Health</a>
+          <a href="/delivery/" {% if '/delivery/' in request.path %}class="active"{% endif %}>Delivery</a>
           {% endif %}
         </nav>
 
-        <!-- Search Bar -->
         <div class="search-bar">
           <form action="{% url 'products:search' %}" method="get" role="search">
             <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -86,36 +66,49 @@
           </form>
         </div>
 
-        <!-- Right Navigation Items -->
         <div class="nav-right">
-          <a href="/contact-us/" class="prescription-link">Upload Prescription</a>
-          <!-- Theme Toggle -->
-          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-            <!-- Sun Icon (Default shown in dark mode logic via JS/CSS if needed, we toggle innerHTML or rely on JS) -->
+
+          <a href="{% url 'set_language' %}?lang={% if request.session.django_language == 'ne' %}en{% else %}ne{% endif %}" class="lang-toggle" title="Toggle language">
+            {% if request.session.django_language == 'ne' %}EN{% else %}NP{% endif %}
+          </a>
+
+          <button class="nav-icon-btn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
             <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </button>
 
-          <!-- Cart -->
-          <a href="{% url 'cart' %}" class="nav-cart" aria-label="Shopping cart" style="position: relative; display: flex; padding: 8px; color: var(--text-secondary); transition: color 0.15s;">
+          <a href="{% url 'cart' %}" class="nav-cart" aria-label="Shopping cart">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             {% if request.session.cart and request.session.cart|length > 0 %}
-              <span class="cart-count" style="position: absolute; top: 0px; right: 0px; background: var(--primary-500); color: white; font-size: 0.65rem; font-weight: 700; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">{{ request.session.cart|length }}</span>
+            <span class="cart-count">{{ request.session.cart|length }}</span>
             {% endif %}
           </a>
 
           {% if user.is_authenticated %}
-            {% if user.is_staff %}
-              <a href="/admin/" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">Admin</a>
-            {% endif %}
-            <a href="{% url 'users:profile' %}" class="nav-btn-link" style="margin-right: 8px;">Profile</a>
-            <form method="post" action="{% url 'logout' %}" style="display:inline;">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">Logout</button>
-            </form>
+          <div class="user-dropdown" id="user-dropdown">
+            <button class="user-dropdown-btn" id="user-dropdown-btn">
+              {{ user.username }}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+              <a href="{% url 'users:profile' %}">My Profile</a>
+              <a href="{% url 'health:my_records' %}">Health Records</a>
+              <a href="{% url 'insurance:my_insurance' %}">Insurance</a>
+              <a href="{% url 'payments:methods' %}">Payment Methods</a>
+              <a href="{% url 'delivery:my_deliveries' %}">My Deliveries</a>
+              {% if user.is_staff %}
+              <div class="divider"></div>
+              <a href="/admin/">Admin Panel</a>
+              {% endif %}
+              <div class="divider"></div>
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+              </form>
+            </div>
+          </div>
           {% else %}
-            <a href="/login/" class="nav-btn-link">Login</a>
-            <a href="/users/signup/" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">Sign Up</a>
+          <a href="/login/" class="btn btn-primary btn-sm">Log In</a>
           {% endif %}
 
           <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
@@ -127,42 +120,57 @@
     </header>
 
     {% if messages %}
-    <div class="messages-container" style="max-width: 1280px; margin: 0 auto; padding: 24px 32px 0;">
+    <div class="messages-container">
       {% for message in messages %}
-        <div class="alert alert-{{ message.tags|default:'info' }}" style="padding: 12px 16px; border-radius: var(--radius-md); font-size: 0.9rem; font-weight: 500; background: var(--bg-surface-hover); border: 1px solid var(--border-light); margin-bottom: 8px;">
-          {{ message }}
-        </div>
+      <div class="alert alert-{{ message.tags|default:'info' }}">
+        {{ message }}
+      </div>
       {% endfor %}
     </div>
     {% endif %}
 
-    <!-- MAIN CONTENT -->
     <main class="page-content animate-fade-in-up">
       {% block content %}{% endblock %}
     </main>
 
-    <!-- FOOTER -->
     <footer class="footer">
       <div class="footer-inner">
         <div class="footer-grid">
-          
-          <div class="footer-col" style="grid-column: span 2;">
-            <a class="brand-link" href="/" style="margin-bottom: 16px; display: inline-flex;">
-              <div class="brand-text">
-                <span class="brand-title" style="font-size: 1.25rem;">OneStep Pharmacy</span>
+
+          <div class="footer-col">
+            <a class="brand-link" href="/" style="display:inline-flex;margin-bottom:var(--space-4);">
+              <div class="brand-logo-container">
+                <img src="{% static 'images/logo.svg' %}" alt="" width="28" height="28" aria-hidden="true" onerror="this.style.display='none'">
               </div>
+              <span class="brand-title" style="font-size:1.2rem;">OneStep Pharmacy</span>
             </a>
-            <p style="color: var(--text-secondary); max-width: 320px; font-size: 0.9rem; line-height: 1.6;">
+            <p class="footer-desc">
               Your trusted source for genuine medicines and healthcare products, delivered right to your doorstep with care and precision.
             </p>
           </div>
 
           <div class="footer-col">
-            <h4>Company</h4>
+            <h4>Shop</h4>
             <div class="footer-links">
               <a href="/">Home</a>
-              <a href="/products/">Products</a>
-              <a href="/about/">About Us</a>
+              <a href="/products/">Medicines</a>
+              <a href="/lab/">Lab Tests</a>
+              <a href="/delivery/zones/">Delivery Zones</a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h4>Account</h4>
+            <div class="footer-links">
+              {% if user.is_authenticated %}
+              <a href="{% url 'users:profile' %}">My Profile</a>
+              <a href="{% url 'health:my_records' %}">Health Records</a>
+              <a href="{% url 'insurance:my_insurance' %}">Insurance</a>
+              <a href="{% url 'payments:methods' %}">Payment Methods</a>
+              {% else %}
+              <a href="/login/">Log In</a>
+              <a href="{% url 'users:signup' %}">Sign Up</a>
+              {% endif %}
             </div>
           </div>
 
@@ -172,25 +180,17 @@
               <a href="/help-center/">Help Center</a>
               <a href="/shipping-info/">Shipping</a>
               <a href="/returns/">Returns</a>
-            </div>
-          </div>
-
-          <div class="footer-col">
-            <h4>Legal</h4>
-            <div class="footer-links">
-              <a href="/privacy-policy/">Privacy Policy</a>
-              <a href="/terms-of-service/">Terms of Service</a>
+              <a href="/contact-us/">Contact Us</a>
             </div>
           </div>
 
         </div>
-        
+
         <div class="footer-bottom">
           <p>&copy; {% now "Y" %} OneStep Pharmacy. All rights reserved.</p>
           <div class="footer-bottom-links">
-            <a href="https://www.facebook.com/sravana.saha.332313" target="_blank" aria-label="Facebook">Facebook</a>
-            <a href="https://www.instagram.com/habibi_shrawan7" target="_blank" aria-label="Instagram">Instagram</a>
-            <a href="https://www.threads.com/@habibi_shrawan7" target="_blank" aria-label="Threads">Threads</a>
+            <a href="https://www.facebook.com" target="_blank" aria-label="Facebook">Facebook</a>
+            <a href="https://www.instagram.com" target="_blank" aria-label="Instagram">Instagram</a>
           </div>
         </div>
       </div>
@@ -198,48 +198,40 @@
 
   </div>
 
-  <!-- MOBILE NAVIGATION OVERLAY -->
   <div class="mobile-overlay" id="mobile-overlay" aria-hidden="true"></div>
   <div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Mobile navigation">
     <div class="mobile-menu-header">
-      <div class="brand-text">
-        <span class="brand-title">Menu</span>
-      </div>
+      <span class="brand-title">Menu</span>
       <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close menu">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     <nav class="mobile-nav-links">
       <a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
-      <a href="/products/" {% if '/products/' in request.path %}class="active"{% endif %}>Products</a>
-      <a href="/contact-us/">Upload Prescription</a>
-      <a href="/help-center/">Help Center</a>
+      <a href="/products/" {% if '/products/' in request.path %}class="active"{% endif %}>Medicines</a>
+      <a href="/lab/" {% if '/lab/' in request.path %}class="active"{% endif %}>Lab Tests</a>
       <a href="/about/" {% if '/about/' in request.path %}class="active"{% endif %}>About</a>
-      {% if not user.is_authenticated %}
-        <a href="/login/">Login</a>
-        <a href="/users/signup/">Sign Up</a>
-      {% endif %}
       {% if user.is_authenticated %}
-        <a href="/orders/place/" {% if '/orders/' in request.path %}class="active"{% endif %}>Order</a>
-        <a href="{% url 'users:profile' %}" {% if '/profile/' in request.path %}class="active"{% endif %}>My Profile</a>
+      <a href="{% url 'health:my_records' %}">Health Records</a>
+      <a href="{% url 'delivery:my_deliveries' %}">My Deliveries</a>
+      <a href="{% url 'insurance:my_insurance' %}">Insurance</a>
+      <a href="{% url 'payments:methods' %}">Payment Methods</a>
+      <a href="{% url 'users:profile' %}">My Profile</a>
+      {% else %}
+      <a href="/login/">Log In</a>
+      <a href="{% url 'users:signup' %}">Sign Up</a>
       {% endif %}
     </nav>
   </div>
 
   <script>
-    // Theme Toggle Logic
     const themeToggle = document.getElementById('theme-toggle');
     const sunIcon = document.querySelector('.theme-icon-sun');
     const moonIcon = document.querySelector('.theme-icon-moon');
-    
+
     function updateThemeIcon(theme) {
-      if (theme === 'dark') {
-        sunIcon.style.display = 'block';
-        moonIcon.style.display = 'none';
-      } else {
-        sunIcon.style.display = 'none';
-        moonIcon.style.display = 'block';
-      }
+      sunIcon.style.display = theme === 'dark' ? 'block' : 'none';
+      moonIcon.style.display = theme === 'dark' ? 'none' : 'block';
     }
 
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
@@ -254,17 +246,11 @@
       document.getElementById('theme-color-meta').setAttribute('content', newTheme === 'dark' ? '#0a0c10' : '#ffffff');
     });
 
-    // Header Scroll Effect
     const header = document.getElementById('site-header');
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 10) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
+      header.classList.toggle('scrolled', window.scrollY > 10);
     }, { passive: true });
 
-    // Mobile Menu Logic
     const mobileToggle = document.getElementById('mobile-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileOverlay = document.getElementById('mobile-overlay');
@@ -285,6 +271,18 @@
     mobileToggle.addEventListener('click', openMobileMenu);
     mobileClose.addEventListener('click', closeMobileMenu);
     mobileOverlay.addEventListener('click', closeMobileMenu);
+
+    const userDropdownBtn = document.getElementById('user-dropdown-btn');
+    const userDropdownMenu = document.getElementById('user-dropdown-menu');
+    if (userDropdownBtn && userDropdownMenu) {
+      userDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        userDropdownMenu.classList.toggle('show');
+      });
+      document.addEventListener('click', () => {
+        userDropdownMenu.classList.remove('show');
+      });
+    }
   </script>
 </body>
 </html>

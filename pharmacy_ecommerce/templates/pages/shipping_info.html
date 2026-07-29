@@ -1,1 +1,12 @@
-{% extends 'base.html' %}{% load static %}{% block title %}Shipping Info - OneStep Pharmacy{% endblock %}{% block content %}<section class="page-content"><h1>Shipping Information</h1><p>We deliver to all addresses across the country. Standard shipping takes 3-5 business days. Express shipping (2-3 business days) is available for an additional fee. Free shipping on orders over Rs. 1000.</p><p>All orders are packed discreetly and securely to ensure your privacy and product safety.</p></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Shipping Info - OneStep Pharmacy{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Shipping Information</h1>
+</div>
+<div class="card" style="padding:var(--space-6);border-radius:var(--radius-lg);">
+  <p>We deliver to all addresses across the country. Standard shipping takes 3-5 business days. Express shipping (2-3 business days) is available for an additional fee. Free shipping on orders over Rs. 1000.</p>
+  <p>All orders are packed discreetly and securely to ensure your privacy and product safety.</p>
+</div>
+{% endblock %}

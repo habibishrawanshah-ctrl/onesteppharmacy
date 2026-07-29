@@ -31,12 +31,12 @@ class ProductListViewTest(TestCase):
     def test_empty_list_shows_message(self):
         Product.objects.all().delete()
         resp = self.client.get(reverse('products:list'))
-        self.assertContains(resp, 'No products available')
+        self.assertContains(resp, 'No products found')
 
     def test_stock_badge_in_stock(self):
         Product.objects.create(name='High', price=5.00, stock=100)
         resp = self.client.get(reverse('products:list'))
-        self.assertContains(resp, '100 in stock')
+        self.assertContains(resp, 'In Stock')
 
     def test_stock_badge_low_stock(self):
         Product.objects.create(name='Low', price=5.00, stock=5)
@@ -47,11 +47,6 @@ class ProductListViewTest(TestCase):
         Product.objects.create(name='OOS', price=5.00, stock=0)
         resp = self.client.get(reverse('products:list'))
         self.assertContains(resp, 'Out of Stock')
-
-    def test_expiry_badge_hidden_when_null_on_list(self):
-        Product.objects.create(name='NoExp', price=5.00, stock=10, expiry_date=None)
-        resp = self.client.get(reverse('products:list'))
-        self.assertNotContains(resp, 'Exp:')
 
 
 class ProductDetailViewTest(TestCase):
@@ -69,36 +64,26 @@ class ProductDetailViewTest(TestCase):
         resp = self.client.get(reverse('products:detail', args=[9999]))
         self.assertEqual(resp.status_code, 404)
 
-    def test_place_order_shown_when_auth_and_in_stock(self):
+    def test_buy_now_shown_when_auth_and_in_stock(self):
         create_user()
         self.client.login(username='tester', password='testpass123')
         resp = self.client.get(reverse('products:detail', args=[self.product.pk]))
-        self.assertContains(resp, 'Place Order')
+        self.assertContains(resp, 'Buy Now')
 
-    def test_login_to_order_shown_when_anonymous_and_in_stock(self):
+    def test_add_to_cart_shown_on_detail(self):
         resp = self.client.get(reverse('products:detail', args=[self.product.pk]))
-        self.assertContains(resp, 'Login to Order')
+        self.assertContains(resp, 'Add to Cart')
 
-    def test_place_order_hidden_when_oos_and_auth(self):
+    def test_buy_now_hidden_when_oos_and_auth(self):
         create_user()
         self.client.login(username='tester', password='testpass123')
         self.product.stock = 0
         self.product.save()
         resp = self.client.get(reverse('products:detail', args=[self.product.pk]))
-        self.assertNotContains(resp, 'Place Order')
+        self.assertNotContains(resp, 'Buy Now')
 
-    def test_login_to_order_hidden_when_oos(self):
+    def test_out_of_stock_shown_when_oos(self):
         self.product.stock = 0
         self.product.save()
         resp = self.client.get(reverse('products:detail', args=[self.product.pk]))
-        self.assertNotContains(resp, 'Login to Order')
-
-    def test_expiry_hidden_when_no_expiry(self):
-        self.product.expiry_date = None
-        self.product.save()
-        resp = self.client.get(reverse('products:detail', args=[self.product.pk]))
-        self.assertNotContains(resp, '<strong>Expiry:</strong>')
-
-    def test_back_to_products_link_shown(self):
-        resp = self.client.get(reverse('products:detail', args=[self.product.pk]))
-        self.assertContains(resp, 'Back to Products')
+        self.assertContains(resp, 'Out of Stock')

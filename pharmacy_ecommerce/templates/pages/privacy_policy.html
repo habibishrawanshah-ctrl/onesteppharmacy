@@ -1,1 +1,21 @@
-{% extends 'base.html' %}{% load static %}{% block title %}Privacy Policy - OneStep Pharmacy{% endblock %}{% block content %}<section class="page-content"><div class="page-header"><h1>Privacy Policy</h1><p>How we handle your information</p></div><div class="card" style="padding:32px;border-radius:var(--radius-lg);margin-top:32px;"><h2>Information We Collect</h2><p>We collect information you provide during registration and ordering, including your name, address, phone number, and prescription details. This information is necessary to process your orders and verify prescriptions.</p><h2>How We Use Your Information</h2><p>Your information is used solely to process orders, verify prescriptions, and improve our services. We never share your data with third parties without your explicit consent, except as required by law.</p><h2>Data Security</h2><p>We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p><h2>Your Rights</h2><p>You have the right to access, correct, or delete your personal data at any time. Contact our support team to exercise these rights.</p><h2>Contact</h2><p>If you have questions about this policy, please <a href="{% url 'contact_us' %}" style="color:var(--primary);text-decoration:none;font-weight:600;">contact us</a>.</p></div></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Privacy Policy - OneStep Pharmacy{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Privacy Policy</h1>
+  <p>How we handle your information</p>
+</div>
+<div class="card" style="padding:var(--space-7);border-radius:var(--radius-lg);">
+  <h3 style="margin-bottom:var(--space-2);">Information We Collect</h3>
+  <p>We collect information you provide during registration and ordering, including your name, address, phone number, and prescription details. This information is necessary to process your orders and verify prescriptions.</p>
+  <h3 style="margin-bottom:var(--space-2);margin-top:var(--space-5);">How We Use Your Information</h3>
+  <p>Your information is used solely to process orders, verify prescriptions, and improve our services. We never share your data with third parties without your explicit consent, except as required by law.</p>
+  <h3 style="margin-bottom:var(--space-2);margin-top:var(--space-5);">Data Security</h3>
+  <p>We implement appropriate technical and organizational security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+  <h3 style="margin-bottom:var(--space-2);margin-top:var(--space-5);">Your Rights</h3>
+  <p>You have the right to access, correct, or delete your personal data at any time. Contact our support team to exercise these rights.</p>
+  <h3 style="margin-bottom:var(--space-2);margin-top:var(--space-5);">Contact</h3>
+  <p>If you have questions about this policy, please <a href="{% url 'contact_us' %}" style="font-weight:600;">contact us</a>.</p>
+</div>
+{% endblock %}

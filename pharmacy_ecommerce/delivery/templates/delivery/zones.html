@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Delivery Zones{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Delivery Zones</h1>
+  <p>Check delivery availability and fees in your area</p>
+</div>
+
+<div class="products-grid">
+  {% for zone in zones %}
+  <div class="product-card">
+    <div class="product-info">
+      <h3>{{ zone.name }}</h3>
+      <div class="text-sm" style="color:var(--text-secondary);margin-bottom:var(--space-2);">
+        {{ zone.districts }}
+      </div>
+      <div class="product-meta">
+        <span class="badge">Delivery Fee: Rs. {{ zone.delivery_fee }}</span>
+        <span class="badge">Free above: Rs. {{ zone.min_order_free }}</span>
+        <span class="badge">{{ zone.estimated_days }} day(s)</span>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="empty-state">
+    <p>No delivery zones configured yet.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,272 @@
+# Nepali translation for OneStep Pharmacy.
+# Copyright (C) 2025 OneStep Pharmacy
+# This file is distributed under the same license as the Django project.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OneStep Pharmacy 1.0\n"
+"Report-Msgid-Bugs-To: support@onesteppharmacy.com\n"
+"POT-Creation-Date: 2025-07-29 15:00+0545\n"
+"PO-Revision-Date: 2025-07-29 15:00+0545\n"
+"Last-Translator: OneStep Pharmacy\n"
+"Language-Team: Nepali\n"
+"Language: ne\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+msgid "English"
+msgstr "अंग्रेजी"
+
+msgid "Nepali"
+msgstr "नेपाली"
+
+msgid "Home"
+msgstr "गृहपृष्ठ"
+
+msgid "Products"
+msgstr "उत्पादनहरू"
+
+msgid "About"
+msgstr "हाम्रो बारेमा"
+
+msgid "Lab Tests"
+msgstr "प्रयोगशाला परीक्षण"
+
+msgid "Health"
+msgstr "स्वास्थ्य"
+
+msgid "Delivery"
+msgstr "डेलिभरी"
+
+msgid "Search medicines..."
+msgstr "औषधि खोज्नुहोस्..."
+
+msgid "Log In"
+msgstr "लगइन गर्नुहोस्"
+
+msgid "Logout"
+msgstr "लग आउट गर्नुहोस्"
+
+msgid "Profile"
+msgstr "प्रोफाइल"
+
+msgid "Admin"
+msgstr "व्यवस्थापक"
+
+msgid "My Profile"
+msgstr "मेरो प्रोफाइल"
+
+msgid "Shopping Cart"
+msgstr "किनमेल कार्ट"
+
+msgid "Add to Cart"
+msgstr "कार्टमा थप्नुहोस्"
+
+msgid "Buy Now"
+msgstr "अहिले किन्नुहोस्"
+
+msgid "Checkout"
+msgstr "चेकआउट"
+
+msgid "Place Order"
+msgstr "अर्डर गर्नुहोस्"
+
+msgid "Order placed successfully!"
+msgstr "अर्डर सफलतापूर्वक गरियो!"
+
+msgid "Your cart is empty."
+msgstr "तपाईंको कार्ट खाली छ।"
+
+msgid "In Stock"
+msgstr "स्टकमा छ"
+
+msgid "Out of Stock"
+msgstr "स्टक छैन"
+
+msgid "Only"
+msgstr "मात्र"
+
+msgid "left"
+msgstr "बाँकी"
+
+msgid "Price"
+msgstr "मूल्य"
+
+msgid "Quantity"
+msgstr "मात्रा"
+
+msgid "Subtotal"
+msgstr "जम्मा"
+
+msgid "Shipping"
+msgstr "डेलिभरी शुल्क"
+
+msgid "Free"
+msgstr "निःशुल्क"
+
+msgid "Total"
+msgstr "कुल"
+
+msgid "Filter"
+msgstr "फिल्टर"
+
+msgid "Category"
+msgstr "श्रेणी"
+
+msgid "All"
+msgstr "सबै"
+
+msgid "Sort By"
+msgstr "क्रमबद्ध गर्नुहोस्"
+
+msgid "Newest"
+msgstr "नयाँ"
+
+msgid "Name: A-Z"
+msgstr "नाम: A-Z"
+
+msgid "Name: Z-A"
+msgstr "नाम: Z-A"
+
+msgid "Price: Low to High"
+msgstr "मूल्य: कम देखि उच्च"
+
+msgid "Price: High to Low"
+msgstr "मूल्य: उच्च देखि कम"
+
+msgid "Apply Filters"
+msgstr "फिल्टर लागू गर्नुहोस्"
+
+msgid "Continue Shopping"
+msgstr "किनमेल जारी राख्नुहोस्"
+
+msgid "Proceed to Checkout"
+msgstr "चेकआउटमा जानुहोस्"
+
+msgid "Remove"
+msgstr "हटाउनुहोस्"
+
+msgid "Book Now"
+msgstr "अहिले बुक गर्नुहोस्"
+
+msgid "My Bookings"
+msgstr "मेरो बुकिङहरू"
+
+msgid "No bookings yet."
+msgstr "कुनै बुकिङ छैन।"
+
+msgid "Book Lab Test"
+msgstr "प्रयोगशाला परीक्षण बुक गर्नुहोस्"
+
+msgid "Delivery Zones"
+msgstr "डेलिभरी क्षेत्रहरू"
+
+msgid "Track"
+msgstr "ट्र्याक गर्नुहोस्"
+
+msgid "My Deliveries"
+msgstr "मेरो डेलिभरीहरू"
+
+msgid "No deliveries yet."
+msgstr "कुनै डेलिभरी छैन।"
+
+msgid "Payment Methods"
+msgstr "भुक्तानी विधिहरू"
+
+msgid "Add Payment Method"
+msgstr "भुक्तानी विधि थप्नुहोस्"
+
+msgid "Insurance"
+msgstr "बीमा"
+
+msgid "My Insurance"
+msgstr "मेरो बीमा"
+
+msgid "Add Insurance Policy"
+msgstr "बीमा पोलिसी थप्नुहोस्"
+
+msgid "Health Records"
+msgstr "स्वास्थ्य रेकर्डहरू"
+
+msgid "Add Health Record"
+msgstr "स्वास्थ्य रेकर्ड थप्नुहोस्"
+
+msgid "Reviews"
+msgstr "समीक्षाहरू"
+
+msgid "Write a Review"
+msgstr "समीक्षा लेख्नुहोस्"
+
+msgid "Submit Review"
+msgstr "समीक्षा पेश गर्नुहोस्"
+
+msgid "Rating"
+msgstr "मूल्याङ्कन"
+
+msgid "Your Health, One Step Closer"
+msgstr "तपाईंको स्वास्थ्य, एक कदम नजिक"
+
+msgid "Browse Medicines"
+msgstr "औषधिहरू ब्राउज गर्नुहोस्"
+
+msgid "Featured Products"
+msgstr "विशेष उत्पादनहरू"
+
+msgid "Popular Medicines"
+msgstr "लोकप्रिय औषधिहरू"
+
+msgid "How It Works"
+msgstr "यसरी काम गर्छ"
+
+msgid "What Our Customers Say"
+msgstr "हाम्रा ग्राहकहरू के भन्छन्"
+
+msgid "Stay Updated"
+msgstr "अपडेट रहनुहोस्"
+
+msgid "Subscribe"
+msgstr "सदस्यता लिनुहोस्"
+
+msgid "Copyright"
+msgstr "प्रतिलिपि अधिकार"
+
+msgid "All rights reserved."
+msgstr "सर्वाधिकार सुरक्षित।"
+
+msgid "Delivery Address"
+msgstr "डेलिभरी ठेगाना"
+
+msgid "Phone Number"
+msgstr "फोन नम्बर"
+
+msgid "Your trusted source for quality medicines and healthcare products."
+msgstr "गुणस्तरीय औषधि र स्वास्थ्य उत्पादनहरूको लागि तपाईंको विश्वसनीय स्रोत।"
+
+msgid "Payment Method"
+msgstr "भुक्तानी विधि"
+
+msgid "Cash on Delivery"
+msgstr "डेलिभरीमा नगद"
+
+msgid "Delivered"
+msgstr "डेलिभर गरियो"
+
+msgid "Pending"
+msgstr "पेन्डिङ"
+
+msgid "Shipped"
+msgstr "पठाइयो"
+
+msgid "Processing"
+msgstr "प्रक्रियामा"
+
+msgid "Completed"
+msgstr "सम्पन्न"
+
+msgid "Cancelled"
+msgstr "रद्द गरियो"
+
+msgid "Failed"
+msgstr "असफल"

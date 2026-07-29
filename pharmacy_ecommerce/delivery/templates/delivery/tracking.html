@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Delivery Tracking{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Delivery Tracking</h1>
+  <p>Order #{{ delivery.order.id }}</p>
+</div>
+
+<div class="card tracking-card">
+  <div class="tracking-header">
+    <div>
+      <strong>Status:</strong>
+      <span class="stock-badge" style="margin-left:var(--space-2);
+        {% if delivery.status == 'delivered' %}background:var(--success-light);color:var(--success);
+        {% elif delivery.status == 'cancelled' or delivery.status == 'failed' %}background:var(--danger-light);color:var(--danger);
+        {% else %}background:var(--warning-light);color:var(--warning);{% endif %}">
+        {{ delivery.get_status_display }}
+      </span>
+    </div>
+    {% if delivery.tracking_number %}
+    <div class="text-sm text-secondary">
+      Tracking #: {{ delivery.tracking_number }}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="tracking-steps">
+    {% for step, label in delivery.STATUS_CHOICES %}
+    <div class="tracking-step">
+      <div class="tracking-step-num
+        {% if delivery.status == step or delivery.status == 'delivered' and step == 'delivered' %}done
+        {% elif forloop.counter0 <= status_index %}current
+        {% else %}pending{% endif %}">
+        {{ forloop.counter }}
+      </div>
+      <span class="tracking-step-label
+        {% if delivery.status == step or delivery.status == 'delivered' and step == 'delivered' %}done
+        {% elif forloop.counter0 <= status_index %}current
+        {% else %}pending{% endif %}">
+        {{ label }}
+      </span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="tracking-details">
+    <div><strong>Delivery Address:</strong> {{ delivery.address }}</div>
+    <div><strong>Phone:</strong> {{ delivery.phone }}</div>
+    {% if delivery.delivery_date %}
+    <div><strong>Expected:</strong> {{ delivery.delivery_date|date:"M d, Y" }} {{ delivery.delivery_time_slot }}</div>
+    {% endif %}
+  </div>
+</div>
+
+{% if delivery.latitude and delivery.longitude %}
+<div class="tracking-map">
+  <div class="text-center">
+    <svg class="mb-2" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <p>Delivery Location</p>
+    <p class="text-sm">{{ delivery.latitude }}, {{ delivery.longitude }}</p>
+    <a href="https://www.google.com/maps?q={{ delivery.latitude }},{{ delivery.longitude }}" target="_blank" class="btn btn-primary btn-sm mt-4">View on Google Maps</a>
+  </div>
+</div>
+{% endif %}
+
+<div class="text-center mt-6">
+  <a href="{% url 'delivery:my_deliveries' %}" class="btn btn-secondary">Back to Deliveries</a>
+</div>
+{% endblock %}

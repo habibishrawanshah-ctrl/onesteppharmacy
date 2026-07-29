@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Health Conditions{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Health Conditions</h1>
+  <p>Information about common health conditions</p>
+</div>
+
+<div class="products-grid">
+  {% for condition in conditions %}
+  <div class="product-card">
+    <div class="product-info">
+      <h3>{{ condition.name }}</h3>
+      <p class="description">{{ condition.description|truncatewords:30 }}</p>
+      {% if condition.common_medicines %}
+      <div class="product-meta">
+        <span class="badge">{{ condition.common_medicines }}</span>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% empty %}
+  <div class="empty-state">
+    <p>No health conditions listed.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

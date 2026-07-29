@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Payment - Order #{{ order.id }}{% endblock %}
+{% block content %}
+<div class="form-page">
+  <div class="form-card">
+    <h2>Complete Payment</h2>
+    <p class="form-card-desc">Order #{{ order.id }} &mdash; Rs. {{ order.total_price }}</p>
+    <form method="post">
+      {% csrf_token %}
+
+      {% if methods %}
+      <div class="form-group">
+        <label class="form-label" for="method">Saved Payment Methods</label>
+        <select name="method" id="method" class="form-select">
+          <option value="">Use a different method</option>
+          {% for m in methods %}
+          <option value="{{ m.pk }}">{{ m.get_method_type_display }} {% if m.account_name %}&mdash; {{ m.account_name }}{% endif %}</option>
+          {% endfor %}
+        </select>
+      </div>
+      {% endif %}
+
+      <div class="form-group">
+        <label class="form-label" for="method_type">Or pay with</label>
+        <select name="method_type" id="method_type" class="form-select">
+          <option value="cash_on_delivery">Cash on Delivery</option>
+          <option value="credit_card">Credit / Debit Card</option>
+          <option value="khalti">Khalti</option>
+          <option value="esewa">eSewa</option>
+          <option value="connectIPS">ConnectIPS</option>
+          <option value="bank_transfer">Bank Transfer</option>
+        </select>
+      </div>
+
+      <div style="background:var(--bg-surface-hover);border-radius:var(--radius-lg);padding:var(--space-4);margin-bottom:var(--space-6);">
+        <div class="d-flex justify-between" style="font-size:0.95rem;padding:var(--space-1) 0;">
+          <span class="text-secondary">Order Total</span>
+          <span class="fw-700">Rs. {{ order.total_price }}</span>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Pay Rs. {{ order.total_price }}</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -3,12 +3,12 @@
 {% block content %}
 <section class="form-page">
   <div class="form-card">
-    <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:24px;">
-      <div style="width:56px;height:56px;background:var(--primary-50);border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;">
+    <div class="d-flex flex-column align-center mb-6">
+      <div class="d-flex align-center justify-center" style="width:56px;height:56px;background:var(--primary-50);border-radius:var(--radius-xl);margin-bottom:var(--space-3);">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
       </div>
       <h2>Create Account</h2>
-      <p style="margin-bottom:0;">Join OneStep Pharmacy to start ordering</p>
+      <p class="form-card-desc mb-0">Join OneStep Pharmacy to start ordering</p>
     </div>
     <form method="post">
       {% csrf_token %}
@@ -18,8 +18,8 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </button>
     </form>
-    <p class="text-center mt-4" style="font-size:0.88rem;color:var(--text-secondary);">
-      Already have an account? <a href="{% url 'login' %}" style="color:var(--primary-500);font-weight:600;text-decoration:none;">Sign In</a>
+    <p class="text-center mt-4 text-sm text-secondary">
+      Already have an account? <a href="{% url 'login' %}" class="fw-600" style="color:var(--primary-500);">Sign In</a>
     </p>
   </div>
 </section>

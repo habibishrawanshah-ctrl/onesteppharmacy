@@ -1,282 +1,267 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}Home - OneStep Pharmacy{% endblock %}
-
 {% block content %}
-  <!-- HERO -->
-  <section class="hero-section">
-    <div class="hero-content">
-      <span class="hero-badge">
-        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        Trusted Since 2024
-      </span>
-      <h1>OneStep Pharmacy</h1>
-      <p class="hero-desc">
-        Search genuine medicines, compare stock and expiry details, and order essentials from a pharmacy experience built for clarity and trust.
+
+<section class="hero-section">
+  <div class="hero-content">
+    <h1>Your health,<br><span>one step</span> away.</h1>
+    <p class="hero-desc">
+      Browse genuine medicines with clear pricing, real-time stock, and expiry transparency. Order with confidence from a pharmacy you can trust.
+    </p>
+    <div class="hero-buttons">
+      <a href="/products/" class="btn btn-primary">
+        Browse Medicines
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="/about/" class="btn btn-secondary">Learn More</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-image-wrapper">
+      <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800&q=80" alt="Pharmacy medicines" class="hero-main-image" loading="eager">
+      <div class="hero-float-card hero-float-card-1">
+        <div class="float-card-icon teal">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="float-card-text">
+          <strong>10,000+</strong>
+          <p>Happy customers</p>
+        </div>
+      </div>
+      <div class="hero-float-card hero-float-card-2">
+        <div class="float-card-icon blue">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="float-card-text">
+          <strong>500+</strong>
+          <p>Products available</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="quick-links">
+    <a href="{% url 'products:list' %}" class="quick-link-card">
+      <div class="quick-link-icon teal">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+      </div>
+      <span>Medicines</span>
+    </a>
+    <a href="{% url 'lab:list' %}" class="quick-link-card">
+      <div class="quick-link-icon blue">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M4 20l4-16h8l4 16"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+      </div>
+      <span>Lab Tests</span>
+    </a>
+    <a href="{% url 'health:conditions' %}" class="quick-link-card">
+      <div class="quick-link-icon green">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      </div>
+      <span>Health Conditions</span>
+    </a>
+    <a href="/delivery/zones/" class="quick-link-card">
+      <div class="quick-link-icon teal">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <span>Delivery Zones</span>
+    </a>
+    <a href="{% url 'insurance:providers' %}" class="quick-link-card">
+      <div class="quick-link-icon blue">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <span>Insurance</span>
+    </a>
+    <a href="{% url 'health:my_records' %}" class="quick-link-card">
+      <div class="quick-link-icon green">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <span>Health Record</span>
+    </a>
+    <a href="{% url 'payments:methods' %}" class="quick-link-card">
+      <div class="quick-link-icon teal">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      </div>
+      <span>Payment</span>
+    </a>
+    <a href="{% url 'products:search' %}?q=" class="quick-link-card">
+      <div class="quick-link-icon blue">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <span>Search</span>
+    </a>
+  </div>
+</section>
+
+{% if user.is_authenticated and user.health_records.exists %}
+<section class="section" style="padding-top:0;">
+  <div class="health-banner">
+    <div>
+      <strong>Your Health Records</strong>
+      <p class="text-sm" style="margin:var(--space-1) 0 0;color:var(--text-secondary);">
+        You have {{ user.health_records.count }} condition(s) tracked
       </p>
-      <form class="hero-search" action="{% url 'products:search' %}" method="get" role="search">
-        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="search" name="q" placeholder="Search medicine, brand, or health need" aria-label="Search medicine, brand, or health need">
-        <button type="submit">Search</button>
-      </form>
-      <div class="popular-searches" aria-label="Popular searches">
-        <span>Popular:</span>
-        <a href="{% url 'products:search' %}?q=paracetamol">Paracetamol</a>
-        <a href="{% url 'products:search' %}?q=vitamin">Vitamins</a>
-        <a href="{% url 'products:search' %}?q=allergy">Allergy</a>
-      </div>
-      <div class="hero-buttons">
-        <a href="/products/" class="btn btn-primary">
-          Browse Medicines
-          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-        <a href="/contact-us/" class="btn btn-secondary">Upload Prescription</a>
-      </div>
-      <div class="trust-badges">
-        <span class="trust-badge">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-          Verified suppliers
-        </span>
-        <span class="trust-badge">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Secure checkout
-        </span>
-        <span class="trust-badge">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          Fast fulfillment
-        </span>
-      </div>
     </div>
-    <div class="hero-visual">
-      <div class="hero-image-wrapper">
-        <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=900&q=80" alt="Organized pharmacy medicines on shelves" class="hero-main-image" loading="eager">
-        <div class="hero-float-card hero-float-card-1">
-          <div class="float-card-icon green">
-            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-          </div>
-          <div class="float-card-text">
-            <strong>Expiry visible</strong>
-            <p>Shop with confidence</p>
-          </div>
-        </div>
-        <div class="hero-float-card hero-float-card-2">
-          <div class="float-card-icon blue">
-            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <div class="float-card-text">
-            <strong>Rx help</strong>
-            <p>Prescription support</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    <a href="{% url 'health:my_records' %}" class="btn btn-primary btn-sm">View Records</a>
+  </div>
+</section>
+{% endif %}
 
-  <!-- CATEGORIES -->
-  <section class="section categories-section">
-    <div class="section-header animate-fade-in-up">
-      <span class="section-badge">Shop by Need</span>
-      <h2>Find the right care faster</h2>
-      <p>Browse common medicine groups and everyday health essentials.</p>
+<section class="section">
+  <div class="section-header animate-fade-in-up">
+    <span class="section-badge">Simple Process</span>
+    <h2>How it works</h2>
+    <p>Getting your medicines is as easy as one, two, three.</p>
+  </div>
+  <div class="steps-grid animate-fade-in-up">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <h3>Browse Medicines</h3>
+      <p>Explore our catalog of genuine medicines with clear pricing, stock levels, and expiry dates.</p>
     </div>
-    <div class="category-grid animate-fade-in-up">
-      <a href="{% url 'products:search' %}?q=pain" class="category-card"><span>Pain Relief</span><small>Fever, headache, muscle pain</small></a>
-      <a href="{% url 'products:search' %}?q=allergy" class="category-card"><span>Allergy Care</span><small>Antihistamines and relief</small></a>
-      <a href="{% url 'products:search' %}?q=vitamin" class="category-card"><span>Vitamins</span><small>Daily immunity support</small></a>
-      <a href="{% url 'products:search' %}?q=digestion" class="category-card"><span>Digestive Health</span><small>Acidity and stomach care</small></a>
-      <a href="{% url 'products:search' %}?q=diabetes" class="category-card"><span>Diabetes Care</span><small>Routine essentials</small></a>
-      <a href="{% url 'products:search' %}?q=skin" class="category-card"><span>Skin Care</span><small>Dermatology basics</small></a>
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <h3>Place Your Order</h3>
+      <p>Select the quantity you need and submit your order in just a few clicks.</p>
     </div>
-  </section>
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <h3>Fast Delivery</h3>
+      <p>We process and ship your order quickly so you get your medicines when you need them.</p>
+    </div>
+  </div>
+</section>
 
-  <!-- FEATURED PRODUCTS -->
-  <section class="section">
-    <div class="section-header animate-fade-in-up">
-      <span class="section-badge">Featured</span>
-      <h2>Popular medicines</h2>
-      <p>Frequently browsed products with clear stock and expiry information.</p>
-    </div>
-    <div class="products-grid animate-fade-in-up">
-      {% for p in featured %}
-        <article class="product-card">
-          {% if p.image and p.image.name %}
-            <div class="product-image">
-              <img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy">
-            </div>
-          {% else %}
-            <div class="product-image no-image">
-              <svg aria-hidden="true" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-            </div>
-          {% endif %}
-          <div class="product-info">
-            <div class="product-tags">
-              <span>Genuine</span>
-              <span>Stock checked</span>
-            </div>
-            <h3>{{ p.name }}</h3>
-            <p class="description">{{ p.description|truncatechars:100 }}</p>
-            <div class="product-meta">
-              {% if p.expiry_date %}
-                <span class="badge">Exp: {{ p.expiry_date|date:"M Y" }}</span>
-              {% endif %}
-            </div>
-            <div class="product-card-footer">
-              <span class="price">Rs. {{ p.price }}</span>
-              {% if p.stock > 10 %}
-                <span class="stock-badge in-stock">{{ p.stock }} in stock</span>
-              {% elif p.stock > 0 %}
-                <span class="stock-badge low-stock">Only {{ p.stock }} left</span>
-              {% else %}
-                <span class="stock-badge out-of-stock">Out of Stock</span>
-              {% endif %}
-            </div>
+{% if featured_products %}
+<section class="section">
+  <div class="section-header animate-fade-in-up">
+    <span class="section-badge">Featured</span>
+    <h2>Featured medicines</h2>
+    <p>Top-rated products selected for your health needs.</p>
+  </div>
+  <div class="products-grid animate-fade-in-up">
+    {% for p in featured_products %}
+      <article class="product-card">
+        {% if p.image and p.image.name %}
+          <div class="product-image">
+            <img src="{{ p.image.url }}" alt="{{ p.name }}" loading="lazy">
           </div>
-          <div class="product-card-actions">
-            <a href="{% url 'products:detail' p.pk %}" class="btn btn-secondary">Details</a>
-            {% if p.stock > 0 %}
-              <form method="post" action="{% url 'cart_add' p.pk %}" class="quick-add-form">
-                {% csrf_token %}
-                <input type="hidden" name="quantity" value="1">
-                <input type="hidden" name="next" value="{{ request.path }}">
-                <button type="submit" class="btn btn-primary">Quick Add</button>
-              </form>
+        {% else %}
+          <div class="product-image no-image">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          </div>
+        {% endif %}
+        <div class="product-info">
+          <h3>{{ p.name }}</h3>
+          <p class="description">{{ p.description|truncatechars:100 }}</p>
+          <div class="product-meta">
+            {% if p.expiry_date %}
+              <span class="badge">Exp: {{ p.expiry_date|date:"M Y" }}</span>
             {% endif %}
           </div>
-        </article>
-      {% empty %}
-        <div class="empty-panel" style="grid-column:1/-1;">
-          <h3>No featured products yet</h3>
-          <p>Check back soon for new medicines and healthcare essentials.</p>
-        </div>
-      {% endfor %}
-    </div>
-  </section>
-
-  <!-- PRESCRIPTION SUPPORT -->
-  <section class="section prescription-section animate-fade-in-up">
-    <div class="prescription-panel">
-      <div>
-        <span class="section-badge">Prescription Support</span>
-        <h2>Have a prescription? We will help you order the right medicines.</h2>
-        <p>Send your prescription details through support and our team will guide the next step before checkout.</p>
-      </div>
-      <a href="/contact-us/" class="btn btn-primary">Upload or Contact Support</a>
-    </div>
-  </section>
-
-  <!-- WHY CHOOSE US -->
-  <section class="section">
-    <div class="section-header animate-fade-in-up">
-      <span class="section-badge">Why Choose Us</span>
-      <h2>Built for careful healthcare shopping</h2>
-      <p>Useful details, calmer decisions, and fewer surprises at checkout.</p>
-    </div>
-    <div class="benefits-grid animate-fade-in-up">
-      <div class="benefit-card">
-        <div class="benefit-icon blue">
-          <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <h3>Verified stock</h3>
-        <p>Product pages make availability visible before you start checkout.</p>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon teal">
-          <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-        </div>
-        <h3>Expiry transparency</h3>
-        <p>Expiry information appears wherever product data is available.</p>
-        <div class="benefit-stat">Clear</div>
-        <div class="benefit-stat-label">Before purchase</div>
-      </div>
-      <div class="benefit-card">
-        <div class="benefit-icon green">
-          <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-        </div>
-        <h3>Simple checkout</h3>
-        <p>Add essentials to cart, review quantities, and confirm delivery details.</p>
-        <div class="benefit-stat">2 min</div>
-        <div class="benefit-stat-label">Typical checkout flow</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="section">
-    <div class="section-header animate-fade-in-up">
-      <span class="section-badge">Testimonials</span>
-      <h2>What customers value</h2>
-      <p>Short, practical feedback from people who want medicine shopping to feel simpler.</p>
-    </div>
-    <div class="testimonials-grid animate-fade-in-up">
-      <div class="testimonial-card">
-        <div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
-        <p class="testimonial-text">"The stock and expiry details made it easy to choose what I needed without calling around."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">AK</div>
-          <div>
-            <div class="testimonial-name">Ayesha Khan</div>
-            <div class="testimonial-role">Regular Customer</div>
+          <div class="product-card-footer">
+            <span class="price">Rs. {{ p.price }}</span>
+            {% if p.stock > 10 %}
+              <span class="stock-badge in-stock">{{ p.stock }} in stock</span>
+            {% elif p.stock > 0 %}
+              <span class="stock-badge low-stock">Only {{ p.stock }} left</span>
+            {% else %}
+              <span class="stock-badge out-of-stock">Out of Stock</span>
+            {% endif %}
           </div>
         </div>
+        <div class="product-card-actions">
+          <a href="{% url 'products:detail' p.pk %}" class="btn btn-secondary">View Details</a>
+          {% if p.stock > 0 %}
+            <a href="{% url 'orders:place' p.pk %}" class="btn btn-primary">Order Now</a>
+          {% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+  <div class="text-center mt-6">
+    <a href="{% url 'products:list' %}" class="btn btn-primary">
+      View All Products
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="section-header animate-fade-in-up">
+    <span class="section-badge">Why Choose Us</span>
+    <h2>Trusted by thousands</h2>
+    <p>We are committed to providing the best pharmacy experience.</p>
+  </div>
+  <div class="benefits-grid animate-fade-in-up">
+    <div class="benefit-card">
+      <div class="benefit-icon teal">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
       </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
-        <p class="testimonial-text">"The checkout felt quick, and I could review everything before placing the order."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">RA</div>
-          <div>
-            <div class="testimonial-name">Ravi Ahmed</div>
-            <div class="testimonial-role">Verified Buyer</div>
-          </div>
+      <h3>Doctor Approved</h3>
+      <p>All medicines are sourced from verified suppliers and approved pharmacies.</p>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon blue">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <h3>Certified Medicines</h3>
+      <p>Every product is verified for authenticity and quality before reaching you.</p>
+      <div class="benefit-stat">99.9%</div>
+      <div class="benefit-stat-label">Genuine rate</div>
+    </div>
+    <div class="benefit-card">
+      <div class="benefit-icon green">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </div>
+      <h3>Fast Delivery</h3>
+      <p>Quick and reliable delivery so you never have to wait long for your medicines.</p>
+      <div class="benefit-stat">50+</div>
+      <div class="benefit-stat-label">Cities covered</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-header animate-fade-in-up">
+    <span class="section-badge">Testimonials</span>
+    <h2>What our customers say</h2>
+    <p>Real stories from real people who trust OneStep Pharmacy.</p>
+  </div>
+  <div class="testimonials-grid animate-fade-in-up">
+    <div class="testimonial-card">
+      <p class="testimonial-text">"Excellent service! The medicines arrived on time and were exactly as described. The expiry date transparency gives me peace of mind."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">AK</div>
+        <div>
+          <div class="testimonial-name">Ayesha Khan</div>
+          <div class="testimonial-role">Regular Customer</div>
         </div>
       </div>
-      <div class="testimonial-card">
-        <div class="testimonial-stars" aria-label="5 out of 5 stars">★★★★★</div>
-        <p class="testimonial-text">"The search made it fast to find my usual medicines and compare available options."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">SN</div>
-          <div>
-            <div class="testimonial-name">Sara Nadeem</div>
-            <div class="testimonial-role">Returning Customer</div>
-          </div>
+    </div>
+    <div class="testimonial-card">
+      <p class="testimonial-text">"Finally a pharmacy that shows stock levels and expiry dates upfront. No more guessing or calling around. Highly recommended!"</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">RA</div>
+        <div>
+          <div class="testimonial-name">Ravi Ahmed</div>
+          <div class="testimonial-role">Verified Buyer</div>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- FAQ -->
-  <section class="section faq-section">
-    <div class="section-header animate-fade-in-up">
-      <span class="section-badge">FAQ</span>
-      <h2>Answers before you order</h2>
-      <p>Clear details reduce hesitation at checkout.</p>
+    <div class="testimonial-card">
+      <p class="testimonial-text">"Ordering was incredibly easy. The website is clean and intuitive. My order arrived within 2 days. Will definitely use again."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">SN</div>
+        <div>
+          <div class="testimonial-name">Sara Nadeem</div>
+          <div class="testimonial-role">New Customer</div>
+        </div>
+      </div>
     </div>
-    <div class="faq-grid animate-fade-in-up">
-      <details>
-        <summary>Can I order prescription medicines?</summary>
-        <p>Yes. Contact support with your prescription details before completing the order so the pharmacy team can guide you.</p>
-      </details>
-      <details>
-        <summary>Do products show expiry dates?</summary>
-        <p>Available expiry information is shown on product cards and product detail pages.</p>
-      </details>
-      <details>
-        <summary>How do I know an item is available?</summary>
-        <p>Each product displays current stock status, including low-stock and out-of-stock indicators.</p>
-      </details>
-    </div>
-  </section>
-
-  <!-- NEWSLETTER -->
-  <section class="section animate-fade-in-up">
-    <div class="newsletter-section">
-      <h2>Health essentials, offers, and refill reminders</h2>
-      <p>Subscribe for thoughtful updates from OneStep Pharmacy.</p>
-      <form class="newsletter-form" onsubmit="alert('Thank you for subscribing!');return false;">
-        <input type="email" placeholder="Enter your email address" aria-label="Email address" required>
-        <button class="btn" type="submit">Subscribe</button>
-      </form>
-    </div>
-  </section>
+  </div>
+</section>
 {% endblock %}

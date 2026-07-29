@@ -1,1 +1,15 @@
-{% extends 'base.html' %}{% load static %}{% block title %}Help Center - OneStep Pharmacy{% endblock %}{% block content %}<section class="page-content"><h1>Help Center</h1><p>Find answers to common questions about ordering, prescriptions, delivery, and more. Can't find what you're looking for? Reach out to our support team.</p><h2>Frequently Asked Questions</h2><p><strong>How do I place an order?</strong> Browse our products, add items to your cart, and proceed to checkout.</p><p><strong>Is my prescription required?</strong> Yes, prescription medicines require a valid prescription from a licensed doctor.</p><p><strong>What are the delivery times?</strong> Standard delivery takes 3-5 business days.</p></section>{% endblock %}
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Help Center - OneStep Pharmacy{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Help Center</h1>
+  <p>Find answers to common questions about ordering, prescriptions, delivery, and more. Can't find what you're looking for? Reach out to our support team.</p>
+</div>
+<div class="card" style="padding:var(--space-6);border-radius:var(--radius-lg);">
+  <h3 style="margin-bottom:var(--space-3);">Frequently Asked Questions</h3>
+  <p><strong>How do I place an order?</strong> Browse our products, add items to your cart, and proceed to checkout.</p>
+  <p><strong>Is my prescription required?</strong> Yes, prescription medicines require a valid prescription from a licensed doctor.</p>
+  <p><strong>What are the delivery times?</strong> Standard delivery takes 3-5 business days.</p>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Review {{ product.name }}{% endblock %}
+{% block content %}
+<div class="form-page">
+  <div class="form-card">
+    <h2>{% if existing %}Edit Your Review{% else %}Write a Review{% endif %}</h2>
+    <p class="form-card-desc">for <strong>{{ product.name }}</strong></p>
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Rating</label>
+        <div class="star-rating" id="rating-stars">
+          {% for i in "12345" %}
+          <label>
+            <input type="radio" name="rating" value="{{ i }}" {% if existing and existing.rating == i|add:0 %}checked{% endif %}>
+            <span class="star" data-value="{{ i }}">&#9734;</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="comment">Your Review</label>
+        <textarea name="comment" id="comment" rows="4" class="form-textarea" placeholder="Share your experience with this product...">{% if existing %}{{ existing.comment }}{% endif %}</textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">
+        {% if existing %}Update Review{% else %}Submit Review{% endif %}
+      </button>
+    </form>
+    <div class="form-card-back">
+      <a href="{% url 'products:detail' product.pk %}">Back to product</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('#rating-stars .star').forEach(star => {
+    star.addEventListener('click', function() {
+      const val = this.dataset.value;
+      document.querySelectorAll('#rating-stars .star').forEach((s, i) => {
+        s.textContent = i < val ? '\u2605' : '\u2606';
+        if (i < val) s.classList.add('filled');
+        else s.classList.remove('filled');
+      });
+      this.closest('label').querySelector('input').checked = true;
+    });
+  });
+</script>
+{% endblock %}

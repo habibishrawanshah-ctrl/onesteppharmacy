@@ -24,5 +24,11 @@ class Product(models.Model):
     manufacturer = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def get_image_url(self):
+        if self.image and self.image.name:
+            return self.image.url
+        name_slug = self.name.replace(' ', '+')
+        return f'https://placehold.co/400x300/1a56db/ffffff?text={name_slug}'
+
     def __str__(self):
         return self.name

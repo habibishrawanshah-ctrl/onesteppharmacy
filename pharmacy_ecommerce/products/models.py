@@ -1,3 +1,4 @@
+import os
 from django.db import models
 
 class Category(models.Model):
@@ -28,13 +29,8 @@ class Product(models.Model):
         if self.image and self.image.name and self.image.storage.exists(self.image.name):
             return self.image.url
         name_slug = self.name.lower().replace(' ', '_')
-        from django.conf import settings
-        from pathlib import Path
-        static_dir = Path(settings.BASE_DIR) / 'products' / 'static' / 'images' / 'products'
-        for ext in ('svg', 'jpg', 'jpeg', 'png', 'webp'):
-            if (static_dir / f'{name_slug}.{ext}').exists():
-                return f'{settings.STATIC_URL}images/products/{name_slug}.{ext}'
-        return f'{settings.STATIC_URL}images/products/{name_slug}.svg'
+        cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', 'cxfqn4a3')
+        return f'https://res.cloudinary.com/{cloud_name}/image/upload/v1/products/{name_slug}.svg'
 
     def __str__(self):
         return self.name

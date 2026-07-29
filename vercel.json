@@ -1,4 +1,5 @@
 {
+  "framework": null,
   "buildCommand": "bash scripts/vercel-build.sh",
   "functions": {
     "api/index.py": {

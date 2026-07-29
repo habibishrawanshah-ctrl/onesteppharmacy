@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 set -e
 cd pharmacy_ecommerce
-apt-get update -qq && apt-get install -y -qq libpq-dev gcc 2>/dev/null
-pip install --break-system-packages --no-binary psycopg2 -r requirements.txt
-python manage.py migrate --noinput --skip-checks
-python manage.py collectstatic --noinput --skip-checks
+pip install --break-system-packages -r requirements.txt 2>&1 | tail -3
+unset DATABASE_URL
+python manage.py collectstatic --noinput --skip-checks --ignore=*.map 2>&1
 mkdir -p ../public/static
 cp -r staticfiles/. ../public/static/

@@ -21,7 +21,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   {% block extra_head %}{% endblock %}
@@ -44,6 +44,14 @@
 <body>
   <div class="page-shell">
     
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <span>Licensed pharmacy support</span>
+        <span>Free delivery on eligible orders</span>
+        <a href="/contact-us/">Talk to a pharmacist</a>
+      </div>
+    </div>
+
     <!-- HEADER -->
     <header class="site-header" id="site-header">
       <div class="header-inner">
@@ -63,6 +71,7 @@
         <nav class="site-nav" id="site-nav" aria-label="Main navigation">
           <a href="/" {% if request.path == '/' %}class="active" aria-current="page"{% endif %}>Home</a>
           <a href="/products/" {% if '/products/' in request.path %}class="active" aria-current="page"{% endif %}>Products</a>
+          <a href="/products/search/?q=vitamin">Categories</a>
           <a href="/about/" {% if '/about/' in request.path %}class="active" aria-current="page"{% endif %}>About</a>
           {% if user.is_authenticated %}
             <a href="/orders/place/" {% if '/orders/' in request.path %}class="active" aria-current="page"{% endif %}>Order</a>
@@ -79,6 +88,7 @@
 
         <!-- Right Navigation Items -->
         <div class="nav-right">
+          <a href="/contact-us/" class="prescription-link">Upload Prescription</a>
           <!-- Theme Toggle -->
           <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
             <!-- Sun Icon (Default shown in dark mode logic via JS/CSS if needed, we toggle innerHTML or rely on JS) -->
@@ -104,7 +114,8 @@
               <button type="submit" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">Logout</button>
             </form>
           {% else %}
-            <a href="/login/" class="nav-btn-link">Log In</a>
+            <a href="/login/" class="nav-btn-link">Login</a>
+            <a href="/users/signup/" class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">Sign Up</a>
           {% endif %}
 
           <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation menu">
@@ -201,7 +212,13 @@
     <nav class="mobile-nav-links">
       <a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a>
       <a href="/products/" {% if '/products/' in request.path %}class="active"{% endif %}>Products</a>
+      <a href="/contact-us/">Upload Prescription</a>
+      <a href="/help-center/">Help Center</a>
       <a href="/about/" {% if '/about/' in request.path %}class="active"{% endif %}>About</a>
+      {% if not user.is_authenticated %}
+        <a href="/login/">Login</a>
+        <a href="/users/signup/">Sign Up</a>
+      {% endif %}
       {% if user.is_authenticated %}
         <a href="/orders/place/" {% if '/orders/' in request.path %}class="active"{% endif %}>Order</a>
         <a href="{% url 'users:profile' %}" {% if '/profile/' in request.path %}class="active"{% endif %}>My Profile</a>

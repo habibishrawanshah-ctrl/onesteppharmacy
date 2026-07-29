@@ -2,6 +2,7 @@ venv/
 __pycache__/
 *.pyc
 *.pyo
+*.sqlite3
 staticfiles/
 .DS_Store
 Thumbs.db
@@ -9,3 +10,5 @@ Thumbs.db
 .opencode/
 public/
 .env
+media/
+db.sqlite3

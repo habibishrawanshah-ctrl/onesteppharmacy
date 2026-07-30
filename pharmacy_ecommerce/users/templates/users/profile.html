@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load order_tags %}
 {% block title %}My Profile - OneStep Pharmacy{% endblock %}
 {% block content %}
 <div class="page-header" style="max-width:100%;margin-bottom:var(--space-6);">
@@ -39,32 +40,68 @@
       {% if orders %}
       <div class="d-flex flex-column gap-3">
         {% for order in orders %}
-        <div class="d-flex justify-between align-center flex-wrap gap-2" style="padding:var(--space-3);background:var(--bg-surface-hover);border-radius:var(--radius-lg);">
-          <div>
-            <strong>#{{ order.id }}</strong>
-            {% for item in order.items.all %}
-            <div>&mdash; {{ item.product.name }} x {{ item.quantity }}</div>
-            {% endfor %}
-            <div class="text-sm text-secondary">
-              {{ order.created_at|date:"M d, Y" }} &middot; Rs. {{ order.total }}
+        <div style="padding:var(--space-3);background:var(--bg-surface-hover);border-radius:var(--radius-lg);">
+          <div class="d-flex justify-between align-center flex-wrap gap-2 mb-3">
+            <div>
+              <strong>#{{ order.id }}</strong>
+              {% for item in order.items.all %}
+              <div>&mdash; {{ item.product.name }} x {{ item.quantity }}</div>
+              {% endfor %}
+              <div class="text-sm text-secondary">
+                {{ order.created_at|date:"M d, Y" }} &middot; Rs. {{ order.total }}
+              </div>
+            </div>
+            <div class="d-flex align-center gap-2">
+              <span class="stock-badge {% if order.status == 'delivered' %}in-stock{% elif order.status == 'shipped' or order.status == 'processing' %}low-stock{% else %}out-of-stock{% endif %}">
+                {{ order.get_status_display }}
+              </span>
+              {% if order.delivery %}
+              <a href="{% url 'delivery:tracking' order.delivery.pk %}" class="btn btn-sm btn-secondary">Track</a>
+              {% endif %}
+              {% if order.status == 'pending' or order.status == 'confirmed' %}
+              <a href="{% url 'orders:cancel' order.pk %}" class="btn btn-sm btn-danger">Cancel</a>
+              {% endif %}
+              {% if order.status == 'delivered' %}
+              <a href="{% url 'orders:return' order.pk %}" class="btn btn-sm btn-secondary">Return</a>
+              {% endif %}
+              <a href="{% url 'orders:invoice' order.pk %}" class="btn btn-sm btn-secondary">Invoice</a>
+              <a href="{% url 'payments:make_payment' order.pk %}" class="btn btn-sm btn-primary">Pay</a>
             </div>
           </div>
-          <div class="d-flex align-center gap-2">
-            <span class="stock-badge {% if order.status == 'delivered' %}in-stock{% elif order.status == 'shipped' or order.status == 'processing' %}low-stock{% else %}out-of-stock{% endif %}">
-              {{ order.get_status_display }}
-            </span>
-            {% if order.delivery %}
-            <a href="{% url 'delivery:tracking' order.delivery.pk %}" class="btn btn-sm btn-secondary">Track</a>
-            {% endif %}
-            {% if order.status == 'pending' or order.status == 'confirmed' %}
-            <a href="{% url 'orders:cancel' order.pk %}" class="btn btn-sm btn-danger">Cancel</a>
-            {% endif %}
-            {% if order.status == 'delivered' %}
-            <a href="{% url 'orders:return' order.pk %}" class="btn btn-sm btn-secondary">Return</a>
-            {% endif %}
-            <a href="{% url 'orders:invoice' order.pk %}" class="btn btn-sm btn-secondary">Invoice</a>
-            <a href="{% url 'payments:make_payment' order.pk %}" class="btn btn-sm btn-primary">Pay</a>
+          {% with s=order.status %}
+          <div class="order-timeline d-flex justify-between" style="gap:4px;">
+            <div class="timeline-step" style="flex:1;text-align:center;padding:4px 0;">
+              <div style="width:20px;height:20px;border-radius:50%;margin:0 auto 4px;background:{% if s == 'pending' %}#0066cc{% elif s in 'confirmed,processing,shipped,delivered' %}#22c55e{% else %}#e5e7eb{% endif %};display:flex;align-items:center;justify-content:center;">
+                <span style="color:{% if s in 'confirmed,processing,shipped,delivered' %}white{% else %}#6b7280{% endif %};font-size:12px;">{% if s in 'confirmed,processing,shipped,delivered' %}&#10003;{% else %}&#9679;{% endif %}</span>
+              </div>
+              <div style="font-size:10px;color:{% if s == 'pending' %}#0066cc{% else %}#6b7280{% endif %};">Pending</div>
+            </div>
+            <div class="timeline-step" style="flex:1;text-align:center;padding:4px 0;">
+              <div style="width:20px;height:20px;border-radius:50%;margin:0 auto 4px;background:{% if s == 'confirmed' %}#0066cc{% elif s in 'processing,shipped,delivered' %}#22c55e{% else %}#e5e7eb{% endif %};display:flex;align-items:center;justify-content:center;">
+                <span style="color:{% if s in 'processing,shipped,delivered' %}white{% elif s == 'confirmed' %}white{% else %}#9ca3af{% endif %};font-size:12px;">{% if s in 'processing,shipped,delivered' %}&#10003;{% elif s == 'confirmed' %}&#9679;{% else %}&#9679;{% endif %}</span>
+              </div>
+              <div style="font-size:10px;color:{% if s == 'confirmed' %}#0066cc{% else %}#6b7280{% endif %};">Confirmed</div>
+            </div>
+            <div class="timeline-step" style="flex:1;text-align:center;padding:4px 0;">
+              <div style="width:20px;height:20px;border-radius:50%;margin:0 auto 4px;background:{% if s == 'processing' %}#0066cc{% elif s in 'shipped,delivered' %}#22c55e{% else %}#e5e7eb{% endif %};display:flex;align-items:center;justify-content:center;">
+                <span style="color:{% if s in 'shipped,delivered' %}white{% elif s == 'processing' %}white{% else %}#9ca3af{% endif %};font-size:12px;">{% if s in 'shipped,delivered' %}&#10003;{% elif s == 'processing' %}&#9679;{% else %}&#9679;{% endif %}</span>
+              </div>
+              <div style="font-size:10px;color:{% if s == 'processing' %}#0066cc{% else %}#6b7280{% endif %};">Processing</div>
+            </div>
+            <div class="timeline-step" style="flex:1;text-align:center;padding:4px 0;">
+              <div style="width:20px;height:20px;border-radius:50%;margin:0 auto 4px;background:{% if s == 'shipped' %}#0066cc{% elif s == 'delivered' %}#22c55e{% else %}#e5e7eb{% endif %};display:flex;align-items:center;justify-content:center;">
+                <span style="color:{% if s == 'delivered' %}white{% elif s == 'shipped' %}white{% else %}#9ca3af{% endif %};font-size:12px;">{% if s == 'delivered' %}&#10003;{% elif s == 'shipped' %}&#9679;{% else %}&#9679;{% endif %}</span>
+              </div>
+              <div style="font-size:10px;color:{% if s == 'shipped' %}#0066cc{% else %}#6b7280{% endif %};">Shipped</div>
+            </div>
+            <div class="timeline-step" style="flex:1;text-align:center;padding:4px 0;">
+              <div style="width:20px;height:20px;border-radius:50%;margin:0 auto 4px;background:{% if s == 'delivered' %}#22c55e{% else %}#e5e7eb{% endif %};display:flex;align-items:center;justify-content:center;">
+                <span style="color:{% if s == 'delivered' %}white{% else %}#9ca3af{% endif %};font-size:12px;">{% if s == 'delivered' %}&#10003;{% else %}&#9679;{% endif %}</span>
+              </div>
+              <div style="font-size:10px;color:{% if s == 'delivered' %}#0066cc{% else %}#6b7280{% endif %};">Delivered</div>
+            </div>
           </div>
+          {% endwith %}
         </div>
         {% endfor %}
       </div>

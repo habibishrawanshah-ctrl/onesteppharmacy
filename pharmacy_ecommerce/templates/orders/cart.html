@@ -35,9 +35,13 @@
   {% endfor %}
 
   <div class="card cart-summary">
-    <div class="cart-summary-row">
+    <div class="cart-summary-row" id="coupon-section">
       <span>Subtotal</span>
-      <span>Rs. {{ total }}</span>
+      <span>Rs. <span id="subtotal">{{ total }}</span></span>
+    </div>
+    <div class="cart-summary-row">
+      <span>Discount</span>
+      <span style="color:var(--success);">- Rs. <span id="discount-amount">0</span></span>
     </div>
     <div class="cart-summary-row">
       <span>Shipping</span>
@@ -50,7 +54,15 @@
     {% endif %}
     <div class="cart-summary-total">
       <span>Total</span>
-      <span>Rs. {{ grand_total }}</span>
+      <span>Rs. <span id="grand-total">{{ grand_total }}</span></span>
+    </div>
+    <div class="mb-3" id="coupon-form">
+      <form id="coupon-form-inner" onsubmit="return applyCoupon()" class="d-flex gap-1">
+        {% csrf_token %}
+        <input type="text" id="coupon-input" name="code" placeholder="Coupon code" class="form-control" style="flex:1;text-transform:uppercase;" required>
+        <button type="submit" class="btn btn-sm btn-secondary">Apply</button>
+      </form>
+      <div id="coupon-message" class="text-sm mt-1"></div>
     </div>
     <div class="cart-summary-actions">
       <a href="{% url 'checkout' %}" class="btn btn-primary">Proceed to Checkout</a>
@@ -64,4 +76,32 @@
   <a href="{% url 'products:list' %}" class="btn btn-primary">Browse Products</a>
 </div>
 {% endif %}
+{% block extra_js %}
+<script>
+function applyCoupon() {
+  const input = document.getElementById('coupon-input');
+  const msg = document.getElementById('coupon-message');
+  const csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  msg.innerHTML = '';
+  fetch('{% url "orders:apply_coupon" %}', {
+    method: 'POST',
+    headers: {'X-CSRFToken': csrf, 'Content-Type': 'application/x-www-form-urlencoded'},
+    body: 'code=' + encodeURIComponent(input.value)
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.success) {
+      document.getElementById('discount-amount').textContent = d.discount;
+      document.getElementById('grand-total').textContent = d.grand_total;
+      msg.innerHTML = '<span style="color:var(--success);">Coupon "' + d.code + '" applied!</span>';
+      document.getElementById('coupon-form-inner').innerHTML = '<span style="color:var(--success);">Coupon applied</span> <a href="{% url "orders:remove_coupon" %}" class="text-sm">Remove</a>';
+    } else {
+      msg.innerHTML = '<span style="color:var(--danger);">' + d.error + '</span>';
+    }
+  })
+  .catch(() => msg.innerHTML = '<span style="color:var(--danger);">Error applying coupon.</span>');
+  return false;
+}
+</script>
+{% endblock %}
 {% endblock %}

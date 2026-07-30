@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order, OrderItem, Cart, CartItem, Prescription
+from .models import Order, OrderItem, Cart, CartItem, Prescription, Coupon
 
 
 class OrderItemInline(admin.TabularInline):
@@ -65,3 +65,10 @@ class PrescriptionAdmin(admin.ModelAdmin):
     def reject_prescriptions(self, request, queryset):
         queryset.update(status='rejected')
     reject_prescriptions.short_description = "Mark selected as Rejected"
+
+
+@admin.register(Coupon)
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ('code', 'discount_type', 'discount_value', 'min_order_amount', 'max_uses', 'used_count', 'is_active', 'valid_until')
+    list_filter = ('is_active', 'discount_type')
+    search_fields = ('code',)

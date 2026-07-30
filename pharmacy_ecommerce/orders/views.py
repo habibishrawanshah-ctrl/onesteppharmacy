@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Order, OrderItem, Prescription
+from .models import Order, OrderItem, Prescription, Coupon
 from products.models import Product
 from django.contrib.auth.decorators import login_required
 from .cart import add_to_cart, remove_from_cart, update_quantity, cart_items, clear_cart, get_or_create_cart
+from django.http import JsonResponse
 from delivery.models import Delivery
 from payments.models import Payment
 from users.models import UserProfile
@@ -130,6 +131,45 @@ def order_invoice(request, order_id):
     return render(request, 'orders/invoice.html', {'order': order})
 
 
+@login_required
+def apply_coupon(request):
+    if request.method == 'POST':
+        code = request.POST.get('code', '').strip().upper()
+        items, total = cart_items(request.user)
+        shipping = 100 if total < 500 else 0
+        try:
+            coupon = Coupon.objects.get(code=code)
+        except Coupon.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Invalid coupon code.'})
+
+        if not coupon.is_valid():
+            return JsonResponse({'success': False, 'error': 'This coupon has expired or reached its usage limit.'})
+        if total < coupon.min_order_amount:
+            return JsonResponse({
+                'success': False,
+                'error': f'Minimum order amount of Rs. {coupon.min_order_amount} required for this coupon.'
+            })
+
+        discounted = coupon.apply_discount(total)
+        new_grand = discounted + shipping
+        request.session['coupon_code'] = coupon.code
+        return JsonResponse({
+            'success': True,
+            'discount': float(total - discounted),
+            'new_total': float(discounted),
+            'grand_total': float(new_grand),
+            'code': coupon.code,
+        })
+    return JsonResponse({'success': False, 'error': 'Invalid request.'})
+
+
+@login_required
+def remove_coupon(request):
+    if 'coupon_code' in request.session:
+        del request.session['coupon_code']
+    return redirect('cart')
+
+
 def cart_view(request):
     if request.user.is_authenticated:
         items, total = cart_items(request.user)
@@ -187,6 +227,21 @@ def checkout(request):
         item.product.is_prescription_required for item in items
     )
 
+    coupon_code = request.session.pop('coupon_code', None)
+    discount_amount = 0
+    if coupon_code:
+        try:
+            coupon = Coupon.objects.get(code=coupon_code)
+            if coupon.is_valid() and total >= coupon.min_order_amount:
+                discounted = coupon.apply_discount(total)
+                discount_amount = total - discounted
+                total = discounted
+                grand_total = total + shipping
+                coupon.used_count += 1
+                coupon.save(update_fields=['used_count'])
+        except Coupon.DoesNotExist:
+            pass
+
     if request.method == 'POST':
         address = request.POST.get('address', '').strip()
         phone = request.POST.get('phone', '').strip()[:15]
@@ -236,6 +291,8 @@ def checkout(request):
             phone=phone,
             delivery_date=delivery_date or None,
             delivery_time_slot=delivery_time,
+            coupon_code=coupon_code or '',
+            discount_amount=discount_amount,
         )
 
         for item in items:

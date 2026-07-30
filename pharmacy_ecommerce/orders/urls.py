@@ -10,4 +10,6 @@ urlpatterns = [
     path('<int:order_id>/cancel/', views.cancel_order, name='cancel'),
     path('<int:order_id>/return/', views.return_order, name='return'),
     path('<int:order_id>/invoice/', views.order_invoice, name='invoice'),
+    path('apply-coupon/', views.apply_coupon, name='apply_coupon'),
+    path('remove-coupon/', views.remove_coupon, name='remove_coupon'),
 ]

@@ -96,6 +96,50 @@ class OrderItem(models.Model):
         return f"{self.quantity}x {self.product.name} (Order #{self.order.id})"
 
 
+class Coupon(models.Model):
+    DISCOUNT_PERCENTAGE = 'percentage'
+    DISCOUNT_FIXED = 'fixed'
+
+    DISCOUNT_TYPES = [
+        (DISCOUNT_PERCENTAGE, 'Percentage'),
+        (DISCOUNT_FIXED, 'Fixed Amount'),
+    ]
+
+    code = models.CharField(max_length=50, unique=True)
+    discount_type = models.CharField(max_length=20, choices=DISCOUNT_TYPES, default=DISCOUNT_PERCENTAGE)
+    discount_value = models.DecimalField(max_digits=10, decimal_places=2)
+    min_order_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    max_uses = models.PositiveIntegerField(default=0, help_text='0 = unlimited')
+    used_count = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    valid_from = models.DateTimeField(auto_now_add=True)
+    valid_until = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.code
+
+    def is_valid(self):
+        from django.utils import timezone
+        now = timezone.now()
+        if not self.is_active:
+            return False
+        if self.max_uses > 0 and self.used_count >= self.max_uses:
+            return False
+        if self.valid_until and now > self.valid_until:
+            return False
+        return True
+
+    def apply_discount(self, total):
+        if not self.is_valid():
+            return total
+        if self.discount_type == self.DISCOUNT_PERCENTAGE:
+            discount = total * (self.discount_value / 100)
+        else:
+            discount = self.discount_value
+        return max(total - discount, 0)
+
+
 class Prescription(models.Model):
     STATUS_PENDING = 'pending'
     STATUS_APPROVED = 'approved'

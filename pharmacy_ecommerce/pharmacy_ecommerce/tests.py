@@ -55,7 +55,7 @@ class SecuritySettingsTest(TestCase):
 class NavigationTest(TestCase):
     def test_anonymous_nav_shows_login_button(self):
         resp = self.client.get(reverse('home'))
-        self.assertContains(resp, 'Login')
+        self.assertContains(resp, 'Log In')
 
     def test_anonymous_nav_shows_signup_button(self):
         resp = self.client.get(reverse('home'))

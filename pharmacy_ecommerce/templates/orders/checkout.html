@@ -10,7 +10,7 @@
   <div>
     <div class="card">
       <h3 class="mb-6">Shipping Details</h3>
-      <form method="post">
+      <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="form-group">
@@ -49,6 +49,25 @@
             <option value="bank_transfer">Bank Transfer</option>
           </select>
         </div>
+
+        {% if has_prescription_items %}
+        <div class="card" style="border:2px solid var(--warning);padding:var(--space-4);margin-bottom:var(--space-4);">
+          <h4 class="mb-3">Prescription Required</h4>
+          <p class="text-sm text-secondary mb-3">Some items in your cart require a valid prescription. Please upload below.</p>
+          <div class="form-group">
+            <label class="form-label" for="prescription_image">Upload Prescription (Image)</label>
+            <input type="file" name="prescription_image" id="prescription_image" accept="image/*" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prescription_file">Or Upload PDF</label>
+            <input type="file" name="prescription_file" id="prescription_file" accept=".pdf" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prescription_notes">Doctor / Notes (optional)</label>
+            <textarea name="prescription_notes" id="prescription_notes" rows="2" class="form-textarea" placeholder="Any additional information..."></textarea>
+          </div>
+        </div>
+        {% endif %}
 
         <button type="submit" class="btn btn-primary btn-block">Place Order</button>
       </form>

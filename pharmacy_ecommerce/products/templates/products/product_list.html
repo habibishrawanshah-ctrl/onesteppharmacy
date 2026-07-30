@@ -55,6 +55,9 @@ function applyFilters() {
         {% if product.category %}
         <span class="badge">{{ product.category.name }}</span>
         {% endif %}
+        {% if product.is_prescription_required %}
+        <span class="badge" style="background:var(--warning-light);color:var(--warning);">Rx Required</span>
+        {% endif %}
         {% if product.expiry_date %}
         <span class="badge">Exp: {{ product.expiry_date|date:"M Y" }}</span>
         {% endif %}

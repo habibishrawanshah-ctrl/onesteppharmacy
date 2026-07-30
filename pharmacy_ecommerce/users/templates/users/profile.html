@@ -56,6 +56,13 @@
             {% if order.delivery %}
             <a href="{% url 'delivery:tracking' order.delivery.pk %}" class="btn btn-sm btn-secondary">Track</a>
             {% endif %}
+            {% if order.status == 'pending' or order.status == 'confirmed' %}
+            <a href="{% url 'orders:cancel' order.pk %}" class="btn btn-sm btn-danger">Cancel</a>
+            {% endif %}
+            {% if order.status == 'delivered' %}
+            <a href="{% url 'orders:return' order.pk %}" class="btn btn-sm btn-secondary">Return</a>
+            {% endif %}
+            <a href="{% url 'orders:invoice' order.pk %}" class="btn btn-sm btn-secondary">Invoice</a>
             <a href="{% url 'payments:make_payment' order.pk %}" class="btn btn-sm btn-primary">Pay</a>
           </div>
         </div>

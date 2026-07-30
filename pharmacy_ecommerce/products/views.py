@@ -57,7 +57,7 @@ def product_detail(request, pk):
         related = Product.objects.exclude(pk=pk)[:4]
 
     recommended = Product.objects.all().order_by('-created_at')[:4]
-    popular = Product.objects.annotate(order_count=Count('order')).order_by('-order_count')[:4]
+    popular = Product.objects.annotate(order_count=Count('orderitem')).order_by('-order_count')[:4]
 
     return render(request, 'products/product_detail.html', {
         'product': product,

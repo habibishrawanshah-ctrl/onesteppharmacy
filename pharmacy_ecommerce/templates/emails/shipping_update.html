@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html><body style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h1>Shipping Update</h1>
+<p>Order <strong>#{{ order.id }}</strong> status: <strong>{{ delivery.get_status_display }}</strong></p>
+{% if delivery.tracking_number %}<p>Tracking Number: <strong>{{ delivery.tracking_number }}</strong></p>{% endif %}
+{% if delivery.delivery_date %}<p>Expected Delivery: {{ delivery.delivery_date|date:"M d, Y" }} {{ delivery.delivery_time_slot }}</p>{% endif %}
+<p><a href="{{ site_url }}{% url 'delivery:tracking' delivery.pk %}" style="background:#0066cc;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;">Track Order</a></p>
+</body></html>

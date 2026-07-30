@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import Order, OrderItem
+from .models import Order, OrderItem, Prescription
 from products.models import Product
 from django.contrib.auth.decorators import login_required
 from .cart import add_to_cart, remove_from_cart, update_quantity, cart_items, clear_cart, get_or_create_cart
 from delivery.models import Delivery
 from payments.models import Payment
 from users.models import UserProfile
+from utils.email import send_order_confirmation, send_welcome_email
 import logging
 
 logger = logging.getLogger(__name__)
@@ -70,6 +71,9 @@ def place_order(request, product_id):
                 status='pending',
             )
 
+            send_order_confirmation(order)
+            if not request.user.last_login:
+                send_welcome_email(request.user)
             logger.info(f'Order #{order.id} placed by {request.user.username}')
             return redirect('orders:success')
         for e in errors:
@@ -79,6 +83,51 @@ def place_order(request, product_id):
 
 def success(request):
     return render(request, 'orders/success.html')
+
+
+@login_required
+def cancel_order(request, order_id):
+    order = get_object_or_404(Order, pk=order_id, user=request.user)
+    if order.status not in ('pending', 'confirmed'):
+        messages.error(request, 'This order cannot be cancelled.')
+        return redirect('users:profile')
+
+    if request.method == 'POST':
+        for item in order.items.all():
+            item.product.stock += item.quantity
+            item.product.save(update_fields=['stock'])
+        order.status = 'cancelled'
+        order.save(update_fields=['status'])
+        logger.info(f'Order #{order.id} cancelled by {request.user.username}')
+        messages.success(request, f'Order #{order.id} has been cancelled.')
+        return redirect('users:profile')
+
+    return render(request, 'orders/cancel_confirm.html', {'order': order})
+
+
+@login_required
+def return_order(request, order_id):
+    order = get_object_or_404(Order, pk=order_id, user=request.user)
+    if order.status != 'delivered':
+        messages.error(request, 'Only delivered orders can be returned.')
+        return redirect('users:profile')
+
+    if request.method == 'POST':
+        reason = request.POST.get('reason', '').strip()
+        order.notes = (order.notes or '') + f'\nReturn reason: {reason}'
+        order.status = 'returned'
+        order.save(update_fields=['status', 'notes'])
+        logger.info(f'Order #{order.id} return requested by {request.user.username}: {reason}')
+        messages.success(request, f'Return request for Order #{order.id} has been submitted.')
+        return redirect('users:profile')
+
+    return render(request, 'orders/return_form.html', {'order': order})
+
+
+@login_required
+def order_invoice(request, order_id):
+    order = get_object_or_404(Order, pk=order_id, user=request.user)
+    return render(request, 'orders/invoice.html', {'order': order})
 
 
 def cart_view(request):
@@ -134,6 +183,9 @@ def checkout(request):
 
     shipping = 100 if total < 500 else 0
     grand_total = total + shipping
+    has_prescription_items = any(
+        item.product.is_prescription_required for item in items
+    )
 
     if request.method == 'POST':
         address = request.POST.get('address', '').strip()
@@ -142,11 +194,32 @@ def checkout(request):
         delivery_time = request.POST.get('delivery_time', '')
         payment_method = request.POST.get('payment_method', 'cash_on_delivery')
 
+        errors = []
         if not address or not phone:
-            messages.error(request, 'Please provide both shipping address and phone number.')
+            errors.append('Please provide both shipping address and phone number.')
+
+        if has_prescription_items:
+            pres_image = request.FILES.get('prescription_image')
+            pres_file = request.FILES.get('prescription_file')
+            if not pres_image and not pres_file:
+                errors.append(
+                    'Some items in your cart require a prescription. '
+                    'Please upload your prescription.'
+                )
+
+        for item in items:
+            if item.quantity > item.product.stock:
+                errors.append(
+                    f'Only {item.product.stock} of {item.product.name} in stock.'
+                )
+
+        if errors:
+            for e in errors:
+                messages.error(request, e)
             return render(request, 'orders/checkout.html', {
                 'items': items, 'total': total,
                 'shipping': shipping, 'grand_total': grand_total,
+                'has_prescription_items': has_prescription_items,
             })
 
         profile, _ = UserProfile.objects.get_or_create(
@@ -155,17 +228,6 @@ def checkout(request):
         profile.address = address
         profile.phone = phone
         profile.save()
-
-        for item in items:
-            if item.quantity > item.product.stock:
-                messages.error(
-                    request,
-                    f'Only {item.product.stock} of {item.product.name} in stock.',
-                )
-                return render(request, 'orders/checkout.html', {
-                    'items': items, 'total': total,
-                    'shipping': shipping, 'grand_total': grand_total,
-                })
 
         order = Order.objects.create(
             user=request.user,
@@ -187,6 +249,15 @@ def checkout(request):
             item.product.stock -= item.quantity
             item.product.save(update_fields=['stock'])
 
+        if has_prescription_items:
+            Prescription.objects.create(
+                user=request.user,
+                order=order,
+                image=request.FILES.get('prescription_image'),
+                file=request.FILES.get('prescription_file'),
+                notes=request.POST.get('prescription_notes', ''),
+            )
+
         Delivery.objects.create(
             order=order,
             user=request.user,
@@ -205,6 +276,9 @@ def checkout(request):
         )
 
         clear_cart(request.user)
+        send_order_confirmation(order)
+        if not request.user.last_login:
+            send_welcome_email(request.user)
         messages.success(request, 'Order placed successfully!')
         return redirect('orders:success')
 
@@ -213,4 +287,5 @@ def checkout(request):
         'total': total,
         'shipping': shipping,
         'grand_total': grand_total,
+        'has_prescription_items': has_prescription_items,
     })

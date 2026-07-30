@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Invoice #{{ order.id }} - OneStep Pharmacy</title>
+<style>
+  @page { size: A4; margin: 20mm; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #333; max-width: 210mm; margin: 0 auto; padding: 20px; }
+  .header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 40px; border-bottom: 3px solid #0066cc; padding-bottom: 20px; }
+  .title { font-size: 28px; font-weight: 800; color: #0066cc; margin: 0; }
+  .invoice-info { text-align: right; }
+  .invoice-info h2 { margin: 0 0 5px; font-size: 18px; }
+  table { width: 100%; border-collapse: collapse; margin: 30px 0; }
+  th { background: #f5f5f5; text-align: left; padding: 12px 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 12px 8px; border-bottom: 1px solid #eee; }
+  .total-row td { font-weight: bold; border-top: 2px solid #333; padding-top: 15px; }
+  .footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; font-size: 12px; color: #888; text-align: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; }
+  .badge.pending { background: #fff3cd; color: #856404; }
+  .address { font-size: 13px; color: #666; margin-top: 20px; }
+  @media print { body { padding: 0; } .no-print { display: none; } }
+</style></head>
+<body>
+  <div class="header">
+    <div>
+      <h1 class="title">ONESTEP PHARMACY</h1>
+      <p style="color:#666;margin:5px 0 0;">Your Trusted Healthcare Partner</p>
+    </div>
+    <div class="invoice-info">
+      <h2>INVOICE</h2>
+      <p><strong>Invoice #:</strong> INV-{{ order.id }}</p>
+      <p><strong>Date:</strong> {{ order.created_at|date:"F d, Y" }}</p>
+      <p><strong>Status:</strong> <span class="badge {{ order.status }}">{{ order.get_status_display }}</span></p>
+    </div>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;">
+    <div>
+      <strong>Customer:</strong>
+      <p>{{ order.user.get_full_name|default:order.user.username }}<br>{{ order.user.email }}</p>
+    </div>
+    <div class="address">
+      <strong>Ship to:</strong>
+      <p>{{ order.shipping_address|default:'N/A' }}<br>{{ order.phone|default:'' }}</p>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>#</th><th>Item</th><th>Qty</th><th style="text-align:right;">Unit Price</th><th style="text-align:right;">Total</th></tr>
+    </thead>
+    <tbody>
+      {% for item in order.items.all %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td style="text-align:right;">Rs. {{ item.unit_price|floatformat:2 }}</td>
+        <td style="text-align:right;">Rs. {{ item.total_price|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      {% if order.discount_amount %}
+      <tr><td colspan="4" style="text-align:right;">Subtotal:</td><td style="text-align:right;">Rs. {{ order.subtotal|floatformat:2 }}</td></tr>
+      <tr><td colspan="4" style="text-align:right;">Discount ({{ order.coupon_code }}):</td><td style="text-align:right;">-Rs. {{ order.discount_amount|floatformat:2 }}</td></tr>
+      {% endif %}
+      <tr class="total-row"><td colspan="4" style="text-align:right;">Total:</td><td style="text-align:right;">Rs. {{ order.total|floatformat:2 }}</td></tr>
+    </tfoot>
+  </table>
+
+  <div class="no-print" style="text-align:center;margin-top:30px;">
+    <button onclick="window.print()" style="padding:12px 30px;background:#0066cc;color:white;border:none;border-radius:6px;font-size:16px;cursor:pointer;">Print / Save PDF</button>
+  </div>
+
+  <div class="footer">
+    <p>OneStep Pharmacy | Kathmandu, Nepal | onesteppharmacy.com</p>
+    <p>Thank you for your business!</p>
+  </div>
+</body></html>

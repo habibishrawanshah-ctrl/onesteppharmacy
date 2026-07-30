@@ -36,7 +36,7 @@ class ProductListViewTest(TestCase):
     def test_stock_badge_in_stock(self):
         Product.objects.create(name='High', price=5.00, stock=100)
         resp = self.client.get(reverse('products:list'))
-        self.assertContains(resp, 'In Stock')
+        self.assertContains(resp, 'in stock')
 
     def test_stock_badge_low_stock(self):
         Product.objects.create(name='Low', price=5.00, stock=5)

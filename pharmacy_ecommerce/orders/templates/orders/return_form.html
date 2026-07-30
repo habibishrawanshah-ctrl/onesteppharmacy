@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Return Order #{{ order.id }} - OneStep Pharmacy{% endblock %}
+{% block content %}
+<section class="form-page">
+  <div class="form-card">
+    <h2>Return Order #{{ order.id }}</h2>
+    <p class="form-card-desc">Tell us why you're returning this order</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label" for="reason">Reason for Return</label>
+        <textarea name="reason" id="reason" rows="4" class="form-textarea" placeholder="Describe the issue..." required></textarea>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Submit Return Request</button>
+      <a href="{% url 'users:profile' %}" class="btn btn-secondary btn-block mt-2">Go Back</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

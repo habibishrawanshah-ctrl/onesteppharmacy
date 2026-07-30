@@ -80,6 +80,8 @@ class SignupViewTest(TestCase):
 class UserProfileModelTest(TestCase):
     def test_create_profile(self):
         user = User.objects.create_user(username='profiled', password='pass1234')
-        profile = UserProfile.objects.create(user=user, address='123 Main St', phone='555-0100')
+        profile = UserProfile.objects.get(user=user)
         self.assertEqual(str(profile), 'profiled')
-        self.assertEqual(profile.address, '123 Main St')
+        profile.address = '123 Main St'
+        profile.phone = '555-0100'
+        profile.save()

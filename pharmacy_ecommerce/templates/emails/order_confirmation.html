@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html><body style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h1>Order Confirmed!</h1>
+<p>Thank you, <strong>{{ order.user.username }}</strong>!</p>
+<p>Your order <strong>#{{ order.id }}</strong> has been placed successfully.</p>
+<table style="width:100%;border-collapse:collapse;margin:20px 0;">
+  <tr><th style="text-align:left;border-bottom:2px solid #ddd;padding:8px;">Item</th><th style="text-align:right;border-bottom:2px solid #ddd;padding:8px;">Qty</th><th style="text-align:right;border-bottom:2px solid #ddd;padding:8px;">Price</th></tr>
+  {% for item in order.items.all %}
+  <tr><td style="padding:8px;border-bottom:1px solid #eee;">{{ item.product.name }}</td><td style="text-align:right;padding:8px;border-bottom:1px solid #eee;">{{ item.quantity }}</td><td style="text-align:right;padding:8px;border-bottom:1px solid #eee;">Rs. {{ item.total_price }}</td></tr>
+  {% endfor %}
+  <tr><td colspan="2" style="text-align:right;padding:8px;font-weight:bold;">Total:</td><td style="text-align:right;padding:8px;font-weight:bold;">Rs. {{ order.total }}</td></tr>
+</table>
+<p>We'll notify you when your order ships.</p>
+</body></html>

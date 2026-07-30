@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html><body style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+<h1>Welcome to OneStep Pharmacy!</h1>
+<p>Hi <strong>{{ user.username }}</strong>,</p>
+<p>Your account has been created successfully. You can now browse our catalog of medicines and healthcare products, place orders, and track deliveries.</p>
+<p><a href="{{ site_url }}{% url 'products:list' %}" style="background:#0066cc;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;">Start Shopping</a></p>
+</body></html>

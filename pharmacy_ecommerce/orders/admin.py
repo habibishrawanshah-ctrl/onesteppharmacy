@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order, OrderItem, Cart, CartItem
+from .models import Order, OrderItem, Cart, CartItem, Prescription
 
 
 class OrderItemInline(admin.TabularInline):
@@ -49,3 +49,19 @@ class CartAdmin(admin.ModelAdmin):
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('order', 'product', 'quantity', 'unit_price', 'total_price')
+
+
+@admin.register(Prescription)
+class PrescriptionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'order', 'status', 'created_at')
+    list_filter = ('status',)
+    search_fields = ('user__username',)
+    actions = ['approve_prescriptions', 'reject_prescriptions']
+
+    def approve_prescriptions(self, request, queryset):
+        queryset.update(status='approved')
+    approve_prescriptions.short_description = "Mark selected as Approved"
+
+    def reject_prescriptions(self, request, queryset):
+        queryset.update(status='rejected')
+    reject_prescriptions.short_description = "Mark selected as Rejected"

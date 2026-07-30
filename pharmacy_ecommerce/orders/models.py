@@ -94,3 +94,31 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity}x {self.product.name} (Order #{self.order.id})"
+
+
+class Prescription(models.Model):
+    STATUS_PENDING = 'pending'
+    STATUS_APPROVED = 'approved'
+    STATUS_REJECTED = 'rejected'
+
+    STATUS_CHOICES = [
+        (STATUS_PENDING, 'Pending Review'),
+        (STATUS_APPROVED, 'Approved'),
+        (STATUS_REJECTED, 'Rejected'),
+    ]
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='prescriptions')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='prescriptions', null=True, blank=True)
+    image = models.ImageField(upload_to='prescriptions/', blank=True, help_text='Upload prescription image')
+    file = models.FileField(upload_to='prescriptions/', blank=True, help_text='Upload prescription PDF')
+    notes = models.TextField(blank=True, help_text='Doctor notes or additional info')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    admin_notes = models.TextField(blank=True, help_text='Admin review notes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Prescription #{self.id} by {self.user.username}"

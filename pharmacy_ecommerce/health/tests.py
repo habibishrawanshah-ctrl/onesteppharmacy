@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import HealthRecord, HealthCondition
+from .models import HealthRecord, HealthCondition, BlogPost
 
 
 def create_user(username='testuser', password='testpass123'):
@@ -58,3 +58,52 @@ class HealthViewTest(TestCase):
         self.client.logout()
         resp = self.client.get(reverse('health:my_records'))
         self.assertEqual(resp.status_code, 302)
+
+
+class BlogPostModelTest(TestCase):
+    def setUp(self):
+        self.user = create_user()
+
+    def test_create_blog_post(self):
+        b = BlogPost.objects.create(title='Health Tips', slug='health-tips', content='Stay healthy!', author=self.user)
+        self.assertEqual(str(b), 'Health Tips')
+
+    def test_blog_post_default_published(self):
+        b = BlogPost.objects.create(title='Wellness', slug='wellness', content='Be well', author=self.user)
+        self.assertTrue(b.is_published)
+
+    def test_blog_post_draft(self):
+        b = BlogPost.objects.create(title='Draft', slug='draft', content='Draft post', author=self.user, is_published=False)
+        self.assertFalse(b.is_published)
+
+
+class BlogViewTest(TestCase):
+    def setUp(self):
+        self.user = create_user()
+        BlogPost.objects.create(title='Article One', slug='article-one', content='Content one', author=self.user, category='Wellness')
+        BlogPost.objects.create(title='Article Two', slug='article-two', content='Content two', author=self.user, category='Nutrition')
+
+    def test_blog_list_view(self):
+        resp = self.client.get(reverse('health:blog_list'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'Article One')
+
+    def test_blog_detail_view(self):
+        resp = self.client.get(reverse('health:blog_detail', args=['article-one']))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'Content one')
+
+    def test_blog_detail_404(self):
+        resp = self.client.get(reverse('health:blog_detail', args=['nonexistent']))
+        self.assertEqual(resp.status_code, 404)
+
+    def test_blog_category_filter(self):
+        resp = self.client.get(reverse('health:blog_list') + '?category=Nutrition')
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'Article Two')
+        self.assertNotContains(resp, 'Article One')
+
+    def test_blog_rss_feed(self):
+        resp = self.client.get(reverse('health:blog_feed'))
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, 'Article One')

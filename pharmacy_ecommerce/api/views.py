@@ -4,9 +4,11 @@ from .serializers import (
     ProductSerializer, CategorySerializer, OrderSerializer, OrderItemSerializer,
     CartSerializer, CartItemSerializer, PrescriptionSerializer, CouponSerializer,
     WishlistSerializer, StockNotificationSerializer, UserSerializer, UserProfileSerializer,
+    BlogPostSerializer,
 )
 from products.models import Product, Category, Wishlist, StockNotification
 from orders.models import Order, OrderItem, Cart, CartItem, Prescription, Coupon
+from health.models import BlogPost
 from django.contrib.auth.models import User
 from users.models import UserProfile
 
@@ -112,3 +114,12 @@ class StockNotificationViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return StockNotification.objects.filter(user=self.request.user)
+
+
+class BlogPostViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = BlogPost.objects.filter(is_published=True)
+    serializer_class = BlogPostSerializer
+    permission_classes = [permissions.AllowAny]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['category']
+    search_fields = ['title', 'content', 'tags']

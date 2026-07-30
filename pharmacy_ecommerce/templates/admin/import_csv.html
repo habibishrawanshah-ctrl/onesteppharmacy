@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>Import Products from CSV</h1>
+<p>CSV must have columns: name, description, price, stock, category, manufacturer, is_prescription_required</p>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="file" name="csv_file" accept=".csv" required>
+  <button type="submit" class="button">Import</button>
+</form>
+<a href=".." class="button" style="margin-top:10px;display:inline-block;">Back to Products</a>
+{% endblock %}

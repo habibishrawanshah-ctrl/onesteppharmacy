@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Order, OrderItem, Prescription, Coupon
 from products.models import Product
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .cart import add_to_cart, remove_from_cart, update_quantity, cart_items, clear_cart, get_or_create_cart
 from django.http import JsonResponse
 from delivery.models import Delivery
@@ -12,6 +12,33 @@ from utils.email import send_order_confirmation, send_welcome_email
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+@user_passes_test(lambda u: u.is_staff)
+def prescription_dashboard(request):
+    status_filter = request.GET.get('status', '')
+    prescriptions = Prescription.objects.select_related('user', 'order').all()
+    if status_filter:
+        prescriptions = prescriptions.filter(status=status_filter)
+
+    if request.method == 'POST':
+        pres_id = request.POST.get('prescription_id')
+        action = request.POST.get('action')
+        pres = get_object_or_404(Prescription, pk=pres_id)
+        if action == 'approve':
+            pres.status = 'approved'
+            messages.success(request, f'Prescription #{pres.id} approved.')
+        elif action == 'reject':
+            pres.status = 'rejected'
+            pres.admin_notes = request.POST.get('admin_notes', pres.admin_notes or '')
+            messages.warning(request, f'Prescription #{pres.id} rejected.')
+        pres.save()
+        return redirect('orders:prescription_dashboard')
+
+    return render(request, 'orders/prescription_dashboard.html', {
+        'prescriptions': prescriptions,
+        'current_status': status_filter,
+    })
 
 
 def place_order_index(request):

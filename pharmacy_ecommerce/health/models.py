@@ -26,3 +26,27 @@ class HealthRecord(models.Model):
     def __str__(self):
         name = self.condition.name if self.condition else self.custom_condition
         return f"{self.user.username} - {name}"
+
+
+class BlogPost(models.Model):
+    title = models.CharField(max_length=300)
+    slug = models.SlugField(unique=True)
+    content = models.TextField()
+    excerpt = models.TextField(blank=True, help_text='Short summary for listing')
+    image = models.ImageField(upload_to='blog/', blank=True, null=True)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.CharField(max_length=100, blank=True, help_text='e.g. Wellness, Medicine, Lifestyle')
+    tags = models.CharField(max_length=300, blank=True, help_text='Comma-separated tags')
+    is_published = models.BooleanField(default=True)
+    published_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-published_at']
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('health:blog_detail', args=[self.slug])

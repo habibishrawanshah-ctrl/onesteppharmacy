@@ -53,6 +53,7 @@
           <a href="/products/" {% if '/products/' in request.path %}class="active" aria-current="page"{% endif %}>Medicines</a>
           <a href="/lab/" {% if '/lab/' in request.path %}class="active"{% endif %}>Lab Tests</a>
           <a href="/about/" {% if '/about/' in request.path %}class="active"{% endif %}>About</a>
+          <a href="{% url 'health:blog_list' %}" {% if '/health/blog/' in request.path %}class="active" aria-current="page"{% endif %}>Blog</a>
           {% if user.is_authenticated %}
           <a href="/health/" {% if '/health/' in request.path %}class="active"{% endif %}>Health</a>
           <a href="/delivery/" {% if '/delivery/' in request.path %}class="active"{% endif %}>Delivery</a>

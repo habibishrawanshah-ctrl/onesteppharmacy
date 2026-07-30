@@ -15,6 +15,7 @@ router.register(r'prescriptions', views.PrescriptionViewSet, basename='prescript
 router.register(r'coupons', views.CouponViewSet, basename='coupon')
 router.register(r'wishlist', views.WishlistViewSet, basename='wishlist')
 router.register(r'stock-notifications', views.StockNotificationViewSet, basename='stocknotification')
+router.register(r'blog', views.BlogPostViewSet, basename='blog')
 
 urlpatterns = [
     path('', include(router.urls)),

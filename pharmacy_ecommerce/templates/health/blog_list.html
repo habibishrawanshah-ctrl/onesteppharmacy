@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Health Blog - OneStep Pharmacy{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Health Blog</h1>
+  <p>Health tips, wellness guides, and medical advice</p>
+</div>
+
+{% if categories %}
+<div class="d-flex gap-2 flex-wrap mb-4">
+  <a href="{% url 'health:blog_list' %}" class="btn btn-sm {% if not current_category %}btn-primary{% else %}btn-secondary{% endif %}">All</a>
+  {% for cat in categories %}
+  <a href="{% url 'health:blog_list' %}?category={{ cat|urlencode }}" class="btn btn-sm {% if current_category == cat %}btn-primary{% else %}btn-secondary{% endif %}">{{ cat }}</a>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--space-5);">
+  {% for post in posts %}
+  <article class="card card-hover">
+    {% if post.image %}
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width:100%;height:180px;object-fit:cover;border-radius:var(--radius-lg) var(--radius-lg) 0 0;">
+    {% endif %}
+    <div style="padding:var(--space-4);">
+      <div class="d-flex gap-2 mb-2 flex-wrap">
+        {% if post.category %}<span class="badge">{{ post.category }}</span>{% endif %}
+        <span class="text-xs text-secondary">{{ post.published_at|date:"M d, Y" }}</span>
+      </div>
+      <h3 style="font-size:1.1rem;margin-bottom:var(--space-2);"><a href="{% url 'health:blog_detail' post.slug %}" style="text-decoration:none;color:inherit;">{{ post.title }}</a></h3>
+      <p class="text-secondary text-sm">{{ post.excerpt|default:post.content|truncatewords:30 }}</p>
+      <a href="{% url 'health:blog_detail' post.slug %}" class="btn btn-sm btn-secondary mt-3">Read More</a>
+    </div>
+  </article>
+  {% empty %}
+  <div class="text-center text-secondary" style="grid-column:1/-1;padding:60px 0;">
+    <p>No articles yet. Check back soon!</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% if posts.has_other_pages %}
+<div class="pagination mt-5">
+  {% if posts.has_previous %}<a href="?page={{ posts.previous_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}" class="btn btn-sm btn-secondary">Previous</a>{% endif %}
+  <span class="text-sm" style="padding:0 var(--space-3);">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span>
+  {% if posts.has_next %}<a href="?page={{ posts.next_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}" class="btn btn-sm btn-secondary">Next</a>{% endif %}
+</div>
+{% endif %}
+
+<div class="text-center mt-5">
+  <a href="{% url 'health:blog_feed' %}" class="btn btn-sm btn-secondary">Subscribe to RSS</a>
+</div>
+{% endblock %}

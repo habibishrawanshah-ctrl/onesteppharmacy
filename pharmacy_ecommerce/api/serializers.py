@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from products.models import Product, Category, Wishlist, StockNotification
 from orders.models import Order, OrderItem, Cart, CartItem, Prescription, Coupon
+from health.models import BlogPost
 from django.contrib.auth.models import User
 from users.models import UserProfile
 
@@ -18,9 +19,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    children = serializers.SerializerMethodField()
+
     class Meta:
         model = Category
         fields = '__all__'
+
+    def get_children(self, obj):
+        return CategorySerializer(obj.children.all(), many=True).data if obj.pk else []
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -87,4 +93,10 @@ class WishlistSerializer(serializers.ModelSerializer):
 class StockNotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = StockNotification
+        fields = '__all__'
+
+
+class BlogPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BlogPost
         fields = '__all__'

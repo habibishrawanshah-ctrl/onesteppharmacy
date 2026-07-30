@@ -11,4 +11,5 @@ psycopg2-binary>=2.9,<3.0
 requests>=2,<3
 beautifulsoup4>=4,<5
 PyJWT>=2,<3
-cryptography>=41,<42
+cryptography~=41.0
+cffi~=1.16

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - OneStep Pharmacy{% endblock %}
+{% block content %}
+<div class="page-header">
+  <h1>Admin Dashboard</h1>
+  <p>Store overview and analytics</p>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-4);margin-bottom:var(--space-6);">
+  <div class="card" style="text-align:center;padding:var(--space-5);">
+    <div style="font-size:2rem;font-weight:800;color:var(--primary-500);">{{ total_orders }}</div>
+    <div class="text-sm text-secondary">Total Orders</div>
+  </div>
+  <div class="card" style="text-align:center;padding:var(--space-5);">
+    <div style="font-size:2rem;font-weight:800;color:var(--success);">Rs. {{ total_revenue|floatformat:0 }}</div>
+    <div class="text-sm text-secondary">Total Revenue</div>
+  </div>
+  <div class="card" style="text-align:center;padding:var(--space-5);">
+    <div style="font-size:2rem;font-weight:800;color:var(--info);">{{ total_products }}</div>
+    <div class="text-sm text-secondary">Products</div>
+  </div>
+  <div class="card" style="text-align:center;padding:var(--space-5);">
+    <div style="font-size:2rem;font-weight:800;color:{% if low_stock > 0 %}var(--danger){% else %}var(--success){% endif %};">{{ low_stock }}</div>
+    <div class="text-sm text-secondary">Low Stock Items</div>
+  </div>
+  <div class="card" style="text-align:center;padding:var(--space-5);">
+    <div style="font-size:2rem;font-weight:800;color:var(--warning);">{{ pending_orders }}</div>
+    <div class="text-sm text-secondary">Pending Orders</div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:2fr 1fr;gap:var(--space-5);">
+  <div class="card">
+    <h3 class="mb-4">Sales (Last 7 Days)</h3>
+    <canvas id="salesChart" height="200"></canvas>
+  </div>
+  <div class="card">
+    <h3 class="mb-4">Top Products</h3>
+    <div class="d-flex flex-column gap-2">
+      {% for p in top_products %}
+      <div class="d-flex justify-between text-sm" style="padding:var(--space-2) 0;border-bottom:1px solid var(--border-light);">
+        <span>{{ p.product__name }}</span>
+        <span class="fw-600">{{ p.total_qty }} sold</span>
+      </div>
+      {% empty %}
+      <p class="text-secondary">No sales yet</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="card mt-5">
+  <h3 class="mb-4">Recent Orders</h3>
+  <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+      <thead><tr style="background:var(--bg-surface-hover);">
+        <th style="padding:10px 8px;text-align:left;">#</th>
+        <th style="padding:10px 8px;text-align:left;">Customer</th>
+        <th style="padding:10px 8px;text-align:left;">Total</th>
+        <th style="padding:10px 8px;text-align:left;">Status</th>
+        <th style="padding:10px 8px;text-align:left;">Date</th>
+      </tr></thead>
+      <tbody>
+        {% for order in recent_orders %}
+        <tr style="border-bottom:1px solid var(--border-light);">
+          <td style="padding:10px 8px;">{{ order.id }}</td>
+          <td style="padding:10px 8px;">{{ order.user.username }}</td>
+          <td style="padding:10px 8px;">Rs. {{ order.total }}</td>
+          <td style="padding:10px 8px;"><span class="stock-badge {% if order.status == 'delivered' %}in-stock{% elif order.status == 'cancelled' %}out-of-stock{% else %}low-stock{% endif %}">{{ order.get_status_display }}</span></td>
+          <td style="padding:10px 8px;">{{ order.created_at|date:"M d, H:i" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('salesChart').getContext('2d');
+const data = {{ sales_data|safe }};
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: data.map(d => d.date),
+    datasets: [{
+      label: 'Revenue (Rs.)',
+      data: data.map(d => d.total),
+      borderColor: '#0066cc',
+      backgroundColor: 'rgba(0,102,204,0.1)',
+      fill: true,
+      tension: 0.3,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true } }
+  }
+});
+</script>
+{% endblock %}

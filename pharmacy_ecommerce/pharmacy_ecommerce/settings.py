@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
     'rest_framework',
     'django_filters',
     'corsheaders',
@@ -42,6 +41,9 @@ INSTALLED_APPS = [
     'insurance',
 ]
 
+if os.environ.get('GOOGLE_OAUTH_CLIENT_ID'):
+    INSTALLED_APPS += ['allauth.socialaccount.providers.google']
+
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
@@ -49,8 +51,9 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
+SOCIALACCOUNT_PROVIDERS = {}
+if os.environ.get('GOOGLE_OAUTH_CLIENT_ID'):
+    SOCIALACCOUNT_PROVIDERS['google'] = {
         'APP': {
             'client_id': os.environ.get('GOOGLE_OAUTH_CLIENT_ID'),
             'secret': os.environ.get('GOOGLE_OAUTH_SECRET'),
@@ -58,7 +61,6 @@ SOCIALACCOUNT_PROVIDERS = {
         'SCOPE': ['profile', 'email'],
         'AUTH_PARAMS': {'access_type': 'online'},
     }
-}
 
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET = True

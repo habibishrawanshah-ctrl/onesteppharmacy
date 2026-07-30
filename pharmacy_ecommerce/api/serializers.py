@@ -32,10 +32,14 @@ class CategorySerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     category_id = serializers.IntegerField(write_only=True, required=False)
+    image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = '__all__'
+
+    def get_image_url(self, obj):
+        return obj.get_image_url()
 
 
 class CartItemSerializer(serializers.ModelSerializer):

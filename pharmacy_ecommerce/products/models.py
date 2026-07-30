@@ -28,8 +28,12 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def get_image_url(self):
-        if self.image and self.image.name and self.image.storage.exists(self.image.name):
-            return self.image.url
+        if self.image and self.image.name:
+            name = self.image.name
+            if name.startswith(('http://', 'https://')):
+                return name
+            if self.image.storage.exists(name):
+                return self.image.url
         name_slug = self.name.lower().replace(' ', '_')
         cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME', 'cxfqn4a3')
         return f'https://res.cloudinary.com/{cloud_name}/image/upload/v1/products/{name_slug}.jpg'

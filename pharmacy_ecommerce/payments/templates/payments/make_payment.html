@@ -4,7 +4,7 @@
 <div class="form-page">
   <div class="form-card">
     <h2>Complete Payment</h2>
-    <p class="form-card-desc">Order #{{ order.id }} &mdash; Rs. {{ order.total_price }}</p>
+    <p class="form-card-desc">Order #{{ order.id }} &mdash; Rs. {{ order.total }}</p>
     <form method="post">
       {% csrf_token %}
 
@@ -35,11 +35,11 @@
       <div style="background:var(--bg-surface-hover);border-radius:var(--radius-lg);padding:var(--space-4);margin-bottom:var(--space-6);">
         <div class="d-flex justify-between" style="font-size:0.95rem;padding:var(--space-1) 0;">
           <span class="text-secondary">Order Total</span>
-          <span class="fw-700">Rs. {{ order.total_price }}</span>
+          <span class="fw-700">Rs. {{ order.total }}</span>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block">Pay Rs. {{ order.total_price }}</button>
+      <button type="submit" class="btn btn-primary btn-block">Pay Rs. {{ order.total }}</button>
     </form>
   </div>
 </div>

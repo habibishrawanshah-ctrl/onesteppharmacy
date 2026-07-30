@@ -14,6 +14,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('set-language/', views.set_language, name='set_language'),
+    path('accounts/', include('allauth.urls')),
 
     # Products
     path('products/', include('products.urls')),

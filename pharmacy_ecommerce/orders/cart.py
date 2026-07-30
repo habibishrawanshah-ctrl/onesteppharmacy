@@ -1,62 +1,50 @@
+from django.shortcuts import get_object_or_404
 from products.models import Product
+from .models import Cart, CartItem
 
 
-def get_cart(request):
-    return request.session.get('cart', {})
+def get_or_create_cart(user):
+    cart, created = Cart.objects.get_or_create(user=user)
+    return cart
 
 
-def save_cart(request, cart):
-    request.session['cart'] = cart
-    request.session.modified = True
+def add_to_cart(user, product_id, quantity=1):
+    cart = get_or_create_cart(user)
+    product = get_object_or_404(Product, pk=product_id)
+    item, created = CartItem.objects.get_or_create(
+        cart=cart,
+        product=product,
+        defaults={'quantity': quantity},
+    )
+    if not created:
+        item.quantity += quantity
+        item.save()
+    return item
 
 
-def add_to_cart(request, product_id, quantity=1):
-    cart = get_cart(request)
-    pid = str(product_id)
-    if pid in cart:
-        cart[pid]['qty'] += quantity
-    else:
-        cart[pid] = {'qty': quantity}
-    save_cart(request, cart)
+def remove_from_cart(user, product_id):
+    cart = get_or_create_cart(user)
+    CartItem.objects.filter(cart=cart, product_id=product_id).delete()
 
 
-def remove_from_cart(request, product_id):
-    cart = get_cart(request)
-    cart.pop(str(product_id), None)
-    save_cart(request, cart)
-
-
-def update_quantity(request, product_id, quantity):
-    cart = get_cart(request)
-    pid = str(product_id)
-    if pid in cart:
+def update_quantity(user, product_id, quantity):
+    cart = get_or_create_cart(user)
+    item = CartItem.objects.filter(cart=cart, product_id=product_id).first()
+    if item:
         if quantity > 0:
-            cart[pid]['qty'] = quantity
+            item.quantity = quantity
+            item.save()
         else:
-            del cart[pid]
-    save_cart(request, cart)
+            item.delete()
 
 
-def cart_items(request):
-    cart = get_cart(request)
-    items = []
-    total = 0
-    if not cart:
-        return items, total
-        
-    product_ids = [int(pid) for pid in cart.keys() if pid.isdigit()]
-    products = Product.objects.filter(pk__in=product_ids)
-    
-    for product in products:
-        pid = str(product.pk)
-        if pid in cart:
-            qty = cart[pid]['qty']
-            subtotal = product.price * qty
-            total += subtotal
-            items.append({
-                'product': product,
-                'quantity': qty,
-                'subtotal': subtotal,
-            })
-            
+def cart_items(user):
+    cart = get_or_create_cart(user)
+    items = cart.items.select_related('product').all()
+    total = sum(item.subtotal() for item in items)
     return items, total
+
+
+def clear_cart(user):
+    cart = get_or_create_cart(user)
+    cart.items.all().delete()

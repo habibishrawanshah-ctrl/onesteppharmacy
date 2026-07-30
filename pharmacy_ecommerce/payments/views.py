@@ -56,12 +56,12 @@ def make_payment(request, order_id):
         Payment.objects.create(
             order=order,
             user=request.user,
-            amount=order.total_price,
+            amount=order.total,
             method=method,
             method_type=method_type,
             status='completed',
             transaction_id=f'TXN{order.id:06d}',
         )
-        messages.success(request, f'Payment of NPR {order.total_price} completed!')
+        messages.success(request, f'Payment of NPR {order.total} completed!')
         return redirect('orders:success')
     return render(request, 'payments/make_payment.html', {'order': order, 'methods': methods})

@@ -41,14 +41,17 @@
         {% for order in orders %}
         <div class="d-flex justify-between align-center flex-wrap gap-2" style="padding:var(--space-3);background:var(--bg-surface-hover);border-radius:var(--radius-lg);">
           <div>
-            <strong>#{{ order.id }}</strong> &mdash; {{ order.product.name }} x {{ order.quantity }}
+            <strong>#{{ order.id }}</strong>
+            {% for item in order.items.all %}
+            <div>&mdash; {{ item.product.name }} x {{ item.quantity }}</div>
+            {% endfor %}
             <div class="text-sm text-secondary">
-              {{ order.order_date|date:"M d, Y" }} &middot; Rs. {{ order.total_price }}
+              {{ order.created_at|date:"M d, Y" }} &middot; Rs. {{ order.total }}
             </div>
           </div>
           <div class="d-flex align-center gap-2">
-            <span class="stock-badge {% if order.status == 'Delivered' %}in-stock{% elif order.status == 'Shipped' %}low-stock{% else %}out-of-stock{% endif %}">
-              {{ order.status }}
+            <span class="stock-badge {% if order.status == 'delivered' %}in-stock{% elif order.status == 'shipped' or order.status == 'processing' %}low-stock{% else %}out-of-stock{% endif %}">
+              {{ order.get_status_display }}
             </span>
             {% if order.delivery %}
             <a href="{% url 'delivery:tracking' order.delivery.pk %}" class="btn btn-sm btn-secondary">Track</a>

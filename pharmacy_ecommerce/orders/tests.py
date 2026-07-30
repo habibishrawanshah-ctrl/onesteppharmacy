@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import Order
+from .models import Order, OrderItem
 from products.models import Product
 from django.contrib.auth.models import User
 
@@ -15,12 +15,24 @@ class OrderModelTest(TestCase):
         self.product = Product.objects.create(name='Test', price=5.00, stock=10)
 
     def test_string_representation(self):
-        order = Order.objects.create(user=self.user, product=self.product, quantity=2)
+        order = Order.objects.create(user=self.user, total=10.00)
         self.assertIn('buyer', str(order))
 
     def test_default_status_is_pending(self):
-        order = Order.objects.create(user=self.user, product=self.product, quantity=1)
-        self.assertEqual(order.status, 'Pending')
+        order = Order.objects.create(user=self.user, total=5.00)
+        self.assertEqual(order.status, 'pending')
+
+    def test_order_items_relationship(self):
+        order = Order.objects.create(user=self.user, total=10.00)
+        item = OrderItem.objects.create(
+            order=order,
+            product=self.product,
+            quantity=2,
+            unit_price=5.00,
+            total_price=10.00,
+        )
+        self.assertEqual(order.items.count(), 1)
+        self.assertEqual(item.subtotal(), 10.00)
 
 
 class PlaceOrderViewTest(TestCase):
@@ -43,9 +55,11 @@ class PlaceOrderViewTest(TestCase):
         self.assertRedirects(resp, reverse('orders:success'))
         self.assertEqual(Order.objects.count(), 1)
         order = Order.objects.first()
-        self.assertEqual(order.quantity, 3)
+        self.assertEqual(order.items.count(), 1)
+        item = order.items.first()
+        self.assertEqual(item.quantity, 3)
+        self.assertEqual(item.product, self.product)
         self.assertEqual(order.user, self.user)
-        self.assertEqual(order.product, self.product)
 
     def test_decrements_stock(self):
         self.client.login(username='buyer', password='pass1234')
@@ -121,6 +135,17 @@ class PlaceOrderViewTest(TestCase):
         self.assertContains(resp, 'Painkiller')
         self.assertContains(resp, '4.99')
         self.assertContains(resp, 'max="10"')
+
+    def test_order_creates_delivery_and_payment(self):
+        self.client.login(username='buyer', password='pass1234')
+        resp = self.client.post(
+            reverse('orders:place', args=[self.product.pk]),
+            {'quantity': 2},
+        )
+        self.assertEqual(Order.objects.count(), 1)
+        order = Order.objects.first()
+        self.assertIsNotNone(getattr(order, 'delivery', None))
+        self.assertEqual(order.payments.count(), 1)
 
 
 class PlaceOrderIndexTest(TestCase):

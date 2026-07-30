@@ -22,5 +22,5 @@ from orders.models import Order
 
 @login_required
 def profile(request):
-    orders = Order.objects.filter(user=request.user).order_by('-order_date')
+    orders = Order.objects.filter(user=request.user).prefetch_related('items__product', 'delivery')
     return render(request, 'users/profile.html', {'orders': orders})

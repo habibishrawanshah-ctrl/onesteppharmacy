@@ -3,7 +3,8 @@
   "buildCommand": "bash pharmacy_ecommerce/scripts/vercel-build.sh",
   "functions": {
     "api/index.py": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "runtime": "python3.12"
     }
   },
   "routes": [

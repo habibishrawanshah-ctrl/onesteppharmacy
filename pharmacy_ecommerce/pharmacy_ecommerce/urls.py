@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 from . import views
 from orders import views as orders_views
 
@@ -9,6 +11,7 @@ admin.site.index_title = "OneStep Pharmacy"
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),
     path('', views.home, name='home'),
     path('about/', views.about, name='about'),
     path('login/', views.login_view, name='login'),

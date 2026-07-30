@@ -17,11 +17,11 @@
       <div class="d-flex align-center gap-3">
         <div style="color:var(--text-tertiary);">
           {% if m.method_type == 'credit_card' %}
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          <i data-lucide="credit-card" width="28" height="28"></i>
           {% elif m.method_type == 'khalti' or m.method_type == 'esewa' %}
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          <i data-lucide="smartphone" width="28" height="28"></i>
           {% else %}
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+          <i data-lucide="monitor" width="28" height="28"></i>
           {% endif %}
         </div>
         <div>

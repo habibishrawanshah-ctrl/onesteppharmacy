@@ -55,7 +55,7 @@
 {% if delivery.latitude and delivery.longitude %}
 <div class="tracking-map">
   <div class="text-center">
-    <svg class="mb-2" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <i data-lucide="map-pin" width="32" height="32" class="mb-2"></i>
     <p>Delivery Location</p>
     <p class="text-sm">{{ delivery.latitude }}, {{ delivery.longitude }}</p>
     <a href="https://www.google.com/maps?q={{ delivery.latitude }},{{ delivery.longitude }}" target="_blank" class="btn btn-primary btn-sm mt-4">View on Google Maps</a>

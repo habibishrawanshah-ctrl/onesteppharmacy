@@ -25,11 +25,11 @@
         <label for="quantity" class="form-label">Quantity:</label>
         <div style="display:inline-flex;align-items:center;border:1px solid var(--border-base);border-radius:var(--radius-md);overflow:hidden;background:var(--bg-surface);">
           <button type="button" id="qty-btn-minus" class="btn-ghost" style="padding:10px 14px;border-radius:0;" aria-label="Decrease quantity">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <i data-lucide="minus" width="16" height="16" stroke-width="2.5"></i>
           </button>
           <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" required class="form-input" style="width:60px;text-align:center;border:none;border-radius:0;padding:10px 0;font-size:1.1rem;font-weight:600;">
           <button type="button" id="qty-btn-plus" class="btn-ghost" style="padding:10px 14px;border-radius:0;" aria-label="Increase quantity">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <i data-lucide="plus" width="16" height="16" stroke-width="2.5"></i>
           </button>
         </div>
       </div>
@@ -39,7 +39,7 @@
       </div>
       <button class="btn btn-primary btn-block" type="submit" id="submit-order-btn">
         Submit Order
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <i data-lucide="arrow-right" width="16" height="16" stroke-width="2.5"></i>
       </button>
     </form>
     <script>

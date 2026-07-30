@@ -6,7 +6,7 @@
   <div class="form-card">
     <div class="d-flex flex-column align-center mb-6">
       <div class="d-flex align-center justify-center" style="width:56px;height:56px;background:var(--primary-50);border-radius:var(--radius-xl);margin-bottom:var(--space-3);">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
+        <i data-lucide="user-plus" width="28" height="28" stroke="var(--primary-500)"></i>
       </div>
       <h2>Create Account</h2>
       <p class="form-card-desc mb-0">Join OneStep Pharmacy to start ordering</p>
@@ -16,7 +16,7 @@
       {{ form.as_p }}
       <button class="btn btn-primary btn-block" type="submit">
         Create Account
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <i data-lucide="arrow-right" width="16" height="16" stroke-width="2.5"></i>
       </button>
     </form>
     <div class="divider mt-4 mb-4" style="text-align:center;border-top:1px solid var(--border);position:relative;">
@@ -27,7 +27,7 @@
       Sign up with Google
     </a>
     <a href="{% url 'account_signup' %}" class="btn btn-block mt-2" style="display:flex;align-items:center;justify-content:center;gap:var(--space-2);border:1px solid var(--border);background:var(--bg);color:var(--text);">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <i data-lucide="mail" width="20" height="20"></i>
       Sign up with Email
     </a>
     <p class="text-center mt-4 text-sm text-secondary">

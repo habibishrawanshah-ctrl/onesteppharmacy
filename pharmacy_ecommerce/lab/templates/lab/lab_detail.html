@@ -3,7 +3,7 @@
 {% block content %}
 <div class="detail-layout">
   <div class="detail-image no-image" style="background:var(--primary-50);color:var(--primary-500);">
-    <i data-lucide="flask-conical" width="96" height="96" stroke-width="1.5"></i>
+    <i data-lucide="{{ test.get_icon }}" width="96" height="96" stroke-width="1.5"></i>
   </div>
   <div class="detail-info">
     <span class="text-sm" style="color:var(--primary-500);font-weight:600;text-transform:uppercase;">{{ test.get_category_display }}</span>

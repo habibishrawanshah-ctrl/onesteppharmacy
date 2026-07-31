@@ -637,6 +637,13 @@ p { margin-bottom: var(--space-4); }
 /* Health Records Banner */
 .health-banner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4); background: var(--primary-50); border: 1px solid var(--primary-100); padding: var(--space-4) var(--space-5); border-radius: var(--radius-lg); }
 
+/* Blog Content */
+.blog-content h2 { font-size: 1.5rem; font-weight: 700; margin: var(--space-5) 0 var(--space-3); color: var(--text-primary); }
+.blog-content h3 { font-size: 1.2rem; font-weight: 600; margin: var(--space-4) 0 var(--space-2); color: var(--text-primary); }
+.blog-content p { margin: 0 0 var(--space-3); }
+.blog-content ul, .blog-content ol { margin: 0 0 var(--space-3) var(--space-5); padding-left: 0; }
+.blog-content li { margin-bottom: var(--space-2); }
+
 /* Stepper No Spinner */
 input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 input[type=number] { -moz-appearance: textfield; }

@@ -16,7 +16,7 @@
   <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width:100%;max-height:400px;object-fit:cover;border-radius:var(--radius-lg);margin-bottom:var(--space-5);">
   {% endif %}
   <div class="blog-content" style="line-height:1.8;font-size:1.05rem;">
-    {{ post.content|linebreaks }}
+    {{ post.content|safe }}
   </div>
   {% if post.author %}
   <div class="text-sm text-secondary mt-5" style="padding-top:var(--space-4);border-top:1px solid var(--border-light);">

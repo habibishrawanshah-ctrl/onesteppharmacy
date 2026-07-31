@@ -6,7 +6,7 @@ from .models import LabTest, LabBooking
 
 def lab_list(request):
     category = request.GET.get('category', '')
-    tests = LabTest.objects.filter(is_active=True)
+    tests = LabTest.objects.filter(is_active=True).order_by('name')
     if category:
         tests = tests.filter(category=category)
     paginator = Paginator(tests, 12)

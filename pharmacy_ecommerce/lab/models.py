@@ -1,3 +1,4 @@
+import re
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -20,6 +21,45 @@ class LabTest(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_icon(self):
+        text = f'{self.name} {self.description}'.lower()
+        rules = [
+            (r'pregnancy', 'baby'),
+            (r'widal|typhoid', 'thermometer'),
+            (r'checkup|screening', 'user-check'),
+            (r'\bthyroid\b|\btsh\b', 'butterfly'),
+            (r'\bhba1c\b|\ba1c\b|glycated haemoglobin', 'calendar-clock'),
+            (r'blood sugar|fasting glucose|\bglucose\b|diabetes', 'gauge'),
+            (r'vitamin d|\b25-?oh\b', 'sun'),
+            (r'vitamin b12|\bb12\b', 'brain'),
+            (r'\bige\b|immunoglobulin', 'shield-alert'),
+            (r'allerg', 'flower-2'),
+            (r'echocardiogr', 'heart-pulse'),
+            (r'\becg\b|electrocardiogram', 'activity'),
+            (r'treadmill|\btmt\b', 'person-running'),
+            (r'abdominal|ultrasound|sonograph', 'scan-line'),
+            (r'\bx-?ray\b', 'x-ray'),
+            (r'\bjoint\b|bone', 'bone'),
+            (r'uric acid|gout', 'gem'),
+            (r'24-?hour', 'hourglass'),
+            (r'\burine\b', 'flask-conical'),
+            (r'\bkidney\b|renal|creatinine', 'filter'),
+            (r'\bliver\b|hepatic|\blft\b', 'shield'),
+            (r'lipid|cholesterol|triglyceride', 'heart'),
+            (r'blood count|\bcbc\b|haemoglobin|platelet', 'droplets'),
+            (r'\biron\b|ferritin', 'droplet'),
+            (r'culture|microscop', 'microscope'),
+            (r'dengue', 'virus'),
+            (r'malaria', 'bug'),
+            (r'\bcardiac\b|heart', 'heart-pulse'),
+            (r'\bblood\b', 'droplet'),
+            (r'imaging', 'scan'),
+        ]
+        for pattern, icon in rules:
+            if re.search(pattern, text):
+                return icon
+        return 'flask-conical'
 
 class LabBooking(models.Model):
     STATUS_CHOICES = [

@@ -20,7 +20,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True, max_length=500)
     stock = models.PositiveIntegerField(default=0)
     expiry_date = models.DateField(blank=True, null=True)
     is_prescription_required = models.BooleanField(default=False)

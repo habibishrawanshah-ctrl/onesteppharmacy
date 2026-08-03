@@ -13,3 +13,4 @@ public/
 media/
 db.sqlite3
 .vercel
+.env*

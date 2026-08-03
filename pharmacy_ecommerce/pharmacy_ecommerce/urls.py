@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from . import views
 from orders import views as orders_views
+from users import views as users_views
 
 admin.site.site_header = "OneStep Pharmacy Administration"
 admin.site.site_title = "OneStep Pharmacy Admin"
@@ -16,6 +17,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('signup/', users_views.signup, name='signup'),
     path('set-language/', views.set_language, name='set_language'),
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('accounts/', include('allauth.urls')),

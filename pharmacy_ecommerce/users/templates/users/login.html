@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% load socialaccount %}
-{% get_providers as socialaccount_providers %}
-<!-- DEBUG: providers={{ socialaccount_providers|length }} -->
 {% block title %}Login - OneStep Pharmacy{% endblock %}
 {% block content %}
+{% get_providers as socialaccount_providers %}
 <section class="form-page">
   <div class="form-card">
     <div class="d-flex flex-column align-center mb-6">

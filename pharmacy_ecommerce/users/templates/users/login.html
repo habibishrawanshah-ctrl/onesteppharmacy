@@ -3,6 +3,7 @@
 {% block title %}Login - OneStep Pharmacy{% endblock %}
 {% block content %}
 {% get_providers as socialaccount_providers %}
+<p style="color:red">DEBUG: {% for p in socialaccount_providers %}{{ p.id }};{% empty %}NONE{% endfor %}</p>
 <section class="form-page">
   <div class="form-card">
     <div class="d-flex flex-column align-center mb-6">

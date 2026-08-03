@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load socialaccount %}
 {% get_providers as socialaccount_providers %}
+<!-- DEBUG: providers={{ socialaccount_providers|length }} -->
 {% block title %}Login - OneStep Pharmacy{% endblock %}
 {% block content %}
 <section class="form-page">
